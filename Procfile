@@ -1,0 +1,1 @@
+web: gunicorn bconstproject.wsgi --log-file -
