@@ -1,0 +1,268 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - شركة باء البناء</title>
+    <link rel="stylesheet" href="{% static 'website/css/styles.css' %}">
+    <style>
+        .dashboard-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .dashboard-card {
+            background: white;
+            border-radius: 20px;
+            padding: 60px 40px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dashboard-logo {
+            height: 80px;
+            margin-bottom: 30px;
+        }
+
+        .dashboard-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #6699cc, #3b82f6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 10px 30px rgba(102, 153, 204, 0.4);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 15px 40px rgba(102, 153, 204, 0.6);
+            }
+        }
+
+        .dashboard-icon svg {
+            width: 50px;
+            height: 50px;
+            color: white;
+        }
+
+        .dashboard-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #111827;
+            margin-bottom: 20px;
+        }
+
+        .dashboard-message {
+            font-size: 1.3rem;
+            color: #6b7280;
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        .dashboard-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #fef3c7;
+            color: #92400e;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            margin: 30px 0;
+            font-size: 1.1rem;
+        }
+
+        .dashboard-status svg {
+            width: 24px;
+            height: 24px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .dashboard-description {
+            color: #6b7280;
+            font-size: 1rem;
+            line-height: 1.8;
+            margin-bottom: 40px;
+        }
+
+        .dashboard-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #6699cc, #3b82f6);
+            color: white;
+            padding: 15px 35px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+            text-decoration: none;
+        }
+
+        .btn-home:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+        }
+
+        .btn-home svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .features-list {
+            text-align: right;
+            margin: 30px 0;
+            padding: 25px;
+            background: #f9fafb;
+            border-radius: 15px;
+        }
+
+        .features-list h3 {
+            font-size: 1.3rem;
+            color: #111827;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .features-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .features-list li {
+            padding: 12px 0;
+            color: #4b5563;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .features-list li::before {
+            content: "⚙️";
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-card {
+                padding: 40px 25px;
+            }
+
+            .dashboard-title {
+                font-size: 1.6rem;
+            }
+
+            .dashboard-message {
+                font-size: 1.1rem;
+            }
+
+            .dashboard-buttons {
+                flex-direction: column;
+            }
+
+            .btn-home {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="dashboard-card">
+            <img src="{% static 'website/img/logob.png' %}" alt="شركة باء البناء" class="dashboard-logo">
+            
+            <div class="dashboard-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="14" width="7" height="7"></rect>
+                    <rect x="3" y="14" width="7" height="7"></rect>
+                </svg>
+            </div>
+
+            <h1 class="dashboard-title">لوحة التحكم الداخلية</h1>
+            
+            <div class="dashboard-status">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path>
+                </svg>
+                جاري العمل على التطوير
+            </div>
+
+            <p class="dashboard-message">
+                نعمل حالياً على تطوير لوحة تحكم متقدمة لإدارة المشاريع والعمليات
+            </p>
+
+            <div class="features-list">
+                <h3>الميزات القادمة:</h3>
+                <ul>
+                    <li>إدارة شاملة للمشاريع</li>
+                    <li>متابعة سير العمل</li>
+                    <li>تقارير مفصلة ومحدثة</li>
+                    <li>نظام إدارة الموظفين</li>
+                    <li>لوحة تحكم تحليلية</li>
+                    <li>إدارة المستندات والملفات</li>
+                </ul>
+            </div>
+
+            <p class="dashboard-description">
+                سيتم إطلاق النظام قريباً بإذن الله مع واجهة حديثة وسهلة الاستخدام
+            </p>
+
+            <div class="dashboard-buttons">
+                <a href="{% url 'home' %}" class="btn-home">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                    العودة للموقع الرئيسي
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

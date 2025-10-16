@@ -1488,3 +1488,73 @@ html {
         font-size: 1.1rem;
     }
 }
+
+
+/* أضف هذا الكود في نهاية ملف styles.css الخاص بك */
+
+/* تنسيق زر تسجيل الدخول */
+.login-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #6699cc, #3b82f6);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+    margin-left: 20px;
+}
+
+.login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+}
+
+.login-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* تحديث تنسيقات الموبايل */
+@media (max-width: 768px) {
+    .login-btn {
+        margin-left: 0;
+        padding: 8px 15px;
+        font-size: 0.85rem;
+    }
+
+    .login-btn svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .login-btn span {
+        display: none;
+    }
+
+    /* عرض أيقونة فقط على الموبايل */
+    .login-btn {
+        width: 40px;
+        height: 40px;
+        justify-content: center;
+        padding: 0;
+        border-radius: 50%;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-btn {
+        width: 38px;
+        height: 38px;
+    }
+
+    .login-btn svg {
+        width: 18px;
+        height: 18px;
+    }
+}

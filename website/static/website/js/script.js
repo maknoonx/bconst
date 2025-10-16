@@ -50,6 +50,57 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
+// Scroll to contact section function
+function scrollToContact() {
+    const contactSection = document.querySelector('#contact');
+    if (contactSection) {
+        const headerOffset = 70;
+        const elementPosition = contactSection.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+        
+        window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+        });
+    }
+}
+
+// Add event listeners to all "تواصل معنا" buttons
+document.addEventListener('DOMContentLoaded', function() {
+    // Hero section button
+    const heroButton = document.querySelector('.hero .btn-primary');
+    if (heroButton) {
+        heroButton.addEventListener('click', scrollToContact);
+    }
+    
+    // Stats section button
+    const statsButton = document.querySelector('.stats .btn-dark');
+    if (statsButton) {
+        statsButton.addEventListener('click', scrollToContact);
+    }
+    
+    // Dark CTA section button
+    const ctaButton = document.querySelector('.dark-cta .btn-primary');
+    if (ctaButton) {
+        ctaButton.addEventListener('click', scrollToContact);
+    }
+    
+    // About section button
+    const aboutButton = document.querySelector('.about .btn-dark');
+    if (aboutButton) {
+        aboutButton.addEventListener('click', scrollToContact);
+    }
+    
+    // Customer service link in navigation
+    const supportLink = document.querySelector('a[href="#support"]');
+    if (supportLink) {
+        supportLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            scrollToContact();
+        });
+    }
+});
+
 // Form submission
 document.getElementById('contactForm').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -59,7 +110,7 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
 
 // WhatsApp button
 function openWhatsApp() {
-    window.open('https://api.whatsapp.com/send/?phone=920009281&text&app_absent=0', '_blank');
+    window.open('https://api.whatsapp.com/send/?phone=966593394747&text&app_absent=0', '_blank');
 }
 
 // Partners slider functionality
@@ -106,10 +157,29 @@ window.addEventListener('resize', function() {
 // Service buttons functionality
 document.addEventListener('DOMContentLoaded', function() {
     const serviceButtons = document.querySelectorAll('.btn-service');
-    serviceButtons.forEach(button => {
+    serviceButtons.forEach((button, index) => {
         button.addEventListener('click', function() {
-            const serviceName = this.closest('.service-card').querySelector('.service-content h3').textContent;
-            alert(`سيتم توجيهك لمزيد من المعلومات عن: ${serviceName}`);
+            // Define service URLs
+            const serviceUrls = [
+                '/architectural-services/',  // الخدمات المعمارية
+                '/structural-services/',     // الخدمات الإنشائية
+                '/design-services/'          // التصاميم
+            ];
+            
+            // Redirect to the appropriate service page
+            if (serviceUrls[index]) {
+                window.location.href = serviceUrls[index];
+            }
+        });
+    });
+    
+    // Project cards functionality
+    const projectCards = document.querySelectorAll('.project-card');
+    projectCards.forEach((card, index) => {
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', function() {
+            // For now, redirect to project 1 (you can create more project pages later)
+            window.location.href = `/project/${index + 1}/`;
         });
     });
 });

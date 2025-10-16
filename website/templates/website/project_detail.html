@@ -1,0 +1,377 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ project.title }} - شركة باء البناء</title>
+    <link rel="stylesheet" href="{% static 'website/css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'website/css/project-page.css' %}">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="{% static 'website/img/logob.png' %}" alt="B construction Logo">
+            </div>
+            <ul class="nav-menu">
+                <li><a href="{% url 'home' %}">الرئيسية</a></li>
+                <li><a href="{% url 'home' %}#services">خدماتنا</a></li>
+                <li><a href="{% url 'home' %}#projects">مشاريعنا</a></li>
+                <li><a href="{% url 'home' %}#about">من نحن</a></li>
+                <li><a href="{% url 'home' %}#contact">تواصل معنا</a></li>
+            </ul>
+            <a href="{% url 'employee_login' %}" class="login-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                    <polyline points="10 17 15 12 10 7"></polyline>
+                    <line x1="15" y1="12" x2="3" y2="12"></line>
+                </svg>
+                <span>تسجيل الدخول</span>
+            </a>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Project Hero Section -->
+    <section class="project-hero">
+        <div class="project-hero-overlay"></div>
+        <img src="{{ project.main_image }}" alt="{{ project.title }}" class="project-hero-bg">
+        <div class="project-hero-content">
+            <div class="breadcrumb">
+                <a href="{% url 'home' %}">الرئيسية</a>
+                <span>/</span>
+                <a href="{% url 'home' %}#projects">المشاريع</a>
+                <span>/</span>
+                <span>مشروع {{ project_id }}</span>
+            </div>
+            <div class="project-badge">{{ project.status }}</div>
+            <h1 class="project-title">{{ project.title }}</h1>
+            <p class="project-subtitle">{{ project.subtitle }}</p>
+        </div>
+    </section>
+
+    <!-- Project Overview -->
+    <section class="project-overview">
+        <div class="container">
+            <div class="overview-grid">
+                <div class="overview-main">
+                    <h2>نظرة عامة على المشروع</h2>
+                    <p class="project-description">
+                        مشروع النخبة السكني هو أحد أبرز مشاريعنا التي تجسد رؤيتنا في بناء مجتمعات سكنية متكاملة. يقع المشروع في موقع استراتيجي متميز، ويتكون من 120 وحدة سكنية فاخرة تم تصميمها بأحدث المعايير المعمارية العالمية. يوفر المشروع بيئة سكنية متكاملة تجمع بين الراحة والرفاهية والأمان.
+                    </p>
+                    <p class="project-description">
+                        تم تصميم المشروع ليلبي احتياجات العائلات العصرية، حيث يضم مرافق متعددة تشمل حدائق واسعة، مناطق ترفيهية للأطفال، صالات رياضية مجهزة بالكامل، ومواقف سيارات آمنة. كما تم الاهتمام بالتفاصيل الدقيقة في كل وحدة سكنية لضمان أعلى مستويات الجودة والراحة.
+                    </p>
+
+                    <div class="project-features">
+                        <h3>مميزات المشروع</h3>
+                        <div class="features-list">
+                            <div class="feature-box">
+                                <div class="feature-icon-box">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                    </svg>
+                                </div>
+                                <div class="feature-text">
+                                    <h4>وحدات سكنية فاخرة</h4>
+                                    <p>120 وحدة سكنية بمساحات متنوعة تبدأ من 150 متر</p>
+                                </div>
+                            </div>
+
+                            <div class="feature-box">
+                                <div class="feature-icon-box">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <path d="M12 6v6l4 2"></path>
+                                    </svg>
+                                </div>
+                                <div class="feature-text">
+                                    <h4>أمن وحراسة 24/7</h4>
+                                    <p>نظام أمني متكامل مع كاميرات مراقبة وحراسة دائمة</p>
+                                </div>
+                            </div>
+
+                            <div class="feature-box">
+                                <div class="feature-icon-box">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="3" width="7" height="7"></rect>
+                                        <rect x="14" y="3" width="7" height="7"></rect>
+                                        <rect x="14" y="14" width="7" height="7"></rect>
+                                        <rect x="3" y="14" width="7" height="7"></rect>
+                                    </svg>
+                                </div>
+                                <div class="feature-text">
+                                    <h4>مرافق ترفيهية</h4>
+                                    <p>حدائق واسعة، ملاعب للأطفال، وصالة رياضية حديثة</p>
+                                </div>
+                            </div>
+
+                            <div class="feature-box">
+                                <div class="feature-icon-box">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                        <circle cx="12" cy="10" r="3"></circle>
+                                    </svg>
+                                </div>
+                                <div class="feature-text">
+                                    <h4>موقع استراتيجي</h4>
+                                    <p>قريب من الخدمات الأساسية والطرق الرئيسية</p>
+                                </div>
+                            </div>
+
+                            <div class="feature-box">
+                                <div class="feature-icon-box">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                                        <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                                    </svg>
+                                </div>
+                                <div class="feature-text">
+                                    <h4>تقنيات ذكية</h4>
+                                    <p>أنظمة منزلية ذكية وإضاءة موفرة للطاقة</p>
+                                </div>
+                            </div>
+
+                            <div class="feature-box">
+                                <div class="feature-icon-box">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+                                    </svg>
+                                </div>
+                                <div class="feature-text">
+                                    <h4>تصميم مستدام</h4>
+                                    <p>مواد بناء صديقة للبيئة وأنظمة توفير الطاقة</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="overview-sidebar">
+                    <div class="project-info-card">
+                        <h3>معلومات المشروع</h3>
+                        <div class="info-row">
+                            <span class="info-label">الحالة:</span>
+                            <span class="info-value status-completed">{{ project.status }}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">الموقع:</span>
+                            <span class="info-value">{{ project.location }}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">المساحة:</span>
+                            <span class="info-value">{{ project.area }}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">عدد الوحدات:</span>
+                            <span class="info-value">{{ project.units }}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">تاريخ البدء:</span>
+                            <span class="info-value">{{ project.start_date }}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">تاريخ الإنجاز:</span>
+                            <span class="info-value">{{ project.end_date }}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">نوع المشروع:</span>
+                            <span class="info-value">{{ project.type }}</span>
+                        </div>
+                    </div>
+
+                    <div class="contact-project-card">
+                        <h3>هل أنت مهتم؟</h3>
+                        <p>للاستفسار عن مشاريعنا القادمة</p>
+                        <a href="{% url 'home' %}#contact" class="btn-primary">تواصل معنا</a>
+                    </div>
+
+                    <div class="share-card">
+                        <h3>شارك المشروع</h3>
+                        <div class="share-buttons">
+                            <button class="share-btn whatsapp">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                                </svg>
+                            </button>
+                            <button class="share-btn twitter">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                                </svg>
+                            </button>
+                            <button class="share-btn facebook">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                                </svg>
+                            </button>
+                            <button class="share-btn linkedin">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Gallery -->
+    <section class="project-gallery-section">
+        <div class="container">
+            <h2 class="gallery-section-title">معرض صور المشروع</h2>
+            <p class="gallery-section-subtitle">استكشف تفاصيل المشروع من خلال معرض الصور الشامل</p>
+
+            <div class="main-gallery">
+                <div class="main-image-container">
+                    <img src="https://ext.same-assets.com/2977916181/4234824831.png" alt="صورة رئيسية" class="main-gallery-image" id="mainImage">
+                    <button class="gallery-nav-btn prev-btn" onclick="changeMainImage(-1)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
+                    </button>
+                    <button class="gallery-nav-btn next-btn" onclick="changeMainImage(1)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </button>
+                    <div class="image-counter">
+                        <span id="currentImageNumber">1</span> / <span id="totalImages">8</span>
+                    </div>
+                </div>
+
+                <div class="thumbnail-gallery">
+                    <div class="thumbnail-item active" onclick="selectImage(0)">
+                        <img src="https://ext.same-assets.com/2977916181/4234824831.png" alt="صورة 1">
+                    </div>
+                    <div class="thumbnail-item" onclick="selectImage(1)">
+                        <img src="https://ext.same-assets.com/2977916181/1160599726.png" alt="صورة 2">
+                    </div>
+                    <div class="thumbnail-item" onclick="selectImage(2)">
+                        <img src="https://ext.same-assets.com/2977916181/351238446.png" alt="صورة 3">
+                    </div>
+                    <div class="thumbnail-item" onclick="selectImage(3)">
+                        <img src="https://ext.same-assets.com/2977916181/2266948137.jpeg" alt="صورة 4">
+                    </div>
+                    <div class="thumbnail-item" onclick="selectImage(4)">
+                        <img src="https://ext.same-assets.com/2977916181/476409975.jpeg" alt="صورة 5">
+                    </div>
+                    <div class="thumbnail-item" onclick="selectImage(5)">
+                        <img src="https://ext.same-assets.com/2977916181/1656347559.png" alt="صورة 6">
+                    </div>
+                    <div class="thumbnail-item" onclick="selectImage(6)">
+                        <img src="https://ext.same-assets.com/2977916181/3823570733.png" alt="صورة 7">
+                    </div>
+                    <div class="thumbnail-item" onclick="selectImage(7)">
+                        <img src="https://ext.same-assets.com/2977916181/3045019044.png" alt="صورة 8">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Related Projects -->
+    <section class="related-projects">
+        <div class="container">
+            <h2 class="section-title">مشاريع أخرى</h2>
+            <p class="section-subtitle">تعرف على المزيد من مشاريعنا المميزة</p>
+
+            <div class="related-grid">
+                <div class="related-card">
+                    <img src="https://ext.same-assets.com/2977916181/1160599726.png" alt="مشروع 2">
+                    <div class="related-overlay">
+                        <h3>مشروع 2</h3>
+                        <p>مجمع تجاري حديث</p>
+                        <a href="{% url 'project_detail' 2 %}" class="view-project-btn">عرض المشروع</a>
+                    </div>
+                </div>
+                <div class="related-card">
+                    <img src="https://ext.same-assets.com/2977916181/351238446.png" alt="مشروع 3">
+                    <div class="related-overlay">
+                        <h3>مشروع 3</h3>
+                        <p>فلل سكنية فاخرة</p>
+                        <a href="{% url 'project_detail' 3 %}" class="view-project-btn">عرض المشروع</a>
+                    </div>
+                </div>
+                <div class="related-card">
+                    <img src="https://ext.same-assets.com/2977916181/2266948137.jpeg" alt="مشروع 4">
+                    <div class="related-overlay">
+                        <h3>مشروع 4</h3>
+                        <p>برج إداري متكامل</p>
+                        <a href="{% url 'project_detail' 4 %}" class="view-project-btn">عرض المشروع</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="project-cta">
+        <div class="container">
+            <h2>هل لديك مشروع في ذهنك؟</h2>
+            <p>دعنا نحوله إلى واقع ملموس بخبرتنا وإبداعنا</p>
+            <a href="{% url 'home' %}#contact" class="btn-primary btn-large">ابدأ مشروعك الآن</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section footer-about">
+                    <img src="{% static 'website/img/logob.png' %}" alt="شركة باء البناء" class="footer-logo-img">
+                    <p class="footer-description">نحن شركة مقاولات تعمل في مجال التطوير العقاري بمفهوم مستقبلي شامل يساهم في تقديم المشبك الإسكاني في المملكة</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>روابط سريعة</h3>
+                    <ul>
+                        <li><a href="{% url 'home' %}">الرئيسية</a></li>
+                        <li><a href="{% url 'home' %}#services">خدماتنا</a></li>
+                        <li><a href="{% url 'home' %}#projects">مشاريعنا</a></li>
+                        <li><a href="{% url 'home' %}#about">من نحن</a></li>
+                        <li><a href="{% url 'home' %}#contact">تواصل معنا</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>تواصل معنا</h3>
+                    <ul class="contact-info">
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                            </svg>
+                            <a href="tel:0593394747">0593394747</a>
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                            <a href="mailto:info@ba-construction.sa">info@ba-construction.sa</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p class="copyright">© 2025 شركة باء البناء للمقاولات. جميع الحقوق محفوظة</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Button -->
+    <button class="whatsapp-btn" onclick="openWhatsApp()">💬</button>
+
+    <script src="{% static 'website/js/script.js' %}"></script>
+    <script src="{% static 'website/js/project-page.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,346 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خدمات التصاميم - شركة باء البناء</title>
+    <link rel="stylesheet" href="{% static 'website/css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'website/css/service-page.css' %}">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="{% static 'website/img/logob.png' %}" alt="B construction Logo">
+            </div>
+            <ul class="nav-menu">
+                <li><a href="{% url 'home' %}">الرئيسية</a></li>
+                <li><a href="{% url 'home' %}#services">خدماتنا</a></li>
+                <li><a href="{% url 'home' %}#projects">مشاريعنا</a></li>
+                <li><a href="{% url 'home' %}#about">من نحن</a></li>
+                <li><a href="{% url 'home' %}#contact">تواصل معنا</a></li>
+            </ul>
+            <a href="{% url 'employee_login' %}" class="login-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                    <polyline points="10 17 15 12 10 7"></polyline>
+                    <line x1="15" y1="12" x2="3" y2="12"></line>
+                </svg>
+                <span>تسجيل الدخول</span>
+            </a>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="service-hero">
+        <div class="service-hero-overlay"></div>
+        <img src="https://ext.same-assets.com/2977916181/2853489005.png" alt="خدمات التصاميم" class="service-hero-bg">
+        <div class="service-hero-content">
+            <div class="breadcrumb">
+                <a href="{% url 'home' %}">الرئيسية</a>
+                <span>/</span>
+                <a href="{% url 'home' %}#services">الخدمات</a>
+                <span>/</span>
+                <span>خدمات التصاميم</span>
+            </div>
+            <h1 class="service-title">خدمات التصاميم</h1>
+            <p class="service-subtitle">نحول رؤيتك إلى واقع... تصاميم إبداعية تجمع بين الجمال والوظيفة</p>
+        </div>
+    </section>
+
+    <!-- Service Details -->
+    <section class="service-details">
+        <div class="container">
+            <div class="details-content">
+                <div class="details-main">
+                    <h2>تصاميم تعكس هويتك وتلبي احتياجاتك</h2>
+                    <p class="intro-text">
+                        في شركة باء البناء، نقدم خدمات تصميم شاملة تغطي جميع جوانب مشروعك من التصميم الداخلي إلى تصميم المناظر الطبيعية. فريقنا من المصممين المبدعين يعمل على تحويل أفكارك إلى تصاميم واقعية تجمع بين الجمال والراحة والعملية، مع مراعاة ذوقك الخاص وميزانيتك.
+                    </p>
+
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                                    <line x1="8" y1="21" x2="16" y2="21"></line>
+                                    <line x1="12" y1="17" x2="12" y2="21"></line>
+                                </svg>
+                            </div>
+                            <h3>التصميم الداخلي</h3>
+                            <p>نصمم مساحات داخلية فريدة تعكس شخصيتك وتوفر لك الراحة والأناقة في كل ركن</p>
+                        </div>
+
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                                </svg>
+                            </div>
+                            <h3>التصميم الخارجي</h3>
+                            <p>نبتكر واجهات خارجية مميزة تجمع بين الجمال المعماري والهوية البصرية القوية</p>
+                        </div>
+
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                                    <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                                    <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                                </svg>
+                            </div>
+                            <h3>تصميم المناظر الطبيعية</h3>
+                            <p>نخلق مساحات خضراء خلابة وحدائق متناسقة تضيف جمالاً لمحيطك</p>
+                        </div>
+
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
+                                    <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
+                                    <path d="M2 2l7.586 7.586"></path>
+                                    <circle cx="11" cy="11" r="2"></circle>
+                                </svg>
+                            </div>
+                            <h3>اختيار الألوان والمواد</h3>
+                            <p>نساعدك في اختيار أفضل الألوان والمواد التي تناسب ذوقك وتحقق التناغم المطلوب</p>
+                        </div>
+
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
+                            </div>
+                            <h3>تصميم الأثاث المخصص</h3>
+                            <p>نصمم قطع أثاث فريدة ومخصصة تتناسب تماماً مع مساحاتك واحتياجاتك</p>
+                        </div>
+
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                                    <path d="M2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                                </svg>
+                            </div>
+                            <h3>التصور ثلاثي الأبعاد</h3>
+                            <p>نوفر لك رؤية واقعية لتصميمك قبل التنفيذ من خلال نماذج ثلاثية الأبعاد دقيقة</p>
+                        </div>
+                    </div>
+
+                    <div class="process-section">
+                        <h2>مراحل عملية التصميم</h2>
+                        <div class="process-steps">
+                            <div class="process-step">
+                                <div class="step-number">01</div>
+                                <h3>فهم الاحتياجات</h3>
+                                <p>نستمع لرؤيتك وأفكارك ونفهم احتياجاتك وتفضيلاتك بشكل دقيق</p>
+                            </div>
+                            <div class="process-step">
+                                <div class="step-number">02</div>
+                                <h3>تطوير المفهوم</h3>
+                                <p>نبتكر مفاهيم تصميمية متنوعة ونقدم لك خيارات مبدعة للاختيار</p>
+                            </div>
+                            <div class="process-step">
+                                <div class="step-number">03</div>
+                                <h3>التصميم التفصيلي</h3>
+                                <p>نطور التصميم المختار بكل تفاصيله مع نماذج ثلاثية الأبعاد</p>
+                            </div>
+                            <div class="process-step">
+                                <div class="step-number">04</div>
+                                <h3>الإشراف على التنفيذ</h3>
+                                <p>نتابع تنفيذ التصميم للتأكد من تحقيق الرؤية المطلوبة بدقة</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="details-sidebar">
+                    <div class="contact-card">
+                        <h3>هل تحتاج لتصميم مميز؟</h3>
+                        <p>دعنا نحول أحلامك إلى تصاميم واقعية ومبهرة</p>
+                        <a href="{% url 'home' %}#contact" class="btn-primary">تواصل معنا</a>
+                        <div class="contact-info">
+                            <div class="info-item">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                </svg>
+                                <span>0593394747</span>
+                            </div>
+                            <div class="info-item">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                    <polyline points="22,6 12,13 2,6"></polyline>
+                                </svg>
+                                <span>info@ba-construction.sa</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="related-services">
+                        <h3>خدمات أخرى</h3>
+                        <a href="{% url 'architectural_services' %}" class="related-item">
+                            <span>الخدمات المعمارية</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </a>
+                        <a href="{% url 'structural_services' %}" class="related-item">
+                            <span>الخدمات الإنشائية</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="service-gallery">
+        <div class="container">
+            <h2 class="gallery-title">معرض التصاميم</h2>
+            <p class="gallery-subtitle">استعرض بعضاً من تصاميمنا الداخلية والخارجية المتميزة</p>
+            
+            <div class="gallery-container">
+                <button class="gallery-nav gallery-prev" onclick="moveGallery(-1)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                </button>
+
+                <div class="gallery-slider">
+                    <div class="gallery-track">
+                        <div class="gallery-item">
+                            <img src="https://ext.same-assets.com/2977916181/2853489005.png" alt="مشروع 1">
+                            <div class="gallery-caption">
+                                <h3>تصميم صالة معيشة فاخرة</h3>
+                                <p>تصميم داخلي عصري يجمع بين الفخامة والراحة</p>
+                            </div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="https://ext.same-assets.com/2977916181/1354237741.jpeg" alt="مشروع 2">
+                            <div class="gallery-caption">
+                                <h3>تصميم مطبخ حديث</h3>
+                                <p>مطبخ بتصميم عملي وأنيق مع إضاءة مدروسة</p>
+                            </div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="https://ext.same-assets.com/2977916181/4234824831.png" alt="مشروع 3">
+                            <div class="gallery-caption">
+                                <h3>تصميم غرفة نوم رئيسية</h3>
+                                <p>غرفة نوم هادئة ومريحة بألوان متناغمة</p>
+                            </div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="https://ext.same-assets.com/2977916181/1160599726.png" alt="مشروع 4">
+                            <div class="gallery-caption">
+                                <h3>تصميم حديقة منزلية</h3>
+                                <p>حديقة خضراء مع أماكن جلوس مريحة ونوافير مائية</p>
+                            </div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="https://ext.same-assets.com/2977916181/351238446.png" alt="مشروع 5">
+                            <div class="gallery-caption">
+                                <h3>تصميم مكتب منزلي</h3>
+                                <p>مساحة عمل هادئة ومنظمة تعزز الإنتاجية</p>
+                            </div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="https://ext.same-assets.com/2977916181/1656347559.png" alt="مشروع 6">
+                            <div class="gallery-caption">
+                                <h3>تصميم واجهة فيلا</h3>
+                                <p>واجهة خارجية مميزة بلمسات معمارية حديثة</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="gallery-nav gallery-next" onclick="moveGallery(1)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="gallery-dots"></div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="service-cta">
+        <div class="container">
+            <h2>حان الوقت لتحويل أحلامك إلى واقع</h2>
+            <p>دعنا نصمم لك مساحات تعكس شخصيتك وتلبي جميع احتياجاتك</p>
+            <a href="{% url 'home' %}#contact" class="btn-primary btn-large">احصل على تصميمك الآن</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section footer-about">
+                    <img src="{% static 'website/img/logob.png' %}" alt="شركة باء البناء" class="footer-logo-img">
+                    <p class="footer-description">نحن شركة مقاولات تعمل في مجال التطوير العقاري بمفهوم مستقبلي شامل يساهم في تقديم المشبك الإسكاني في المملكة</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>روابط سريعة</h3>
+                    <ul>
+                        <li><a href="{% url 'home' %}">الرئيسية</a></li>
+                        <li><a href="{% url 'home' %}#services">خدماتنا</a></li>
+                        <li><a href="{% url 'home' %}#projects">مشاريعنا</a></li>
+                        <li><a href="{% url 'home' %}#about">من نحن</a></li>
+                        <li><a href="{% url 'home' %}#contact">تواصل معنا</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>تواصل معنا</h3>
+                    <ul class="contact-info">
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                            </svg>
+                            <a href="tel:0593394747">0593394747</a>
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                            <a href="mailto:info@ba-construction.sa">info@ba-construction.sa</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p class="copyright">© 2025 شركة باء البناء للمقاولات. جميع الحقوق محفوظة</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Button -->
+    <button class="whatsapp-btn" onclick="openWhatsApp()">💬</button>
+
+    <script src="{% static 'website/js/script.js' %}"></script>
+    <script src="{% static 'website/js/service-page.js' %}"></script>
+</body>
+</html>
