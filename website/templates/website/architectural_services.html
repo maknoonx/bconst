@@ -13,14 +13,15 @@
     <nav class="navbar">
         <div class="nav-container">
             <div class="logo">
-                <img src="{% static 'website/img/logob.png' %}" alt="B construction Logo">
+                <img src="{% static 'website/img/logob.png' %}" alt="B construction Logo" class="B construction Logo">
             </div>
             <ul class="nav-menu">
                 <li><a href="{% url 'home' %}">الرئيسية</a></li>
                 <li><a href="{% url 'home' %}#services">خدماتنا</a></li>
-                <li><a href="{% url 'home' %}#projects">مشاريعنا</a></li>
-                <li><a href="{% url 'home' %}#about">من نحن</a></li>
-                <li><a href="{% url 'home' %}#contact">تواصل معنا</a></li>
+                <li><a href="{% url 'team' %}" class="active">فريق العمل</a></li>
+                <li><a href="{% url 'home' %}#partners">شركاء النجاح</a></li>
+                <li><a href="{% url 'about' %}">من نحن</a></li>
+                <li><a href="{% url 'home' %}#support">خدمة العملاء</a></li>
             </ul>
             <a href="{% url 'employee_login' %}" class="login-btn">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -222,45 +223,136 @@
                 <div class="gallery-slider">
                     <div class="gallery-track">
                         <div class="gallery-item">
-                            <img src="https://ext.same-assets.com/2977916181/3823570733.png" alt="مشروع 1">
+                            <img src="{% static 'website/img/service1_2.svg' %}" alt="تصميم معماري 1">
                             <div class="gallery-caption">
-                                <h3>تصميم فيلا عصرية</h3>
-                                <p>تصميم معماري فريد يجمع بين الحداثة والأصالة</p>
+                                <h3>تصميم معماري مبتكر</h3>
+                                <p>تصميم عصري يجمع بين الأصالة والحداثة</p>
                             </div>
                         </div>
                         <div class="gallery-item">
-                            <img src="https://ext.same-assets.com/2977916181/4234824831.png" alt="مشروع 2">
+                            <img src="{% static 'website/img/service1_3.svg' %}" alt="تصميم معماري 2">
                             <div class="gallery-caption">
-                                <h3>مجمع سكني متكامل</h3>
-                                <p>تصميم مجتمع سكني بمرافق حديثة ومساحات خضراء</p>
+                                <h3>واجهات معمارية فريدة</h3>
+                                <p>تصاميم واجهات مميزة بلمسات عصرية</p>
                             </div>
                         </div>
                         <div class="gallery-item">
-                            <img src="https://ext.same-assets.com/2977916181/1160599726.png" alt="مشروع 3">
+                            <img src="{% static 'website/img/service1_4.svg' %}" alt="تصميم معماري 3">
                             <div class="gallery-caption">
-                                <h3>منتجع سياحي فاخر</h3>
-                                <p>تصميم منتجع يحاكي الطبيعة الخلابة المحيطة</p>
+                                <h3>مخططات تفصيلية دقيقة</h3>
+                                <p>رسومات هندسية شاملة لجميع التفاصيل</p>
                             </div>
                         </div>
                         <div class="gallery-item">
-                            <img src="https://ext.same-assets.com/2977916181/351238446.png" alt="مشروع 4">
+                            <img src="{% static 'website/img/service1_5.svg' %}" alt="تصميم معماري 4">
                             <div class="gallery-caption">
-                                <h3>مركز تجاري</h3>
-                                <p>تصميم عصري لمركز تجاري بمساحات واسعة</p>
+                                <h3>تخطيط مساحات ذكي</h3>
+                                <p>استغلال أمثل للمساحات المتاحة</p>
                             </div>
                         </div>
                         <div class="gallery-item">
-                            <img src="https://ext.same-assets.com/2977916181/2266948137.jpeg" alt="مشروع 5">
+                            <img src="{% static 'website/img/service1_6.svg' %}" alt="تصميم معماري 5">
                             <div class="gallery-caption">
-                                <h3>مبنى إداري حديث</h3>
-                                <p>تصميم مبنى إداري بواجهات زجاجية أنيقة</p>
+                                <h3>نماذج ثلاثية الأبعاد</h3>
+                                <p>تصور واقعي للمشروع قبل التنفيذ</p>
                             </div>
                         </div>
                         <div class="gallery-item">
-                            <img src="https://ext.same-assets.com/2977916181/476409975.jpeg" alt="مشروع 6">
+                            <img src="{% static 'website/img/service1_7.svg' %}" alt="تصميم معماري 6">
                             <div class="gallery-caption">
-                                <h3>قصر فخم</h3>
-                                <p>تصميم قصر بطراز معماري كلاسيكي راقي</p>
+                                <h3>تصاميم داخلية راقية</h3>
+                                <p>فراغات داخلية مريحة وعملية</p>
+                            </div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="{% static 'website/img/service1_8.svg' %}" alt="تصميم معماري 7">
+                            <div class="gallery-caption">
+                                <h3>تصميم مستدام</h3>
+                                <p>حلول معمارية صديقة للبيئة</p>
+                            </div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="{% static 'website/img/service1_9.svg' %}" alt="تصميم معماري 8">
+                            <div class="gallery-caption">
+                                <h3>مشاريع سكنية فاخرة</h3>
+                                <p>تصاميم تحاكي الرفاهية والراحة</p>
+                            </div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="{% static 'website/img/service1_10.svg' %}" alt="تصميم معماري 9">
+                            <div class="gallery-caption">
+                                <h3>مباني تجارية حديثة</h3>
+                                <p>تصاميم عصرية للمجمعات التجارية</p>
+                            </div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="{% static 'website/img/service1_11.svg' %}" alt="تصميم معماري 10">
+                            <div class="gallery-caption">
+                                <h3>فلل سكنية راقية</h3>
+                                <p>تصاميم فلل بأرقى المواصفات</p>
+                            </div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="{% static 'website/img/service1_12.svg' %}" alt="تصميم معماري 11">
+                            <div class="gallery-caption">
+                                <h3>مجمعات سكنية متكاملة</h3>
+                                <p>مشاريع سكنية بمرافق حديثة</p>
+                            </div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="{% static 'website/img/service1_13.svg' %}" alt="تصميم معماري 12">
+                            <div class="gallery-caption">
+                                <h3>أبراج إدارية عالية</h3>
+                                <p>تصاميم مباني إدارية بأحدث الطرز</p>
+                            </div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="{% static 'website/img/service1_14.svg' %}" alt="تصميم معماري 13">
+                            <div class="gallery-caption">
+                                <h3>واجهات زجاجية أنيقة</h3>
+                                <p>تصاميم واجهات بلمسات زجاجية راقية</p>
+                            </div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="{% static 'website/img/service1_15.svg' %}" alt="تصميم معماري 14">
+                            <div class="gallery-caption">
+                                <h3>مساجد بتصاميم مميزة</h3>
+                                <p>عمارة إسلامية أصيلة وعصرية</p>
+                            </div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="{% static 'website/img/service1_16.svg' %}" alt="تصميم معماري 15">
+                            <div class="gallery-caption">
+                                <h3>منتجعات سياحية فخمة</h3>
+                                <p>تصاميم تنسجم مع الطبيعة المحيطة</p>
+                            </div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="{% static 'website/img/service1_17.svg' %}" alt="تصميم معماري 16">
+                            <div class="gallery-caption">
+                                <h3>مدارس ومؤسسات تعليمية</h3>
+                                <p>بيئة تعليمية محفزة ومريحة</p>
+                            </div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="{% static 'website/img/service1_18.svg' %}" alt="تصميم معماري 17">
+                            <div class="gallery-caption">
+                                <h3>مستشفيات ومراكز طبية</h3>
+                                <p>تصاميم وظيفية لمرافق صحية</p>
+                            </div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="{% static 'website/img/service1_19.svg' %}" alt="تصميم معماري 18">
+                            <div class="gallery-caption">
+                                <h3>مراكز رياضية متطورة</h3>
+                                <p>منشآت رياضية بأحدث المواصفات</p>
+                            </div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="{% static 'website/img/service1_20.svg' %}" alt="تصميم معماري 19">
+                            <div class="gallery-caption">
+                                <h3>قصور فاخرة</h3>
+                                <p>تصاميم قصور بطراز معماري راقي</p>
                             </div>
                         </div>
                     </div>
@@ -286,53 +378,102 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section footer-about">
-                    <img src="{% static 'website/img/logob.png' %}" alt="شركة باء البناء" class="footer-logo-img">
-                    <p class="footer-description">نحن شركة مقاولات تعمل في مجال التطوير العقاري بمفهوم مستقبلي شامل يساهم في تقديم المشبك الإسكاني في المملكة</p>
-                </div>
-                
-                <div class="footer-section">
-                    <h3>روابط سريعة</h3>
-                    <ul>
-                        <li><a href="{% url 'home' %}">الرئيسية</a></li>
-                        <li><a href="{% url 'home' %}#services">خدماتنا</a></li>
-                        <li><a href="{% url 'home' %}#projects">مشاريعنا</a></li>
-                        <li><a href="{% url 'home' %}#about">من نحن</a></li>
-                        <li><a href="{% url 'home' %}#contact">تواصل معنا</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h3>تواصل معنا</h3>
-                    <ul class="contact-info">
-                        <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                            </svg>
-                            <a href="tel:0593394747">0593394747</a>
-                        </li>
-                        <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                                <polyline points="22,6 12,13 2,6"></polyline>
-                            </svg>
-                            <a href="mailto:info@ba-construction.sa">info@ba-construction.sa</a>
-                        </li>
-                    </ul>
+   
+ <!-- Footer -->
+ <footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section footer-about">
+                <img src="{% static 'website/img/logob.png' %}" alt="شركة باء البناء" class="footer-logo-img">
+                <p class="footer-description">شركة باء البناء للمقاولات</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Instagram" class="social-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                    </a>
+                    <a href="#" aria-label="Twitter" class="social-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+                        </svg>
+                    </a>
+                    <a href="#" aria-label="LinkedIn" class="social-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                            <rect x="2" y="9" width="4" height="12"></rect>
+                            <circle cx="4" cy="4" r="2"></circle>
+                        </svg>
+                    </a>
+                    <a href="#" aria-label="YouTube" class="social-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path>
+                            <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+                        </svg>
+                    </a>
                 </div>
             </div>
             
-            <div class="footer-bottom">
-                <div class="footer-bottom-content">
-                    <p class="copyright">© 2025 شركة باء البناء للمقاولات. جميع الحقوق محفوظة</p>
+            <div class="footer-section">
+                <h3>روابط سريعة</h3>
+                <ul>
+                    <li><a href="#home">الرئيسية</a></li>
+                    <li><a href="#services">خدماتنا</a></li>
+                    <li><a href="{% url 'about' %}">من نحن</a></li>
+                    <li><a href="#contact">تواصل معنا</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>خدماتنا</h3>
+                <ul>
+                    <li><a href="{% url 'architectural_services' %}">الخدمات المعمارية</a></li>
+                    <li><a href="{% url 'structural_services' %}">الخدمات الإنشائية</a></li>
+                    <li><a href="{% url 'design_services' %}">التصاميم</a></li>
+                    <li><a href="#services">جميع الخدمات</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>تواصل معنا</h3>
+                <ul class="contact-info">
+                    <li>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                        </svg>
+                        <a href="tel:0593394747">0593394747</a>
+                    </li>
+                    <li>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                        <a href="mailto:info@ba-construction.sa">info@ba-construction.sa</a>
+                    </li>
+                    <li>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        <span>المملكة العربية السعودية</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div class="footer-bottom-content">
+                <p class="copyright">© 2025 شركة باء البناء للمقاولات. جميع الحقوق محفوظة</p>
+                <div class="footer-links">
+                    <a href="{% url 'privacy_policy' %}">سياسة الخصوصية</a>
+                    <span class="separator">|</span>
+                    <a href="{% url 'terms_conditions' %}">الشروط والأحكام</a>
                 </div>
             </div>
         </div>
-    </footer>
+    </div>
+</footer>
 
     <!-- WhatsApp Button -->
     <button class="whatsapp-btn" onclick="openWhatsApp()">💬</button>

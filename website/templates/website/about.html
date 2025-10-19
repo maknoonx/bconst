@@ -1,0 +1,473 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>من نحن - شركة باء البناء للمقاولات</title>
+    <link rel="icon" type="image/png" href="{% static 'website/img/logob.png' %}">
+    <link rel="stylesheet" href="{% static 'website/css/styles.css' %}">
+    <style>
+        .about-hero {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 120px 0 80px;
+            color: white;
+            text-align: center;
+        }
+
+        .about-hero h1 {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .about-hero .underline {
+            width: 100px;
+            height: 4px;
+            background: #6699cc;
+            margin: 0 auto 30px;
+        }
+
+        .about-hero p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+            opacity: 0.95;
+        }
+
+        .about-section {
+            padding: 80px 0;
+        }
+
+        .about-section:nth-child(even) {
+            background: #f9fafb;
+        }
+
+        .about-content-box {
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            margin-bottom: 40px;
+        }
+
+        .about-section:nth-child(even) .about-content-box {
+            background: white;
+        }
+
+        .about-content-box h2 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #111827;
+            margin-bottom: 30px;
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+        .about-content-box h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(135deg, #6699cc, #3b82f6);
+        }
+
+        .about-content-box p {
+            font-size: 1.15rem;
+            line-height: 2;
+            color: #4b5563;
+            margin-bottom: 25px;
+            text-align: justify;
+        }
+
+        .vision-mission-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .vm-card {
+            background: white;
+            padding: 50px 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .vm-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(135deg, #6699cc, #3b82f6);
+        }
+
+        .vm-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+        }
+
+        .vm-card h3 {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #111827;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .vm-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #6699cc, #3b82f6);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .vm-card p {
+            font-size: 1.1rem;
+            line-height: 1.9;
+            color: #6b7280;
+            text-align: justify;
+        }
+
+        .about-images-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 50px;
+        }
+
+        .about-images-grid img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .about-images-grid img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, #6699cc, #3b82f6);
+            color: white;
+            padding: 60px 40px;
+            border-radius: 20px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .cta-box h2 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .cta-box p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
+
+        .cta-box .btn-primary {
+            background: white;
+            color: #3b82f6;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cta-box .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .about-hero {
+                padding: 100px 0 60px;
+            }
+
+            .about-hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .about-hero p {
+                font-size: 1.1rem;
+            }
+
+            .about-content-box {
+                padding: 30px 25px;
+            }
+
+            .about-content-box h2 {
+                font-size: 2rem;
+            }
+
+            .about-content-box p {
+                font-size: 1rem;
+            }
+
+            .vision-mission-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .vm-card {
+                padding: 35px 25px;
+            }
+
+            .vm-card h3 {
+                font-size: 1.6rem;
+            }
+
+            .about-images-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .about-images-grid img {
+                height: 200px;
+            }
+
+            .cta-box {
+                padding: 40px 25px;
+            }
+
+            .cta-box h2 {
+                font-size: 2rem;
+            }
+
+            .cta-box p {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="{% static 'website/img/logob.png' %}" alt="B construction Logo" class="B construction Logo">
+            </div>
+            <ul class="nav-menu">
+                <li><a href="{% url 'home' %}">الرئيسية</a></li>
+                <li><a href="{% url 'home' %}#services">خدماتنا</a></li>
+                <li><a href="{% url 'team' %}" class="active">فريق العمل</a></li>
+                <li><a href="{% url 'home' %}#partners">شركاء النجاح</a></li>
+                <li><a href="{% url 'about' %}">من نحن</a></li>
+                <li><a href="{% url 'home' %}#support">خدمة العملاء</a></li>
+            </ul>
+            <a href="{% url 'employee_login' %}" class="login-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                    <polyline points="10 17 15 12 10 7"></polyline>
+                    <line x1="15" y1="12" x2="3" y2="12"></line>
+                </svg>
+                <span>تسجيل الدخول</span>
+            </a>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="about-hero">
+        <div class="container">
+            <h1>من نحن</h1>
+            <div class="underline"></div>
+            <p>نشـأت شركة باء البناء لتلبي وتواكب رؤية المملكـة العربية السعودية 2030 في مجــال الإنشـاءات العامـة للمباني السكنية والتجارية والصيانـة والتشغيـل</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="about-section">
+        <div class="container">
+            <div class="about-content-box">
+                <h2>قصة نجاحنا</h2>
+                <p>
+                    تتراءى في إنجاز الكثير مــن المشاريــع المتميــزة والفريــدة بأماكـن متعـددة فـي ربـوع مملكتنـا العزيـزة، وخــلال مسيـرة النجـاح وفقنـا بالتعامل مع العديد من الجهات الحكومية والخاصة.
+                </p>
+                <p>
+                    تــدار الشركة مـن قبـل فريـق عمـل متنـوع ومختـص فـي مجال المقاولات، تراكمت لديهم الخبــرة وتنوعــت مـن خـلال التخطيـط والإدارة للكثيــر مــن المشاريــع المتنوعــة، ومواكبــة المتغيــرات والحداثـة التـي تطـرأ علـى سـوق الإنشاءات بالمملكة العربية السعودية.
+                </p>
+            </div>
+
+            <div class="about-images-grid">
+                <img src="https://ext.same-assets.com/2977916181/3823570733.png" alt="مشروع 1">
+                <img src="https://ext.same-assets.com/2977916181/3045019044.png" alt="مشروع 2">
+                <img src="https://ext.same-assets.com/2977916181/2853489005.png" alt="مشروع 3">
+            </div>
+        </div>
+    </section>
+
+    <!-- Vision & Mission -->
+    <section class="about-section">
+        <div class="container">
+            <div class="vision-mission-grid">
+                <div class="vm-card">
+                    <h3>
+                        <div class="vm-icon">🎯</div>
+                        رؤيتنـــــا
+                    </h3>
+                    <p>
+                        تسعى شركة باء البنــــاء لتعزيـز مكانتهـا فـي مجـال الهندسـة والإنشـاءات والصيانـة والتشغيل، لمواكبة التطور ولتكون جزءا فعالا ومشاركا في تحقيق رؤيـة المملكـة 2030 وذلك بتحقيق نتائج مرضية لعملائنا.
+                    </p>
+                </div>
+
+                <div class="vm-card">
+                    <h3>
+                        <div class="vm-icon">📋</div>
+                        خطتنــــا
+                    </h3>
+                    <p>
+                        نهتم بتحقيــق أعلــــى معاييــــــر الجـــــــودة والسلامة بمـا يتوافــق مـــــع رؤيـــــة 2030. مهمــــا كــان المشروع إنشـــــاء بنـــاء سكني، مشــروع تجـاري، أو أعمال الترميمــات. فنحن هنا للمساعــدة مـع خبرات هندسيــــة عاليــــــــة ومعــــــدات حديثــــة تضمــــــن دقة وجودة العمـــل.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="about-section">
+        <div class="container">
+            <div class="cta-box">
+                <h2>نبني المستقبل معاً</h2>
+                <p>انضم إلى عملائنا الذين يثقون بخبرتنا وجودة أعمالنا</p>
+                <button class="btn-primary" onclick="scrollToContact()">تواصل معنا الآن</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section footer-about">
+                    <img src="{% static 'website/img/logob.png' %}" alt="شركة باء البناء" class="footer-logo-img">
+                    <p class="footer-description">شركة باء البناء للمقاولات</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Instagram" class="social-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                            </svg>
+                        </a>
+                        <a href="#" aria-label="Twitter" class="social-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+                            </svg>
+                        </a>
+                        <a href="#" aria-label="LinkedIn" class="social-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                                <rect x="2" y="9" width="4" height="12"></rect>
+                                <circle cx="4" cy="4" r="2"></circle>
+                            </svg>
+                        </a>
+                        <a href="#" aria-label="YouTube" class="social-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path>
+                                <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>روابط سريعة</h3>
+                    <ul>
+                        <li><a href="{% url 'home' %}#home">الرئيسية</a></li>
+                        <li><a href="{% url 'home' %}#services">خدماتنا</a></li>
+                        <li><a href="{% url 'about' %}">من نحن</a></li>
+                        <li><a href="{% url 'home' %}#contact">تواصل معنا</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>خدماتنا</h3>
+                    <ul>
+                        <li><a href="#">الخدمات المعمارية</a></li>
+                        <li><a href="#">الخدمات الانشائية</a></li>
+                        <li><a href="#">التصاميم</a></li>
+                        <li><a href="#">إدارة المشاريع</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>تواصل معنا</h3>
+                    <ul class="contact-info">
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                            </svg>
+                            <a href="tel:0593394747">0593394747</a>
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                            <a href="mailto:info@ba-construction.sa">info@ba-construction.sa</a>
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            <span>المملكة العربية السعودية</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p class="copyright">© 2025 شركة باء البناء للمقاولات. جميع الحقوق محفوظة</p>
+                    <div class="footer-links">
+                        <a href="{% url 'privacy_policy' %}">سياسة الخصوصية</a>
+                        <span class="separator">|</span>
+                        <a href="{% url 'terms_conditions' %}">الشروط والأحكام</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Button -->
+    <button class="whatsapp-btn" onclick="openWhatsApp()">💬</button>
+
+    <script src="{% static 'website/js/script.js' %}"></script>
+    <script>
+        function scrollToContact() {
+            window.location.href = "{% url 'home' %}#contact";
+        }
+    </script>
+</body>
+</html>

@@ -13,14 +13,15 @@
     <nav class="navbar">
         <div class="nav-container">
             <div class="logo">
-                <img src="{% static 'website/img/logob.png' %}" alt="B construction Logo">
+                <img src="{% static 'website/img/logob.png' %}" alt="B construction Logo" class="B construction Logo">
             </div>
             <ul class="nav-menu">
                 <li><a href="{% url 'home' %}">الرئيسية</a></li>
                 <li><a href="{% url 'home' %}#services">خدماتنا</a></li>
-                <li><a href="{% url 'home' %}#projects">مشاريعنا</a></li>
-                <li><a href="{% url 'home' %}#about">من نحن</a></li>
-                <li><a href="{% url 'home' %}#contact">تواصل معنا</a></li>
+                <li><a href="{% url 'team' %}" class="active">فريق العمل</a></li>
+                <li><a href="{% url 'home' %}#partners">شركاء النجاح</a></li>
+                <li><a href="{% url 'about' %}">من نحن</a></li>
+                <li><a href="{% url 'home' %}#support">خدمة العملاء</a></li>
             </ul>
             <a href="{% url 'employee_login' %}" class="login-btn">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -295,7 +296,7 @@
             <div class="footer-content">
                 <div class="footer-section footer-about">
                     <img src="{% static 'website/img/logob.png' %}" alt="شركة باء البناء" class="footer-logo-img">
-                    <p class="footer-description">نحن شركة مقاولات تعمل في مجال التطوير العقاري بمفهوم مستقبلي شامل يساهم في تقديم المشبك الإسكاني في المملكة</p>
+                    <p class="footer-description">شركة باء البناء للمقاولات</p>
                 </div>
                 
                 <div class="footer-section">
@@ -303,7 +304,6 @@
                     <ul>
                         <li><a href="{% url 'home' %}">الرئيسية</a></li>
                         <li><a href="{% url 'home' %}#services">خدماتنا</a></li>
-                        <li><a href="{% url 'home' %}#projects">مشاريعنا</a></li>
                         <li><a href="{% url 'home' %}#about">من نحن</a></li>
                         <li><a href="{% url 'home' %}#contact">تواصل معنا</a></li>
                     </ul>
@@ -332,6 +332,11 @@
             <div class="footer-bottom">
                 <div class="footer-bottom-content">
                     <p class="copyright">© 2025 شركة باء البناء للمقاولات. جميع الحقوق محفوظة</p>
+                    <div class="footer-links">
+                        <a href="{% url 'privacy_policy' %}">سياسة الخصوصية</a>
+                        <span class="separator">|</span>
+                        <a href="{% url 'terms_conditions' %}">الشروط والأحكام</a>
+                    </div>
                 </div>
             </div>
         </div>

@@ -1488,3 +1488,222 @@ html {
         font-size: 1.1rem;
     }
 }
+
+
+/* أضف هذا الكود في نهاية ملف styles.css الخاص بك */
+
+/* تنسيق زر تسجيل الدخول */
+.login-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #6699cc, #3b82f6);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+    margin-left: 20px;
+}
+
+.login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+}
+
+.login-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* تحديث تنسيقات الموبايل */
+@media (max-width: 768px) {
+    .login-btn {
+        margin-left: 0;
+        padding: 8px 15px;
+        font-size: 0.85rem;
+    }
+
+    .login-btn svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .login-btn span {
+        display: none;
+    }
+
+    /* عرض أيقونة فقط على الموبايل */
+    .login-btn {
+        width: 40px;
+        height: 40px;
+        justify-content: center;
+        padding: 0;
+        border-radius: 50%;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-btn {
+        width: 38px;
+        height: 38px;
+    }
+
+    .login-btn svg {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+/* إضافة تنسيق للروابط التي تبدو كأزرار */
+a.btn-secondary {
+    display: inline-block;
+    text-decoration: none;
+}
+
+a.btn-secondary:hover {
+    text-decoration: none;
+}
+
+/* تحسين تنسيق الأزرار في قسم الإحصائيات */
+.stats-buttons a,
+.stats-buttons button {
+    min-width: 200px;
+}
+
+@media (max-width: 768px) {
+    .stats-buttons a,
+    .stats-buttons button {
+        width: 100%;
+        min-width: auto;
+    }
+}
+
+
+/* أزرار الاتصال السريع */
+.quick-contact-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+}
+
+.quick-contact-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 35px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    min-width: 280px;
+    justify-content: center;
+}
+
+.quick-contact-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.quick-contact-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
+.call-btn {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+}
+
+.call-btn:hover {
+    background: linear-gradient(135deg, #2563eb, #1e40af);
+}
+
+.whatsapp-btn-large {
+    background: linear-gradient(135deg, #25d366, #128c7e);
+    color: white;
+}
+
+.whatsapp-btn-large:hover {
+    background: linear-gradient(135deg, #128c7e, #075e54);
+}
+
+.phone-number {
+    font-family: 'Courier New', monospace;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+/* رسالة النموذج */
+#formMessage {
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    font-weight: 500;
+    animation: slideIn 0.3s ease;
+}
+
+#formMessage.success {
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid #10b981;
+}
+
+#formMessage.error {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #ef4444;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* تنسيقات الموبايل */
+@media (max-width: 768px) {
+    .quick-contact-buttons {
+        flex-direction: column;
+        padding: 0 20px;
+    }
+    
+    .quick-contact-btn {
+        min-width: 100%;
+        padding: 16px 25px;
+        font-size: 1rem;
+    }
+    
+    .phone-number {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .quick-contact-btn {
+        padding: 14px 20px;
+        font-size: 0.95rem;
+    }
+    
+    .quick-contact-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .phone-number {
+        font-size: 0.9rem;
+    }
+}

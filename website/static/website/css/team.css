@@ -1,0 +1,816 @@
+/* Team Page Styles */
+
+/* Icon Wrapper Styles */
+.member-icon-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #e0f2fe 0%, #dbeafe 100%);
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.member-icon-wrapper::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.team-member:hover .member-icon-wrapper::before {
+    opacity: 1;
+}
+
+.member-icon-wrapper.manager {
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+}
+
+.member-icon-wrapper.engineer {
+    background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+}
+
+.member-icon-wrapper.technician {
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+}
+
+.member-icon {
+    width: 120px;
+    height: 120px;
+    color: #3b82f6;
+    filter: drop-shadow(0 4px 15px rgba(59, 130, 246, 0.2));
+    transition: all 0.4s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.member-icon-wrapper.manager .member-icon {
+    width: 140px;
+    height: 140px;
+    color: #2563eb;
+}
+
+.member-icon-wrapper.engineer .member-icon {
+    width: 110px;
+    height: 110px;
+    color: #4f46e5;
+}
+
+.member-icon-wrapper.technician .member-icon {
+    width: 100px;
+    height: 100px;
+    color: #059669;
+}
+
+.team-member:hover .member-icon-wrapper {
+    background: linear-gradient(135deg, #6699cc 0%, #3b82f6 100%);
+}
+
+.team-member:hover .member-icon-wrapper.manager {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+}
+
+.team-member:hover .member-icon-wrapper.engineer {
+    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+}
+
+.team-member:hover .member-icon-wrapper.technician {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.team-member:hover .member-icon {
+    color: white;
+    transform: scale(1.15) rotate(5deg);
+    filter: drop-shadow(0 8px 25px rgba(255, 255, 255, 0.3));
+}
+
+/* Hero Section */
+.team-hero {
+    height: 60vh;
+    min-height: 500px;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 90px;
+    overflow: hidden;
+}
+
+.team-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('/static/website/img/pattern.png') repeat;
+    opacity: 0.05;
+}
+
+.team-hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.3) 100%);
+}
+
+.team-hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: white;
+    max-width: 1000px;
+    padding: 0 20px;
+}
+
+.team-hero h1 {
+    font-size: 4rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 20px rgba(0, 0, 0, 0.3);
+    animation: fadeInDown 1s ease;
+}
+
+.team-hero p {
+    font-size: 1.5rem;
+    font-weight: 300;
+    margin-bottom: 50px;
+    opacity: 0.95;
+    animation: fadeInUp 1s ease 0.2s backwards;
+}
+
+.hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    flex-wrap: wrap;
+    animation: fadeInUp 1s ease 0.4s backwards;
+}
+
+.hero-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.hero-stat .stat-number {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #6699cc;
+    text-shadow: 0 0 30px rgba(102, 153, 204, 0.5);
+}
+
+.hero-stat .stat-label {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    font-weight: 400;
+}
+
+/* Team Sections */
+.team-section {
+    padding: 100px 0;
+}
+
+.management-section {
+    background: linear-gradient(to bottom, #f9fafb, white);
+}
+
+.engineers-section {
+    background: white;
+}
+
+.technicians-section {
+    background: #f9fafb;
+}
+
+/* Management Grid */
+.management-grid {
+    display: flex;
+    justify-content: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.team-member.featured {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s ease;
+    max-width: 700px;
+    width: 100%;
+}
+
+.team-member.featured:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.15);
+}
+
+.team-member.featured .member-image {
+    height: 400px;
+    position: relative;
+    overflow: hidden;
+}
+
+.team-member.featured .member-info {
+    padding: 40px;
+    text-align: center;
+}
+
+.team-member.featured h3 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 10px;
+}
+
+.team-member.featured .member-position {
+    font-size: 1.3rem;
+    color: #6699cc;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.team-member.featured .member-bio {
+    font-size: 1.1rem;
+    color: #6b7280;
+    line-height: 1.8;
+    margin-bottom: 30px;
+}
+
+.member-badges {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.badge {
+    background: linear-gradient(135deg, #6699cc, #3b82f6);
+    color: white;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(102, 153, 204, 0.3);
+}
+
+/* Team Grid */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 35px;
+}
+
+.team-grid.compact {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 25px;
+}
+
+.team-member {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.team-member:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+}
+
+.team-member .member-image {
+    position: relative;
+    height: 320px;
+    overflow: hidden;
+}
+
+.team-member.compact .member-image {
+    height: 280px;
+}
+
+.team-member .member-image img {
+    display: none;
+}
+
+.member-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, transparent 40%, rgba(0, 0, 0, 0.85));
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 25px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.team-member:hover .member-overlay {
+    opacity: 1;
+}
+
+.member-skills {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.member-skills span {
+    background: rgba(102, 153, 204, 0.9);
+    color: white;
+    padding: 6px 15px;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.social-links a {
+    width: 45px;
+    height: 45px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #111827;
+    transition: all 0.3s ease;
+}
+
+.social-links a:hover {
+    background: #6699cc;
+    color: white;
+    transform: translateY(-3px);
+}
+
+.team-member .member-info {
+    padding: 25px 20px;
+    text-align: center;
+}
+
+.team-member.compact .member-info {
+    padding: 20px 15px;
+}
+
+.team-member h3 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 8px;
+}
+
+.team-member.compact h3 {
+    font-size: 1.2rem;
+}
+
+.member-position {
+    font-size: 1rem;
+    color: #6699cc;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.team-member.compact .member-position {
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+}
+
+.member-contact {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.contact-icon {
+    width: 36px;
+    height: 36px;
+    background: #f3f4f6;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6699cc;
+    transition: all 0.3s ease;
+}
+
+.contact-icon:hover {
+    background: #6699cc;
+    color: white;
+    transform: scale(1.1);
+}
+
+/* CTA Section */
+.team-cta {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    padding: 80px 0;
+    text-align: center;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.team-cta::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(102, 153, 204, 0.1) 0%, transparent 70%);
+    animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.team-cta h2 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.team-cta p {
+    font-size: 1.3rem;
+    margin-bottom: 40px;
+    opacity: 0.95;
+    position: relative;
+    z-index: 2;
+}
+
+.team-cta .btn-primary {
+    position: relative;
+    z-index: 2;
+}
+
+/* Active Navigation Link */
+.nav-menu a.active {
+    color: #6699cc;
+    font-weight: 600;
+    position: relative;
+}
+
+.nav-menu a.active::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: #6699cc;
+    border-radius: 2px;
+}
+
+/* Animations */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .team-hero h1 {
+        font-size: 3.5rem;
+    }
+
+    .team-hero p {
+        font-size: 1.3rem;
+    }
+
+    .hero-stats {
+        gap: 40px;
+    }
+
+    .hero-stat .stat-number {
+        font-size: 2.5rem;
+    }
+
+    .team-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 30px;
+    }
+
+    .team-member.featured .member-image {
+        height: 350px;
+    }
+
+    .member-icon {
+        width: 100px;
+        height: 100px;
+    }
+
+    .member-icon-wrapper.manager .member-icon {
+        width: 120px;
+        height: 120px;
+    }
+
+    .member-icon-wrapper.engineer .member-icon {
+        width: 95px;
+        height: 95px;
+    }
+
+    .member-icon-wrapper.technician .member-icon {
+        width: 85px;
+        height: 85px;
+    }
+}
+
+@media (max-width: 768px) {
+    .team-hero {
+        height: 50vh;
+        min-height: 450px;
+        margin-top: 60px;
+    }
+
+    .team-hero h1 {
+        font-size: 2.5rem;
+    }
+
+    .team-hero p {
+        font-size: 1.1rem;
+        margin-bottom: 40px;
+    }
+
+    .hero-stats {
+        gap: 30px;
+    }
+
+    .hero-stat .stat-number {
+        font-size: 2rem;
+    }
+
+    .hero-stat .stat-label {
+        font-size: 1rem;
+    }
+
+    .team-section {
+        padding: 60px 0;
+    }
+
+    .section-header h2 {
+        font-size: 2rem;
+    }
+
+    .team-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 25px;
+    }
+
+    .team-grid.compact {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 20px;
+    }
+
+    .team-member .member-image {
+        height: 280px;
+    }
+
+    .team-member.compact .member-image {
+        height: 240px;
+    }
+
+    .team-member.featured .member-image {
+        height: 300px;
+    }
+
+    .team-member.featured .member-info {
+        padding: 30px 25px;
+    }
+
+    .team-member.featured h3 {
+        font-size: 1.8rem;
+    }
+
+    .team-member.featured .member-position {
+        font-size: 1.1rem;
+    }
+
+    .team-member.featured .member-bio {
+        font-size: 1rem;
+    }
+
+    .team-cta h2 {
+        font-size: 2.2rem;
+    }
+
+    .team-cta p {
+        font-size: 1.1rem;
+    }
+
+    .member-icon {
+        width: 90px;
+        height: 90px;
+    }
+
+    .member-icon-wrapper.manager .member-icon {
+        width: 110px;
+        height: 110px;
+    }
+
+    .member-icon-wrapper.engineer .member-icon {
+        width: 85px;
+        height: 85px;
+    }
+
+    .member-icon-wrapper.technician .member-icon {
+        width: 75px;
+        height: 75px;
+    }
+}
+
+@media (max-width: 480px) {
+    .team-hero h1 {
+        font-size: 2rem;
+    }
+
+    .team-hero p {
+        font-size: 1rem;
+    }
+
+    .hero-stats {
+        gap: 25px;
+        flex-direction: column;
+    }
+
+    .hero-stat .stat-number {
+        font-size: 2.5rem;
+    }
+
+    .section-header h2 {
+        font-size: 1.8rem;
+    }
+
+    .team-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .team-grid.compact {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .team-member .member-image {
+        height: 320px;
+    }
+
+    .team-member.compact .member-image {
+        height: 220px;
+    }
+
+    .team-member h3 {
+        font-size: 1.3rem;
+    }
+
+    .team-member.compact h3 {
+        font-size: 1.1rem;
+    }
+
+    .member-position {
+        font-size: 0.95rem;
+    }
+
+    .team-member.compact .member-position {
+        font-size: 0.85rem;
+    }
+
+    .team-member.featured .member-image {
+        height: 280px;
+    }
+
+    .team-member.featured h3 {
+        font-size: 1.6rem;
+    }
+
+    .team-member.featured .member-position {
+        font-size: 1rem;
+    }
+
+    .team-member.featured .member-bio {
+        font-size: 0.95rem;
+    }
+
+    .member-badges {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .badge {
+        font-size: 0.85rem;
+        padding: 6px 15px;
+    }
+
+    .team-cta h2 {
+        font-size: 1.8rem;
+    }
+
+    .team-cta p {
+        font-size: 1rem;
+        margin-bottom: 30px;
+    }
+
+    .team-member .member-info {
+        padding: 20px 15px;
+    }
+
+    .team-member.compact .member-info {
+        padding: 15px 10px;
+    }
+
+    .member-icon {
+        width: 80px;
+        height: 80px;
+    }
+
+    .member-icon-wrapper.manager .member-icon {
+        width: 100px;
+        height: 100px;
+    }
+
+    .member-icon-wrapper.engineer .member-icon {
+        width: 75px;
+        height: 75px;
+    }
+
+    .member-icon-wrapper.technician .member-icon {
+        width: 65px;
+        height: 65px;
+    }
+}
+
+@media (max-width: 360px) {
+    .team-hero h1 {
+        font-size: 1.8rem;
+    }
+
+    .team-grid.compact {
+        grid-template-columns: 1fr;
+    }
+
+    .team-member.compact .member-image {
+        height: 260px;
+    }
+
+    .member-icon {
+        width: 70px;
+        height: 70px;
+    }
+
+    .member-icon-wrapper.manager .member-icon {
+        width: 90px;
+        height: 90px;
+    }
+
+    .member-icon-wrapper.engineer .member-icon {
+        width: 65px;
+        height: 65px;
+    }
+
+    .member-icon-wrapper.technician .member-icon {
+        width: 55px;
+        height: 55px;
+    }
+}

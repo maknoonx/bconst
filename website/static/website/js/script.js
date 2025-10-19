@@ -1,22 +1,30 @@
 // Mobile menu toggle
-document.querySelector('.hamburger').addEventListener('click', function() {
+document.addEventListener('DOMContentLoaded', function() {
+    const hamburger = document.querySelector('.hamburger');
     const navMenu = document.querySelector('.nav-menu');
-    navMenu.classList.toggle('active');
     
-    // Animate hamburger
-    this.classList.toggle('active');
+    if (hamburger) {
+        hamburger.addEventListener('click', function() {
+            navMenu.classList.toggle('active');
+            this.classList.toggle('active');
+        });
+    }
 });
 
 // Close menu when clicking on a link
-document.querySelectorAll('.nav-menu a').forEach(link => {
-    link.addEventListener('click', function() {
-        const navMenu = document.querySelector('.nav-menu');
-        const hamburger = document.querySelector('.hamburger');
-        
-        if (window.innerWidth <= 768) {
-            navMenu.classList.remove('active');
-            hamburger.classList.remove('active');
-        }
+document.addEventListener('DOMContentLoaded', function() {
+    const navLinks = document.querySelectorAll('.nav-menu a');
+    
+    navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            const navMenu = document.querySelector('.nav-menu');
+            const hamburger = document.querySelector('.hamburger');
+            
+            if (window.innerWidth <= 768) {
+                navMenu.classList.remove('active');
+                hamburger.classList.remove('active');
+            }
+        });
     });
 });
 
@@ -26,9 +34,11 @@ document.addEventListener('click', function(event) {
     const hamburger = document.querySelector('.hamburger');
     const navbar = document.querySelector('.navbar');
     
-    if (!navbar.contains(event.target) && navMenu.classList.contains('active')) {
-        navMenu.classList.remove('active');
-        hamburger.classList.remove('active');
+    if (navbar && navMenu && hamburger) {
+        if (!navbar.contains(event.target) && navMenu.classList.contains('active')) {
+            navMenu.classList.remove('active');
+            hamburger.classList.remove('active');
+        }
     }
 });
 
@@ -102,10 +112,16 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Form submission
-document.getElementById('contactForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    alert('تم إرسال النموذج بنجاح! سنتواصل معك قريباً.');
-    this.reset();
+document.addEventListener('DOMContentLoaded', function() {
+    const contactForm = document.getElementById('contactForm');
+    
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('تم إرسال النموذج بنجاح! سنتواصل معك قريباً.');
+            this.reset();
+        });
+    }
 });
 
 // WhatsApp button
@@ -119,6 +135,9 @@ let currentPartnerIndex = 0;
 function scrollPartners(direction) {
     const track = document.querySelector('.partners-track');
     const items = document.querySelectorAll('.partner-item');
+    
+    if (!track || items.length === 0) return;
+    
     const itemsVisible = getVisiblePartnersCount();
     const maxIndex = items.length - itemsVisible;
     
@@ -187,18 +206,22 @@ document.addEventListener('DOMContentLoaded', function() {
 // Navbar background on scroll
 window.addEventListener('scroll', function() {
     const navbar = document.querySelector('.navbar');
-    if (window.scrollY > 50) {
-        navbar.style.background = 'rgba(255, 255, 255, 0.95)';
-        navbar.style.boxShadow = '0 4px 10px rgba(0, 0, 0, 0.15)';
-    } else {
-        navbar.style.background = 'rgba(255, 255, 255, 0.6)';
-        navbar.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+    if (navbar) {
+        if (window.scrollY > 50) {
+            navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+            navbar.style.boxShadow = '0 4px 10px rgba(0, 0, 0, 0.15)';
+        } else {
+            navbar.style.background = 'rgba(255, 255, 255, 0.6)';
+            navbar.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+        }
     }
 });
 
 // Animate stats on scroll
 function animateStats() {
     const stats = document.querySelectorAll('.stat-number');
+    if (stats.length === 0) return;
+    
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -229,6 +252,8 @@ function animateStats() {
 // Animate elements on scroll
 function animateOnScroll() {
     const elements = document.querySelectorAll('.project-card, .service-card, .stat-item, .about-images img, .partner-item');
+    
+    if (elements.length === 0) return;
     
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -273,9 +298,11 @@ window.addEventListener('resize', function() {
         const navMenu = document.querySelector('.nav-menu');
         const hamburger = document.querySelector('.hamburger');
         
-        if (window.innerWidth > 768) {
-            navMenu.classList.remove('active');
-            hamburger.classList.remove('active');
+        if (navMenu && hamburger) {
+            if (window.innerWidth > 768) {
+                navMenu.classList.remove('active');
+                hamburger.classList.remove('active');
+            }
         }
     }, 250);
 });
