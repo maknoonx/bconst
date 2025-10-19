@@ -10,8 +10,6 @@
 </head>
 <body>
     <!-- Navigation -->
-    <!-- Navigation -->
-    <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
             <div class="logo">
@@ -210,7 +208,7 @@
             <p class="gallery-subtitle">استعرض بعضاً من مشاريعنا الإنشائية المتميزة</p>
             
             <div class="gallery-container">
-                <button class="gallery-nav gallery-prev" onclick="moveGallery(-1)">
+                <button class="gallery-nav gallery-prev" onclick="moveGallery(1)">
                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="15 18 9 12 15 6"></polyline>
                     </svg>
@@ -218,52 +216,53 @@
 
                 <div class="gallery-slider">
                     <div class="gallery-track">
-                        <div class="gallery-item">
-                            <img src="https://ext.same-assets.com/2977916181/3045019044.png" alt="مشروع 1">
-                            <div class="gallery-caption">
-                                <h3>مبنى سكني متعدد الطوابق</h3>
-                                <p>تنفيذ هيكل خرساني قوي بـ 12 طابق بأعلى معايير السلامة</p>
-                            </div>
-                        </div>
-                        <div class="gallery-item">
-                            <img src="https://ext.same-assets.com/2977916181/1656347559.png" alt="مشروع 2">
-                            <div class="gallery-caption">
-                                <h3>مجمع تجاري ضخم</h3>
-                                <p>بناء هيكل معدني وخرساني لمجمع تجاري بمساحة 15,000 متر</p>
-                            </div>
-                        </div>
-                        <div class="gallery-item">
-                            <img src="https://ext.same-assets.com/2977916181/2266948137.jpeg" alt="مشروع 3">
-                            <div class="gallery-caption">
-                                <h3>مصنع صناعي</h3>
-                                <p>تنفيذ هيكل معدني كامل للمصنع بمساحة 8,000 متر مربع</p>
-                            </div>
-                        </div>
-                        <div class="gallery-item">
-                            <img src="https://ext.same-assets.com/2977916181/476409975.jpeg" alt="مشروع 4">
-                            <div class="gallery-caption">
-                                <h3>برج إداري</h3>
-                                <p>بناء برج بـ 20 طابق بأحدث التقنيات الإنشائية</p>
-                            </div>
-                        </div>
-                        <div class="gallery-item">
-                            <img src="https://ext.same-assets.com/2977916181/351238446.png" alt="مشروع 5">
-                            <div class="gallery-caption">
-                                <h3>جسر معلق</h3>
-                                <p>تصميم وتنفيذ جسر معلق بطول 200 متر</p>
-                            </div>
-                        </div>
-                        <div class="gallery-item">
-                            <img src="https://ext.same-assets.com/2977916181/1160599726.png" alt="مشروع 6">
-                            <div class="gallery-caption">
-                                <h3>مستشفى متخصص</h3>
-                                <p>تنفيذ بناء مستشفى بـ 300 سرير مع مواصفات خاصة</p>
-                            </div>
-                        </div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_2.svg' %}" alt="مشروع 1"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_3.svg' %}" alt="مشروع 2"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_4.svg' %}" alt="مشروع 3"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_5.svg' %}" alt="مشروع 4"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_6.svg' %}" alt="مشروع 5"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_7.svg' %}" alt="مشروع 6"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_8.svg' %}" alt="مشروع 7"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_9.svg' %}" alt="مشروع 8"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_10.svg' %}" alt="مشروع 9"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_11.svg' %}" alt="مشروع 10"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_12.svg' %}" alt="مشروع 11"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_13.svg' %}" alt="مشروع 12"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_14.svg' %}" alt="مشروع 13"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_15.svg' %}" alt="مشروع 14"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_16.svg' %}" alt="مشروع 15"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_17.svg' %}" alt="مشروع 16"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_18.svg' %}" alt="مشروع 17"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_19.svg' %}" alt="مشروع 18"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_20.svg' %}" alt="مشروع 19"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_21.svg' %}" alt="مشروع 20"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_22.svg' %}" alt="مشروع 21"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_23.svg' %}" alt="مشروع 22"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_24.svg' %}" alt="مشروع 23"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_25.svg' %}" alt="مشروع 24"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_26.svg' %}" alt="مشروع 25"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_27.svg' %}" alt="مشروع 26"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_28.svg' %}" alt="مشروع 27"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_29.svg' %}" alt="مشروع 28"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_30.svg' %}" alt="مشروع 29"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_31.svg' %}" alt="مشروع 30"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_32.svg' %}" alt="مشروع 31"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_33.svg' %}" alt="مشروع 32"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_34.svg' %}" alt="مشروع 33"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_35.svg' %}" alt="مشروع 34"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_36.svg' %}" alt="مشروع 35"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_37.svg' %}" alt="مشروع 36"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_38.svg' %}" alt="مشروع 37"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_39.svg' %}" alt="مشروع 38"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_40.svg' %}" alt="مشروع 39"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_41.svg' %}" alt="مشروع 40"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_42.svg' %}" alt="مشروع 41"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_43.svg' %}" alt="مشروع 42"></div>
+                        <div class="gallery-item"><img src="{% static 'website/img/service2_44.svg' %}" alt="مشروع 43"></div>
                     </div>
                 </div>
 
-                <button class="gallery-nav gallery-next" onclick="moveGallery(1)">
+                <button class="gallery-nav gallery-next" onclick="moveGallery(-1)">
                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="9 18 15 12 9 6"></polyline>
                     </svg>

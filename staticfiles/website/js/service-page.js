@@ -2,12 +2,19 @@
 let currentGalleryIndex = 0;
 let galleryItems = [];
 let galleryDots = [];
+let autoSlideInterval;
+let galleryResizeTimer;
+let touchStartX = 0;
+let touchEndX = 0;
 
 // Initialize gallery when page loads
 document.addEventListener('DOMContentLoaded', function() {
     initializeGallery();
     setupGalleryDots();
+    setupGalleryButtons();
+    setupTouchSupport();
     startAutoSlide();
+    setupAnimations();
 });
 
 // Initialize gallery
@@ -22,12 +29,35 @@ function initializeGallery() {
     updateGalleryPosition();
 }
 
+// Setup gallery navigation buttons
+function setupGalleryButtons() {
+    const galleryPrev = document.querySelector('.gallery-prev');
+    const galleryNext = document.querySelector('.gallery-next');
+    
+    if (galleryPrev) {
+        galleryPrev.addEventListener('click', () => {
+            moveGallery(1);
+            stopAutoSlide();
+            setTimeout(startAutoSlide, 10000);
+        });
+    }
+    
+    if (galleryNext) {
+        galleryNext.addEventListener('click', () => {
+            moveGallery(-1);
+            stopAutoSlide();
+            setTimeout(startAutoSlide, 10000);
+        });
+    }
+}
+
 // Setup dots for gallery navigation
 function setupGalleryDots() {
     const dotsContainer = document.querySelector('.gallery-dots');
     if (!dotsContainer || galleryItems.length === 0) return;
     
     dotsContainer.innerHTML = '';
+    galleryDots = [];
     
     const visibleItems = getVisibleGalleryItems();
     const totalPages = Math.ceil(galleryItems.length / visibleItems);
@@ -49,13 +79,22 @@ function moveGallery(direction) {
     const visibleItems = getVisibleGalleryItems();
     const maxIndex = galleryItems.length - visibleItems;
     
-    currentGalleryIndex += direction * visibleItems;
+    // Simply move by 1 item at a time
+    currentGalleryIndex -= direction;
     
     if (currentGalleryIndex < 0) {
         currentGalleryIndex = 0;
     } else if (currentGalleryIndex > maxIndex) {
         currentGalleryIndex = maxIndex;
     }
+    
+    console.log('Moving gallery:', {
+        direction,
+        currentIndex: currentGalleryIndex,
+        maxIndex,
+        totalItems: galleryItems.length,
+        visibleItems
+    });
     
     updateGalleryPosition();
     updateGalleryDots();
@@ -84,7 +123,7 @@ function updateGalleryPosition() {
     const gap = 30;
     const offset = currentGalleryIndex * (itemWidth + gap);
     
-    track.style.transform = `translateX(${offset}px)`;
+    track.style.transform = `translateX(-${offset}px)`;
 }
 
 // Update gallery dots
@@ -106,21 +145,21 @@ function updateGalleryDots() {
 // Get number of visible gallery items based on screen width
 function getVisibleGalleryItems() {
     const width = window.innerWidth;
-    if (width <= 480) return 1;
     if (width <= 768) return 1;
     if (width <= 1024) return 2;
     return 3;
 }
 
 // Auto slide gallery
-let autoSlideInterval;
-
 function startAutoSlide() {
+    stopAutoSlide();
     autoSlideInterval = setInterval(() => {
+        if (galleryItems.length === 0) return;
+        
         const visibleItems = getVisibleGalleryItems();
         const maxIndex = galleryItems.length - visibleItems;
         
-        currentGalleryIndex += visibleItems;
+        currentGalleryIndex++;
         
         if (currentGalleryIndex > maxIndex) {
             currentGalleryIndex = 0;
@@ -128,7 +167,7 @@ function startAutoSlide() {
         
         updateGalleryPosition();
         updateGalleryDots();
-    }, 5000); // Auto slide every 5 seconds
+    }, 5000);
 }
 
 function stopAutoSlide() {
@@ -137,39 +176,58 @@ function stopAutoSlide() {
     }
 }
 
-// Stop auto slide when user interacts with gallery
-document.addEventListener('DOMContentLoaded', function() {
-    const galleryPrev = document.querySelector('.gallery-prev');
-    const galleryNext = document.querySelector('.gallery-next');
+// Touch support for gallery slider
+function setupTouchSupport() {
+    const gallerySlider = document.querySelector('.gallery-slider');
     
-    if (galleryPrev) {
-        galleryPrev.addEventListener('click', () => {
-            stopAutoSlide();
-            setTimeout(startAutoSlide, 10000); // Restart after 10 seconds
+    if (gallerySlider) {
+        gallerySlider.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+        
+        gallerySlider.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleGallerySwipe();
         });
     }
+}
+
+function handleGallerySwipe() {
+    const swipeThreshold = 50;
+    const diff = touchStartX - touchEndX;
     
-    if (galleryNext) {
-        galleryNext.addEventListener('click', () => {
-            stopAutoSlide();
-            setTimeout(startAutoSlide, 10000); // Restart after 10 seconds
-        });
+    if (Math.abs(diff) > swipeThreshold) {
+        if (diff > 0) {
+            moveGallery(1);
+        } else {
+            moveGallery(-1);
+        }
+        stopAutoSlide();
+        setTimeout(startAutoSlide, 10000);
     }
-});
+}
 
 // Handle window resize
-let resizeTimer;
 window.addEventListener('resize', function() {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(function() {
-        currentGalleryIndex = 0;
-        updateGalleryPosition();
-        setupGalleryDots();
+    clearTimeout(galleryResizeTimer);
+    galleryResizeTimer = setTimeout(function() {
+        if (galleryItems.length > 0) {
+            const visibleItems = getVisibleGalleryItems();
+            const maxIndex = galleryItems.length - visibleItems;
+            
+            if (currentGalleryIndex > maxIndex) {
+                currentGalleryIndex = maxIndex;
+            }
+            
+            updateGalleryPosition();
+            setupGalleryDots();
+        }
     }, 250);
 });
 
-// Smooth scroll for CTA button
-document.addEventListener('DOMContentLoaded', function() {
+// Setup animations
+function setupAnimations() {
+    // Smooth scroll for CTA button
     const ctaButtons = document.querySelectorAll('.btn-primary, .btn-large');
     
     ctaButtons.forEach(button => {
@@ -178,7 +236,6 @@ document.addEventListener('DOMContentLoaded', function() {
             if (href && href.includes('#contact')) {
                 e.preventDefault();
                 
-                // If we're on the home page, scroll to contact
                 if (window.location.pathname === '/' || window.location.pathname === '/home/') {
                     const contactSection = document.querySelector('#contact');
                     if (contactSection) {
@@ -192,78 +249,34 @@ document.addEventListener('DOMContentLoaded', function() {
                         });
                     }
                 } else {
-                    // If we're on another page, navigate to home with contact hash
                     window.location.href = href;
                 }
             }
         });
     });
-});
-
-// Animate elements on scroll
-function animateOnScroll() {
+    
+    // Animate elements on scroll
     const elements = document.querySelectorAll('.feature-item, .process-step, .gallery-item');
     
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, { threshold: 0.1 });
-    
-    elements.forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(20px)';
-        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(el);
-    });
-}
-
-// Initialize animations when page loads
-window.addEventListener('load', function() {
-    animateOnScroll();
-});
-
-// Touch support for gallery slider
-let touchStartX = 0;
-let touchEndX = 0;
-
-document.addEventListener('DOMContentLoaded', function() {
-    const gallerySlider = document.querySelector('.gallery-slider');
-    
-    if (gallerySlider) {
-        gallerySlider.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-        });
+    if (elements.length > 0) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
         
-        gallerySlider.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleGallerySwipe();
+        elements.forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
         });
     }
-});
-
-function handleGallerySwipe() {
-    const swipeThreshold = 50;
-    const diff = touchStartX - touchEndX;
     
-    if (Math.abs(diff) > swipeThreshold) {
-        if (diff > 0) {
-            // Swipe left - move forward
-            moveGallery(1);
-        } else {
-            // Swipe right - move backward
-            moveGallery(-1);
-        }
-        stopAutoSlide();
-        setTimeout(startAutoSlide, 10000);
-    }
-}
-
-// Lazy load images
-document.addEventListener('DOMContentLoaded', function() {
+    // Lazy load images
     const images = document.querySelectorAll('.gallery-item img');
     
     const imageObserver = new IntersectionObserver((entries, observer) => {
@@ -285,4 +298,4 @@ document.addEventListener('DOMContentLoaded', function() {
             this.style.opacity = '1';
         });
     });
-});
+}

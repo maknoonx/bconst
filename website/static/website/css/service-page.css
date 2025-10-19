@@ -619,3 +619,237 @@
         font-size: 1.1rem;
     }
 }
+
+
+
+/* إضافة هذا الكود في نهاية ملف service-page.css */
+
+/* Fix gallery slider direction for RTL */
+.gallery-slider {
+    overflow: hidden;
+    border-radius: 20px;
+    direction: ltr; /* Override RTL for slider */
+}
+
+.gallery-track {
+    display: flex;
+    transition: transform 0.5s ease;
+    gap: 30px;
+    direction: rtl; /* Keep items in RTL order */
+}
+
+/* Ensure gallery items maintain proper direction */
+.gallery-item {
+    flex: 0 0 calc(33.333% - 20px);
+    min-width: calc(33.333% - 20px);
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    direction: rtl; /* Maintain RTL for content */
+}
+
+@media (max-width: 1024px) {
+    .gallery-item {
+        flex: 0 0 calc(50% - 15px);
+        min-width: calc(50% - 15px);
+    }
+}
+
+@media (max-width: 768px) {
+    .gallery-item {
+        flex: 0 0 100%;
+        min-width: 100%;
+    }
+}
+
+
+/* إضافة هذا الكود في نهاية ملف service-page.css */
+
+/* Gallery Container */
+.gallery-container {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 80px;
+}
+
+/* Fix gallery slider */
+.gallery-slider {
+    overflow: hidden;
+    border-radius: 20px;
+    width: 100%;
+}
+
+.gallery-track {
+    display: flex;
+    transition: transform 0.5s ease;
+    gap: 30px;
+    will-change: transform;
+}
+
+/* Ensure gallery items maintain proper sizing */
+.gallery-item {
+    flex: 0 0 calc(33.333% - 20px);
+    min-width: calc(33.333% - 20px);
+    max-width: calc(33.333% - 20px);
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover {
+    transform: scale(1.05);
+    z-index: 10;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    display: block;
+}
+
+.gallery-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+    color: white;
+    padding: 40px 20px 20px;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover .gallery-caption {
+    transform: translateY(0);
+}
+
+.gallery-caption h3 {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.gallery-caption p {
+    font-size: 0.95rem;
+    opacity: 0.9;
+}
+
+/* Gallery Navigation Buttons */
+.gallery-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: white;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.gallery-nav:hover {
+    background: #6699cc;
+    transform: translateY(-50%) scale(1.1);
+}
+
+.gallery-nav:hover svg {
+    color: white;
+}
+
+.gallery-nav svg {
+    color: #374151;
+    transition: color 0.3s ease;
+}
+
+.gallery-prev {
+    left: 0;
+}
+
+.gallery-next {
+    right: 0;
+}
+
+/* Gallery Dots */
+.gallery-dots {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 30px;
+}
+
+.gallery-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #d1d5db;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.gallery-dot.active {
+    background: #6699cc;
+    width: 30px;
+    border-radius: 6px;
+}
+
+@media (max-width: 1024px) {
+    .gallery-item {
+        flex: 0 0 calc(50% - 15px);
+        min-width: calc(50% - 15px);
+        max-width: calc(50% - 15px);
+    }
+    
+    .gallery-container {
+        padding: 0 70px;
+    }
+}
+
+@media (max-width: 768px) {
+    .gallery-item {
+        flex: 0 0 100%;
+        min-width: 100%;
+        max-width: 100%;
+    }
+    
+    .gallery-item img {
+        height: 300px;
+    }
+    
+    .gallery-container {
+        padding: 0 60px;
+    }
+    
+    .gallery-nav {
+        width: 50px;
+        height: 50px;
+    }
+}
+
+@media (max-width: 480px) {
+    .gallery-container {
+        padding: 0 50px;
+    }
+    
+    .gallery-nav {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .gallery-item img {
+        height: 250px;
+    }
+}
