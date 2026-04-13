@@ -1,0 +1,53 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}قريباً - شركة باء البناء{% endblock %}
+
+{% block content %}
+<section class="coming-soon">
+    <div class="coming-soon-container">
+        <!-- Header -->
+        <header class="coming-soon-header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <img src="{% static 'website/img/logo.png' %}" alt="b Logo">
+                </div>
+                <span class="logo-text">شركة باء البناء</span>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <div class="coming-soon-content">
+            <div class="construction-icon">
+                <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="60" cy="60" r="55" stroke="#C7FF00" stroke-width="3" stroke-dasharray="5 5"/>
+                    <path d="M40 60L50 70L80 40" stroke="#C7FF00" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                    <rect x="30" y="70" width="60" height="25" fill="#6699cc" rx="2"/>
+                    <rect x="35" y="75" width="10" height="15" fill="#C7FF00"/>
+                    <rect x="50" y="75" width="10" height="15" fill="#C7FF00"/>
+                    <rect x="65" y="75" width="10" height="15" fill="#C7FF00"/>
+                </svg>
+            </div>
+
+            <h1 class="coming-soon-title">شغالين نجهز لك الصفحة</h1>
+
+ 
+
+            <a href="{% url 'home' %}" class="btn-back-home">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+                العودة للرئيسية
+            </a>
+        </div>
+
+        <!-- Background Animation -->
+        <div class="bg-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+        </div>
+    </div>
+</section>
+{% endblock %}

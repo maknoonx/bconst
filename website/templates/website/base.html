@@ -1,0 +1,156 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}شركة باء البناء للمقاولات{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'website/css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'website/css/loading.css' %}">
+    <link rel="stylesheet" href="{% static 'website/css/coming-soon.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- ================================================
+         شاشة الانتظار
+         ================================================ -->
+    <div class="preloader" id="preloader">
+        <div class="loader-wrap">
+            <!-- الشعار -->
+            <div class="loader-logo">
+                <img src="{% static 'website/img/logo.png' %}" alt="شركة باء البناء">
+            </div>
+            <!-- النص -->
+            <p class="loader-brand">شركة باء البناء</p>
+            <p class="loader-sub">للمقاولات</p>
+            <!-- الدوار -->
+            <div class="loader-ring">
+                <div class="loader-ring-inner"></div>
+            </div>
+            <!-- شريط التقدم -->
+            <div class="loader-bar-wrap">
+                <div class="loader-bar"></div>
+            </div>
+            <p class="loader-msg">جاري التحميل&hellip;</p>
+        </div>
+    </div>
+
+    <!-- طبقة تعتيم القائمة للجوال -->
+    <div class="nav-overlay" id="navOverlay"></div>
+
+    <!-- المحتوى الرئيسي -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- ================================================
+         الفوتر
+         ================================================ -->
+    <footer class="footer">
+        <div class="footer-main">
+            <div class="container">
+                <div class="footer-grid">
+
+                    <!-- عمود الشركة -->
+                    <div class="footer-brand">
+                        <div class="footer-logo">
+                            <div class="footer-logo-mark">
+                                <img src="{% static 'website/img/logo.png' %}" alt="شركة باء البناء">
+                            </div>
+                            <div>
+                                <span class="footer-brand-name">شركة باء البناء</span>
+                                <span class="footer-brand-sub">للمقاولات</span>
+                            </div>
+                        </div>
+                        <p>
+                            نحن بناة ومطورون موثوقون نقدم حلول بناء سكنية وتجارية حديثة وعالية الجودة. أكثر من ٢٥ عاماً من الخبرة في السوق السعودي.
+                        </p>
+                        <div class="footer-socials">
+                            <a href="{% url 'coming_soon' %}" class="social-btn" aria-label="تويتر / X">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                                </svg>
+                            </a>
+                            <a href="{% url 'coming_soon' %}" class="social-btn" aria-label="فيسبوك">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                                </svg>
+                            </a>
+                            <a href="{% url 'coming_soon' %}" class="social-btn" aria-label="انستغرام">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                                </svg>
+                            </a>
+                            <a href="{% url 'coming_soon' %}" class="social-btn" aria-label="لينكدإن">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/>
+                                    <circle cx="4" cy="4" r="2"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- روابط سريعة -->
+                    <div class="footer-links-col">
+                        <h3 class="footer-col-title">روابط سريعة</h3>
+                        <ul class="footer-link-list">
+                            <li><a href="{% url 'home' %}">الرئيسية</a></li>
+                            <li><a href="{% url 'coming_soon' %}">من نحن</a></li>
+                            <li><a href="{% url 'coming_soon' %}">خدماتنا</a></li>
+                            <li><a href="{% url 'coming_soon' %}">المشاريع</a></li>
+                            <li><a href="{% url 'coming_soon' %}">المدونة</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- خدماتنا -->
+                    <div class="footer-links-col">
+                        <h3 class="footer-col-title">خدماتنا</h3>
+                        <ul class="footer-link-list">
+                            <li><a href="{% url 'coming_soon' %}">التصميم المعماري</a></li>
+                            <li><a href="{% url 'coming_soon' %}">الإنشاء والبناء</a></li>
+                            <li><a href="{% url 'coming_soon' %}">التطوير العقاري</a></li>
+                            <li><a href="{% url 'coming_soon' %}">التجديد والترميم</a></li>
+                            <li><a href="{% url 'coming_soon' %}">الاستشارات الهندسية</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- النشرة البريدية -->
+                    <div class="footer-newsletter">
+                        <h3 class="footer-col-title">النشرة البريدية</h3>
+                        <p>اشترك لتلقي آخر أخبار مشاريعنا والعروض الحصرية</p>
+                        <form class="newsletter-form" onsubmit="return false;">
+                            <input type="email" placeholder="بريدك الإلكتروني" required>
+                            <button type="submit" aria-label="اشتراك">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                    <line x1="22" y1="2" x2="11" y2="13"/>
+                                    <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- الشريط السفلي -->
+        <div class="footer-bottom">
+            <div class="container">
+                <p class="copyright">حقوق النشر &copy; 2025 شركة باء البناء للمقاولات — جميع الحقوق محفوظة</p>
+                <div class="footer-bottom-links">
+                    <a href="{% url 'coming_soon' %}">سياسة الخصوصية</a>
+                    <a href="{% url 'coming_soon' %}">الشروط والأحكام</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{% static 'website/js/loading.js' %}"></script>
+    <script src="{% static 'website/js/script.js' %}"></script>
+</body>
+</html>
