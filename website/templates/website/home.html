@@ -1,42 +1,43 @@
 {% extends 'website/base.html' %}
 {% load static %}
 
-{% block title %}شركة باء البناء — نبني المستقبل{% endblock %}
+{% block title %}{{ page_title }}{% endblock %}
 
 {% block content %}
 
-<!-- ================================================
-     HERO — القسم الرئيسي
-     ================================================ -->
 <section class="hero" id="top">
 
-    <!-- شريط التنقل العائم -->
     <header class="site-header" id="siteHeader">
         <div class="header-inner">
             <nav class="navbar">
-                <!-- الشعار -->
                 <div class="logo">
                     <div class="logo-mark">
-                        <img src="{% static 'website/img/logo.png' %}" alt="شركة باء البناء">
+                        <img src="{% static 'website/img/logo.png' %}" alt="{{ company_name }}">
                     </div>
                     <div class="logo-info">
-                        <span class="logo-name">شركة باء البناء</span>
+                        <span class="logo-name">{{ company_name }}</span>
                     </div>
                 </div>
 
-                <!-- القائمة -->
                 <ul class="nav-menu" id="navMenu">
-                    <li><a href="{% url 'home' %}" class="nav-link active">الرئيسية</a></li>
-                    <li><a href="#about" class="nav-link">من نحن</a></li>
-                    <li><a href="{% url 'studio' %}" class="nav-link">استديو أعمالنا</a></li>
-                    <li><a href="#partners" class="nav-link">شركاؤنا</a></li>
-                    <li><a href="{% url 'coming_soon' %}" class="nav-link">تواصل معنا</a></li>
+                    <li><a href="{{ url_home }}"        class="nav-link {% if active_page == 'home' %}active{% endif %}">{{ nav_home }}</a></li>
+                    <li><a href="#about"                class="nav-link">{{ nav_about }}</a></li>
+                    <li><a href="{{ url_studio }}"      class="nav-link">{{ nav_studio }}</a></li>
+                    <li><a href="#partners"             class="nav-link">{{ nav_partners }}</a></li>
+                    <li><a href="{{ url_coming_soon }}" class="nav-link">{{ nav_contact }}</a></li>
                 </ul>
 
-                <!-- أزرار -->
                 <div class="nav-actions">
-                    <a href="{% url 'coming_soon' %}" class="btn-nav">احصل على عرض سعر</a>
-                    <button class="menu-toggle" id="menuToggle" aria-label="القائمة">
+                    <a href="{{ url_lang_switch }}" class="lang-switch">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="2" y1="12" x2="22" y2="12"/>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                        </svg>
+                        {{ lang_label }}
+                    </a>
+                    <a href="{{ url_coming_soon }}" class="btn-nav">{{ nav_cta }}</a>
+                    <button class="menu-toggle" id="menuToggle" aria-label="{{ nav_home }}">
                         <span></span><span></span><span></span>
                     </button>
                 </div>
@@ -44,7 +45,6 @@
         </div>
     </header>
 
-    <!-- الفيديو -->
     <div class="hero-media">
         <video autoplay muted loop playsinline class="hero-video">
             <source src="{% static 'website/vid/heroimg.mp4' %}" type="video/mp4">
@@ -52,26 +52,23 @@
         <div class="hero-overlay"></div>
     </div>
 
-    <!-- المحتوى -->
     <div class="hero-body">
         <div class="container">
             <div class="hero-content" id="heroContent">
                 <span class="hero-badge">
                     <span class="badge-dot"></span>
-                    بناء الثقة، خلق القيمة
+                    {{ hero_badge }}
                 </span>
                 <h1 class="hero-title">
-                    نبني المستقبل<br>
-                    <em>بيد خبراء موثوقين</em>
+                    {{ hero_title_1 }}<br>
+                    <em>{{ hero_title_2 }}</em>
                 </h1>
-                <p class="hero-subtitle">
-                    شركة باء البناء — أكثر من ٢٥ عاماً من التميز في الإنشاء والتصميم المعماري والحلول الهندسية المتكاملة.
-                </p>
+                <p class="hero-subtitle">{{ hero_subtitle }}</p>
                 <div class="hero-actions">
-                    <a href="{% url 'coming_soon' %}" class="btn-hero-primary">احصل على استشارة مجانية</a>
-                    <a href="{% url 'studio' %}" class="btn-hero-secondary">
+                    <a href="{{ url_coming_soon }}" class="btn-hero-primary">{{ btn_consultation }}</a>
+                    <a href="{{ url_studio }}" class="btn-hero-secondary">
                         <span class="play-circle">&#9658;</span>
-                        استعرض أعمالنا
+                        {{ btn_browse }}
                     </a>
                 </div>
             </div>
@@ -80,117 +77,94 @@
 
 </section>
 
-<!-- ================================================
-     ABOUT — من نحن
-     ================================================ -->
+<!-- من نحن -->
 <section class="about-section" id="about">
     <div class="container">
         <div class="about-grid">
-            <!-- النص -->
             <div class="about-text">
-                <span class="section-badge">من نحن</span>
-                <h2 class="section-title">خبرة تتحدث<br><em>عن نفسها</em></h2>
-                <p class="section-desc">
-                    نحن شركة باء البناء، شركة سعودية متخصصة في تقديم الحلول الإنشائية والمعمارية الشاملة منذ أكثر من ربع قرن. نجمع بين الخبرة العميقة والتقنيات الحديثة لتسليم مشاريع تتجاوز توقعات عملائنا.
-                </p>
+                <span class="section-badge">{{ about_badge }}</span>
+                <h2 class="section-title">{{ about_title_1 }}<br><em>{{ about_title_2 }}</em></h2>
+                <p class="section-desc">{{ about_text }}</p>
                 <div class="features-list">
                     <div class="feature-row">
                         <div class="feature-icon">🏛</div>
                         <div class="feature-text">
-                            <h4>تصميم معماري متكامل</h4>
-                            <p>نقدم حلول تصميمية تجمع بين الجمال والوظيفية وفق أحدث المعايير العالمية</p>
+                            <h4>{{ f1_title }}</h4>
+                            <p>{{ f1_text }}</p>
                         </div>
                     </div>
                     <div class="feature-row">
                         <div class="feature-icon">🏗</div>
                         <div class="feature-text">
-                            <h4>إنشاء بجودة عالية</h4>
-                            <p>نستخدم أفضل المواد والتقنيات لضمان متانة وجودة المشروع على المدى الطويل</p>
+                            <h4>{{ f2_title }}</h4>
+                            <p>{{ f2_text }}</p>
                         </div>
                     </div>
                     <div class="feature-row">
                         <div class="feature-icon">✅</div>
                         <div class="feature-text">
-                            <h4>التزام بالمواعيد</h4>
-                            <p>نلتزم بجداول التسليم المتفق عليها مع الحفاظ على أعلى معايير الجودة</p>
+                            <h4>{{ f3_title }}</h4>
+                            <p>{{ f3_text }}</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- بطاقات -->
             <div class="about-cards">
                 <div class="about-card">
-                    <div class="card-num">5+</div>
-                    <div class="card-label">سنة خبرة<br>في السوق السعودي</div>
+                    <div class="card-num">{{ card1_num }}</div>
+                    <div class="card-label">{{ card1_label }}</div>
                 </div>
                 <div class="about-card">
-                    <div class="card-num">100+</div>
-                    <div class="card-label">مشروع منجز<br>بنجاح وإتقان</div>
+                    <div class="card-num">{{ card2_num }}</div>
+                    <div class="card-label">{{ card2_label }}</div>
                 </div>
                 <div class="about-card">
-                    <div class="card-num">٥٠+</div>
-                    <div class="card-label">مهندس وخبير<br>متخصص</div>
+                    <div class="card-num">{{ card3_num }}</div>
+                    <div class="card-label">{{ card3_label }}</div>
                 </div>
                 <div class="about-card">
-                    <div class="card-num">٩٨٪</div>
-                    <div class="card-label">نسبة رضا<br>عملائنا</div>
+                    <div class="card-num">{{ card4_num }}</div>
+                    <div class="card-label">{{ card4_label }}</div>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ================================================
-     PARTNERS — شركاؤنا
-     ================================================ -->
+<!-- الشركاء -->
 <section class="partners-section" id="partners">
     <div class="container">
         <div class="section-header center">
-            <span class="section-badge">شركاؤنا</span>
-            <h2 class="section-title">من <em>يثق بنا</em></h2>
-            <p class="section-desc">نفخر بشراكاتنا مع كبرى الشركات والمؤسسات في المملكة العربية السعودية</p>
+            <span class="section-badge">{{ partners_badge }}</span>
+            <h2 class="section-title">{{ partners_title_1 }} <em>{{ partners_title_2 }}</em></h2>
+            <p class="section-desc">{{ partners_text }}</p>
         </div>
     </div>
     <div class="partners-track-wrap">
         <div class="partners-track">
-            <div class="partner-item"><img src="{% static 'website/img/شعارات الشركاء/1.png' %}" alt="شريك 1" loading="lazy"></div>
-            <div class="partner-item"><img src="{% static 'website/img/شعارات الشركاء/2.png' %}" alt="شريك 2" loading="lazy"></div>
-            <div class="partner-item"><img src="{% static 'website/img/شعارات الشركاء/3.png' %}" alt="شريك 3" loading="lazy"></div>
-            <div class="partner-item"><img src="{% static 'website/img/شعارات الشركاء/4.png' %}" alt="شريك 4" loading="lazy"></div>
-            <div class="partner-item"><img src="{% static 'website/img/شعارات الشركاء/5.png' %}" alt="شريك 5" loading="lazy"></div>
-            <div class="partner-item"><img src="{% static 'website/img/شعارات الشركاء/6.png' %}" alt="شريك 6" loading="lazy"></div>
-            <div class="partner-item"><img src="{% static 'website/img/شعارات الشركاء/7.png' %}" alt="شريك 7" loading="lazy"></div>
-            <div class="partner-item"><img src="{% static 'website/img/شعارات الشركاء/8.png' %}" alt="شريك 8" loading="lazy"></div>
-            <!-- تكرار للتمرير اللانهائي -->
-            <div class="partner-item"><img src="{% static 'website/img/شعارات الشركاء/1.png' %}" alt="شريك 1" loading="lazy"></div>
-            <div class="partner-item"><img src="{% static 'website/img/شعارات الشركاء/2.png' %}" alt="شريك 2" loading="lazy"></div>
-            <div class="partner-item"><img src="{% static 'website/img/شعارات الشركاء/3.png' %}" alt="شريك 3" loading="lazy"></div>
-            <div class="partner-item"><img src="{% static 'website/img/شعارات الشركاء/4.png' %}" alt="شريك 4" loading="lazy"></div>
-            <div class="partner-item"><img src="{% static 'website/img/شعارات الشركاء/5.png' %}" alt="شريك 5" loading="lazy"></div>
-            <div class="partner-item"><img src="{% static 'website/img/شعارات الشركاء/6.png' %}" alt="شريك 6" loading="lazy"></div>
-            <div class="partner-item"><img src="{% static 'website/img/شعارات الشركاء/7.png' %}" alt="شريك 7" loading="lazy"></div>
-            <div class="partner-item"><img src="{% static 'website/img/شعارات الشركاء/8.png' %}" alt="شريك 8" loading="lazy"></div>
+            {% for i in "12345678" %}
+            <div class="partner-item"><img src="{% static 'website/img/شعارات الشركاء/'|add:i|add:'.png' %}" alt="{{ partner_alt }} {{ i }}" loading="lazy"></div>
+            {% endfor %}
+            {% for i in "12345678" %}
+            <div class="partner-item"><img src="{% static 'website/img/شعارات الشركاء/'|add:i|add:'.png' %}" alt="{{ partner_alt }} {{ i }}" loading="lazy"></div>
+            {% endfor %}
         </div>
     </div>
 </section>
 
-<!-- ================================================
-     CTA — دعوة للتواصل
-     ================================================ -->
+<!-- CTA -->
 <section class="cta-section" id="contact">
     <div class="container">
-        <span class="cta-eyebrow">تواصل معنا</span>
+        <span class="cta-eyebrow">{{ cta_eyebrow }}</span>
         <h2 class="cta-title">
-            ابدأ مشروعك<br>
-            <em>معنا اليوم</em>
+            {{ cta_title_1 }}<br>
+            <em>{{ cta_title_2 }}</em>
         </h2>
-        <p class="cta-subtitle">
-            فريقنا من الخبراء جاهز للاستماع إلى رؤيتك وتقديم الحل الأمثل لمشروعك
-        </p>
+        <p class="cta-subtitle">{{ cta_subtitle }}</p>
         <div class="cta-btns">
-            <a href="{% url 'coming_soon' %}" class="btn-cta-solid">احصل على استشارة مجانية</a>
-            <a href="{% url 'coming_soon' %}" class="btn-cta-ghost">تواصل مع فريقنا</a>
+            <a href="{{ url_coming_soon }}" class="btn-cta-solid">{{ btn_cta }}</a>
+            <a href="{{ url_coming_soon }}" class="btn-cta-ghost">{{ btn_contact_team }}</a>
         </div>
     </div>
 </section>

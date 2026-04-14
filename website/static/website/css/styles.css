@@ -1039,5 +1039,82 @@ ul { list-style:none; }
     padding-top: 60px;
 }
 
+/* ====================================================
+   زر تبديل اللغة
+   ==================================================== */
+.lang-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: rgba(250,248,242,.72);
+    font-size: 13px;
+    font-weight: 700;
+    padding: 8px 16px;
+    border: 1px solid rgba(200,146,10,.3);
+    border-radius: var(--radius-pill);
+    transition: var(--transition-fast);
+    white-space: nowrap;
+    letter-spacing: .02em;
+}
+.lang-switch:hover {
+    color: var(--gold-light);
+    border-color: var(--gold);
+    background: rgba(200,146,10,.1);
+}
+.lang-switch svg { flex-shrink: 0; }
+
+/* ====================================================
+   LTR — تخطيط الإنجليزية من اليسار
+   ==================================================== */
+[dir="ltr"] body {
+    font-family: 'Inter', 'Cairo', sans-serif;
+}
+
+/* القائمة المتحركة — تنزلق من اليسار في LTR */
+[dir="ltr"] .nav-menu.open {
+    right: auto;
+    left: 0;
+    border-left: none;
+    border-right: 1px solid rgba(200,146,10,.2);
+    border-radius: 0 20px 20px 0;
+    animation: menuSlideLTR .3s ease;
+}
+@keyframes menuSlideLTR {
+    from { transform: translateX(-100%); }
+    to   { transform: translateX(0); }
+}
+
+/* اتجاه النص */
+[dir="ltr"] .section-title,
+[dir="ltr"] .section-desc,
+[dir="ltr"] .hero-title,
+[dir="ltr"] .hero-subtitle,
+[dir="ltr"] .hero-badge,
+[dir="ltr"] .cta-title,
+[dir="ltr"] .cta-subtitle,
+[dir="ltr"] .studio-hero-title,
+[dir="ltr"] .studio-hero-desc { text-align: left; }
+
+[dir="ltr"] .section-header.center,
+[dir="ltr"] .cta-section { text-align: center; }
+[dir="ltr"] .section-header.center .section-title,
+[dir="ltr"] .section-header.center .section-desc { text-align: center; }
+
+/* روابط الفوتر عند التمرير */
+[dir="ltr"] .footer-link-list a:hover {
+    padding-left: 5px;
+    padding-right: 0;
+}
+
+/* اللايت بوكس — عكس موضع الأسهم */
+[dir="ltr"] .lightbox-prev { right: 24px; left: auto; }
+[dir="ltr"] .lightbox-next { left: 24px;  right: auto; }
+
+/* إغلاق اللايت بوكس */
+[dir="ltr"] .lightbox-close { left: auto; right: 20px; }
+
+/* الفوتر — محاذاة الروابط السفلية */
+[dir="ltr"] .footer-bottom-links { flex-direction: row; }
+
 /* === التحديد === */
 ::selection { background:var(--gold); color:var(--dark); }

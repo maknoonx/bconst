@@ -1,36 +1,42 @@
 {% extends 'website/base.html' %}
 {% load static %}
 
-{% block title %}استديو أعمالنا — شركة باء البناء{% endblock %}
+{% block title %}{{ page_title }}{% endblock %}
 
 {% block content %}
 
-<!-- ================================================
-     STUDIO PAGE — شريط التنقل
-     ================================================ -->
+<!-- شريط التنقل -->
 <header class="site-header studio-header" id="siteHeader">
     <div class="header-inner">
         <nav class="navbar">
             <div class="logo">
                 <div class="logo-mark">
-                    <img src="{% static 'website/img/logo.png' %}" alt="شركة باء البناء">
+                    <img src="{% static 'website/img/logo.png' %}" alt="{{ company_name }}">
                 </div>
                 <div class="logo-info">
-                    <span class="logo-name">شركة باء البناء</span>
+                    <span class="logo-name">{{ company_name }}</span>
                 </div>
             </div>
 
             <ul class="nav-menu" id="navMenu">
-                <li><a href="{% url 'home' %}" class="nav-link">الرئيسية</a></li>
-                <li><a href="{% url 'home' %}#about" class="nav-link">من نحن</a></li>
-                <li><a href="{% url 'studio' %}" class="nav-link active">استديو أعمالنا</a></li>
-                <li><a href="{% url 'home' %}#partners" class="nav-link">شركاؤنا</a></li>
-                <li><a href="{% url 'coming_soon' %}" class="nav-link">تواصل معنا</a></li>
+                <li><a href="{{ url_home }}"        class="nav-link">{{ nav_home }}</a></li>
+                <li><a href="{{ url_home }}#about"  class="nav-link">{{ nav_about }}</a></li>
+                <li><a href="{{ url_studio }}"      class="nav-link {% if active_page == 'studio' %}active{% endif %}">{{ nav_studio }}</a></li>
+                <li><a href="{{ url_home }}#partners" class="nav-link">{{ nav_partners }}</a></li>
+                <li><a href="{{ url_coming_soon }}" class="nav-link">{{ nav_contact }}</a></li>
             </ul>
 
             <div class="nav-actions">
-                <a href="{% url 'coming_soon' %}" class="btn-nav">احصل على عرض سعر</a>
-                <button class="menu-toggle" id="menuToggle" aria-label="القائمة">
+                <a href="{{ url_lang_switch }}" class="lang-switch">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="2" y1="12" x2="22" y2="12"/>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                    </svg>
+                    {{ lang_label }}
+                </a>
+                <a href="{{ url_coming_soon }}" class="btn-nav">{{ nav_cta }}</a>
+                <button class="menu-toggle" id="menuToggle" aria-label="menu">
                     <span></span><span></span><span></span>
                 </button>
             </div>
@@ -38,34 +44,27 @@
     </div>
 </header>
 
-<!-- ================================================
-     STUDIO HERO — رأس الصفحة
-     ================================================ -->
+<!-- رأس صفحة الاستديو -->
 <section class="studio-page-hero">
     <div class="container">
         <div class="studio-hero-content">
-            <span class="section-badge">معرض أعمالنا</span>
-            <h1 class="studio-hero-title">استديو <em>مشاريعنا</em></h1>
-            <p class="studio-hero-desc">
-                اكتشف أعمالنا المعمارية والإنشائية وتصاميمنا المنجزة — اختر القسم واستعرض الصور وحمّلها منفردة
-            </p>
+            <span class="section-badge">{{ studio_badge }}</span>
+            <h1 class="studio-hero-title">{{ studio_title_1 }} <em>{{ studio_title_2 }}</em></h1>
+            <p class="studio-hero-desc">{{ studio_desc }}</p>
         </div>
     </div>
 </section>
 
-<!-- ================================================
-     STUDIO GALLERY — معرض الصور
-     ================================================ -->
+<!-- معرض الصور -->
 <section class="studio-section studio-page-gallery">
     <div class="container">
 
-        <!-- التبويبات -->
         <div class="studio-tabs">
             <button class="studio-tab active" data-tab="arch">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/>
                 </svg>
-                المعماري
+                {{ tab_arch }}
                 <span class="tab-count">٢١</span>
             </button>
             <button class="studio-tab" data-tab="struct">
@@ -73,19 +72,18 @@
                     <rect x="2" y="7" width="20" height="15" rx="2"/>
                     <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
                 </svg>
-                الإنشائي
+                {{ tab_struct }}
                 <span class="tab-count">٤٢</span>
             </button>
             <button class="studio-tab" data-tab="design">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/>
                 </svg>
-                التصاميم
+                {{ tab_design }}
                 <span class="tab-count">٩</span>
             </button>
         </div>
 
-        <!-- لوحات المعرض -->
         <div class="studio-gallery">
             <div class="gallery-panel active" id="panel-arch">
                 <div class="gallery-grid" id="grid-arch"></div>
@@ -102,12 +100,12 @@
 
     <!-- لايت بوكس -->
     <div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
-        <button class="lightbox-close" id="lightboxClose" aria-label="إغلاق">&#10005;</button>
-        <button class="lightbox-prev" id="lightboxPrev" aria-label="السابق">&#8250;</button>
-        <button class="lightbox-next" id="lightboxNext" aria-label="التالي">&#8249;</button>
+        <button class="lightbox-close" id="lightboxClose" aria-label="{{ lb_close_label }}">&#10005;</button>
+        <button class="lightbox-prev" id="lightboxPrev" aria-label="{{ lb_prev_label }}">{{ lb_prev_char }}</button>
+        <button class="lightbox-next" id="lightboxNext" aria-label="{{ lb_next_label }}">{{ lb_next_char }}</button>
         <div class="lightbox-inner">
             <div class="lightbox-img-wrap">
-                <img src="" alt="صورة المشروع" id="lightboxImg">
+                <img src="" alt="" id="lightboxImg">
             </div>
             <div class="lightbox-footer">
                 <span class="lightbox-counter" id="lightboxCounter"></span>
@@ -117,7 +115,7 @@
                         <polyline points="7 10 12 15 17 10"/>
                         <line x1="12" y1="15" x2="12" y2="3"/>
                     </svg>
-                    تحميل الصورة
+                    {{ download_btn }}
                 </a>
             </div>
         </div>
@@ -125,11 +123,14 @@
 
 </section>
 
-<!-- ================================================
-     بيانات الاستديو — JavaScript
-     ================================================ -->
 <script>
 (function () {
+    var tabLabels = {
+        arch:   "{{ tab_arch }}",
+        struct: "{{ tab_struct }}",
+        design: "{{ tab_design }}"
+    };
+
     var galleryData = {
         arch: [
             "{% static 'website/img/معماري/service1_1.svg' %}",
@@ -211,8 +212,6 @@
         ]
     };
 
-    var tabLabels = { arch: 'معماري', struct: 'إنشائي', design: 'تصاميم' };
-
     function buildGrids() {
         Object.keys(galleryData).forEach(function (key) {
             var grid = document.getElementById('grid-' + key);
@@ -233,13 +232,11 @@
         });
     }
 
-    /* لايت بوكس */
-    var lb         = document.getElementById('lightbox');
-    var lbImg      = document.getElementById('lightboxImg');
-    var lbCounter  = document.getElementById('lightboxCounter');
+    var lb = document.getElementById('lightbox');
+    var lbImg = document.getElementById('lightboxImg');
+    var lbCounter = document.getElementById('lightboxCounter');
     var lbDownload = document.getElementById('lightboxDownload');
-    var curPanel   = 'arch';
-    var curIndex   = 0;
+    var curPanel = 'arch', curIndex = 0;
 
     function openLightbox(panel, index) {
         curPanel = panel; curIndex = index;
@@ -247,10 +244,7 @@
         lb.classList.add('open');
         document.body.style.overflow = 'hidden';
     }
-    function closeLightbox() {
-        lb.classList.remove('open');
-        document.body.style.overflow = '';
-    }
+    function closeLightbox() { lb.classList.remove('open'); document.body.style.overflow = ''; }
     function showImage() {
         var src = galleryData[curPanel][curIndex];
         lbImg.src = src;
@@ -259,7 +253,7 @@
         lbCounter.textContent = (curIndex + 1) + ' / ' + galleryData[curPanel].length;
     }
     function prev() { var l = galleryData[curPanel].length; curIndex = (curIndex - 1 + l) % l; showImage(); }
-    function next() { var l = galleryData[curPanel].length; curIndex = (curIndex + 1) % l;       showImage(); }
+    function next() { var l = galleryData[curPanel].length; curIndex = (curIndex + 1) % l; showImage(); }
 
     document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
     document.getElementById('lightboxPrev').addEventListener('click', prev);
@@ -267,12 +261,11 @@
     lb.addEventListener('click', function (e) { if (e.target === lb) closeLightbox(); });
     document.addEventListener('keydown', function (e) {
         if (!lb.classList.contains('open')) return;
-        if (e.key === 'Escape')     closeLightbox();
-        if (e.key === 'ArrowRight') prev();
-        if (e.key === 'ArrowLeft')  next();
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowRight') { document.documentElement.dir === 'ltr' ? next() : prev(); }
+        if (e.key === 'ArrowLeft')  { document.documentElement.dir === 'ltr' ? prev() : next(); }
     });
 
-    /* تبويبات */
     document.querySelectorAll('.studio-tab').forEach(function (btn) {
         btn.addEventListener('click', function () {
             var tab = this.dataset.tab;
