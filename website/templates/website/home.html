@@ -3,6 +3,21 @@
 
 {% block title %}{{ page_title }}{% endblock %}
 
+{% block schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "url": "{{ canonical_url }}",
+  "name": "{{ og_title }}",
+  "description": "{{ meta_description }}",
+  "inLanguage": "{{ lang }}",
+  "isPartOf": { "@id": "https://www.bconstructions.org/#website" },
+  "about": { "@id": "https://www.bconstructions.org/#organization" }
+}
+</script>
+{% endblock %}
+
 {% block content %}
 
 <section class="hero" id="top">
@@ -54,7 +69,9 @@
     </header>
  
     <div class="hero-media">
-        <video autoplay muted loop playsinline class="hero-video">
+        <video autoplay muted loop playsinline preload="metadata"
+               poster="{% static 'website/img/hero-poster.webp' %}"
+               width="1920" height="1080" class="hero-video">
             <source src="{% static 'website/vid/heroimg.mp4' %}" type="video/mp4">
         </video>
         <div class="hero-overlay"></div>
@@ -97,21 +114,21 @@
                     <div class="feature-row">
                         <div class="feature-icon">🏛</div>
                         <div class="feature-text">
-                            <h4>{{ f1_title }}</h4>
+                            <h3>{{ f1_title }}</h3>
                             <p>{{ f1_text }}</p>
                         </div>
                     </div>
                     <div class="feature-row">
                         <div class="feature-icon">🏗</div>
                         <div class="feature-text">
-                            <h4>{{ f2_title }}</h4>
+                            <h3>{{ f2_title }}</h3>
                             <p>{{ f2_text }}</p>
                         </div>
                     </div>
                     <div class="feature-row">
                         <div class="feature-icon">✅</div>
                         <div class="feature-text">
-                            <h4>{{ f3_title }}</h4>
+                            <h3>{{ f3_title }}</h3>
                             <p>{{ f3_text }}</p>
                         </div>
                     </div>

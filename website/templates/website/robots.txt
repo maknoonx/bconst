@@ -1,0 +1,28 @@
+# robots.txt for https://www.bconstructions.org
+User-agent: *
+Allow: /
+
+Disallow: /admin/
+Disallow: /admin
+Disallow: /accounts/
+Disallow: /login/
+Disallow: /logout/
+Disallow: /coming-soon/
+Disallow: /en/coming-soon/
+Disallow: /*?*sort=
+Disallow: /*?*filter=
+Disallow: /*?*page=
+Disallow: /*?*utm_
+
+Allow: /static/
+Allow: /*.css$
+Allow: /*.js$
+Allow: /*.png$
+Allow: /*.jpg$
+Allow: /*.jpeg$
+Allow: /*.webp$
+Allow: /*.svg$
+
+Crawl-delay: 1
+
+Sitemap: https://www.bconstructions.org/sitemap.xml

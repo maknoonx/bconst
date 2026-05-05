@@ -1,4 +1,5 @@
 from django.urls import path
+from django.views.generic.base import TemplateView
 from . import views
 
 urlpatterns = [
@@ -21,4 +22,9 @@ urlpatterns = [
     path('en/terms/',                 views.terms,          {'lang': 'en'}, name='terms_en'),
     path('en/services/',              views.services_list,  {'lang': 'en'}, name='services_en'),
     path('en/services/<slug:slug>/',  views.service_detail, {'lang': 'en'}, name='service_detail_en'),
+]
+
+urlpatterns += [
+    path('robots.txt', TemplateView.as_view(template_name='website/robots.txt', content_type='text/plain')),
+    path('sitemap.xml', TemplateView.as_view(template_name='website/sitemap.xml', content_type='application/xml')),
 ]

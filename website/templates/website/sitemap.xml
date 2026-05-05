@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <!-- Homepage -->
+  <url>
+    <loc>https://www.bconstructions.org/</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/"/>
+    <xhtml:link rel="alternate" hreflang="ar"    href="https://www.bconstructions.org/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/"/>
+  </url>
+  <url>
+    <loc>https://www.bconstructions.org/en/</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/"/>
+    <xhtml:link rel="alternate" hreflang="ar"    href="https://www.bconstructions.org/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/"/>
+  </url>
+
+  <!-- Studio -->
+  <url>
+    <loc>https://www.bconstructions.org/studio/</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/studio/"/>
+    <xhtml:link rel="alternate" hreflang="ar"    href="https://www.bconstructions.org/studio/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/studio/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/studio/"/>
+  </url>
+  <url>
+    <loc>https://www.bconstructions.org/en/studio/</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/studio/"/>
+    <xhtml:link rel="alternate" hreflang="ar"    href="https://www.bconstructions.org/studio/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/studio/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/studio/"/>
+  </url>
+
+  <!-- Contact -->
+  <url>
+    <loc>https://www.bconstructions.org/contact/</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/contact/"/>
+    <xhtml:link rel="alternate" hreflang="ar"    href="https://www.bconstructions.org/contact/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/contact/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/contact/"/>
+  </url>
+  <url>
+    <loc>https://www.bconstructions.org/en/contact/</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/contact/"/>
+    <xhtml:link rel="alternate" hreflang="ar"    href="https://www.bconstructions.org/contact/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/contact/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/contact/"/>
+  </url>
+
+  <!-- Services main -->
+  <url>
+    <loc>https://www.bconstructions.org/services/</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/services/"/>
+    <xhtml:link rel="alternate" hreflang="ar"    href="https://www.bconstructions.org/services/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/services/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/services/"/>
+  </url>
+  <url>
+    <loc>https://www.bconstructions.org/en/services/</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/services/"/>
+    <xhtml:link rel="alternate" hreflang="ar"    href="https://www.bconstructions.org/services/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/services/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/services/"/>
+  </url>
+
+  <!-- Service detail pages — AR + EN pairs -->
+  <!-- architectural-design -->
+  <url>
+    <loc>https://www.bconstructions.org/services/architectural-design/</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/services/architectural-design/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/services/architectural-design/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/services/architectural-design/"/>
+  </url>
+  <url>
+    <loc>https://www.bconstructions.org/en/services/architectural-design/</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/services/architectural-design/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/services/architectural-design/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/services/architectural-design/"/>
+  </url>
+
+  <!-- construction -->
+  <url>
+    <loc>https://www.bconstructions.org/services/construction/</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/services/construction/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/services/construction/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/services/construction/"/>
+  </url>
+  <url>
+    <loc>https://www.bconstructions.org/en/services/construction/</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/services/construction/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/services/construction/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/services/construction/"/>
+  </url>
+
+  <!-- real-estate -->
+  <url>
+    <loc>https://www.bconstructions.org/services/real-estate/</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/services/real-estate/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/services/real-estate/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/services/real-estate/"/>
+  </url>
+  <url>
+    <loc>https://www.bconstructions.org/en/services/real-estate/</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/services/real-estate/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/services/real-estate/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/services/real-estate/"/>
+  </url>
+
+  <!-- renovation -->
+  <url>
+    <loc>https://www.bconstructions.org/services/renovation/</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/services/renovation/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/services/renovation/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/services/renovation/"/>
+  </url>
+  <url>
+    <loc>https://www.bconstructions.org/en/services/renovation/</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/services/renovation/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/services/renovation/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/services/renovation/"/>
+  </url>
+
+  <!-- consultancy -->
+  <url>
+    <loc>https://www.bconstructions.org/services/consultancy/</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/services/consultancy/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/services/consultancy/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/services/consultancy/"/>
+  </url>
+  <url>
+    <loc>https://www.bconstructions.org/en/services/consultancy/</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/services/consultancy/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/services/consultancy/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/services/consultancy/"/>
+  </url>
+
+  <!-- Privacy + Terms -->
+  <url>
+    <loc>https://www.bconstructions.org/privacy/</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/privacy/"/>
+  </url>
+  <url>
+    <loc>https://www.bconstructions.org/en/privacy/</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/privacy/"/>
+  </url>
+  <url>
+    <loc>https://www.bconstructions.org/terms/</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/terms/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/terms/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/terms/"/>
+  </url>
+  <url>
+    <loc>https://www.bconstructions.org/en/terms/</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/terms/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/terms/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/terms/"/>
+  </url>
+
+</urlset>

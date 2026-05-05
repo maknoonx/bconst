@@ -268,6 +268,41 @@ CONTENT = {
             'حل النزاعات الهندسية والخبرة القضائية',
             'توفير شهادات الجودة والمطابقة',
         ],
+
+        # SEO titles (optimized for search engines)
+        'seo_title_home':     'شركة باء البناء | مقاول إنشاءات وتصميم معماري في السعودية',
+        'seo_title_studio':   'استديو أعمالنا — معرض المشاريع المعمارية والإنشائية | شركة باء البناء',
+        'seo_title_contact':  'تواصل معنا | شركة باء البناء للمقاولات',
+        'seo_title_services': 'خدماتنا | تصميم معماري وإنشاء وتطوير عقاري | شركة باء البناء',
+        'seo_title_privacy':  'سياسة الخصوصية | شركة باء البناء',
+        'seo_title_terms':    'الشروط والأحكام | شركة باء البناء',
+
+        # Meta descriptions (120-140 chars Arabic)
+        'meta_description_home':     'شركة باء البناء — مقاول إنشاءات معتمد في المملكة العربية السعودية. نقدم التصميم المعماري، الإنشاء، التطوير العقاري، التجديد، والاستشارات الهندسية. أكثر من 10 سنوات و500+ مشروع منجز.',
+        'meta_description_studio':   'معرض أعمال شركة باء البناء — 21 مشروعاً معمارياً، 42 مشروعاً إنشائياً، و9 تصاميم منجزة في المملكة العربية السعودية. شاهد جودة التنفيذ والتصميم.',
+        'meta_description_contact':  'تواصل مع شركة باء البناء للمقاولات في السعودية. اتصل على 0593394747 أو راسلنا عبر البريد الإلكتروني للحصول على استشارة مجانية.',
+        'meta_description_services': 'خدمات شركة باء البناء: التصميم المعماري، الإنشاء والبناء، التطوير العقاري، التجديد والترميم، والاستشارات الهندسية في المملكة العربية السعودية.',
+        'meta_description_privacy':  'سياسة خصوصية شركة باء البناء — تعرف على كيفية جمع بياناتك الشخصية وحمايتها عند تصفحك لموقعنا.',
+        'meta_description_terms':    'الشروط والأحكام لشركة باء البناء — اقرأ شروط الاستخدام وسياسات التعامل مع خدماتنا الإنشائية والمعمارية.',
+
+        # Meta keywords
+        'meta_keywords_home':     'شركة مقاولات السعودية, شركة بناء الرياض, مقاول إنشاءات معتمد, تصميم معماري, تطوير عقاري, شركة باء البناء',
+        'meta_keywords_studio':   'معرض مشاريع إنشائية, أعمال معمارية السعودية, تصاميم هندسية, شركة باء البناء',
+        'meta_keywords_contact':  'تواصل شركة مقاولات, أرقام هاتف مقاول السعودية, استشارة هندسية مجانية',
+        'meta_keywords_services': 'خدمات إنشائية السعودية, تصميم معماري, إنشاء وبناء, تطوير عقاري, تجديد وترميم',
+        'meta_keywords_privacy':  'سياسة خصوصية, حماية البيانات',
+        'meta_keywords_terms':    'شروط وأحكام, سياسات الاستخدام',
+
+        # OG overrides
+        'og_title_home':     'شركة باء البناء — نبني المستقبل بيد خبراء موثوقين',
+        'og_title_studio':   'استديو مشاريعنا — شركة باء البناء',
+        'og_title_contact':  'تواصل معنا — شركة باء البناء',
+        'og_title_services': 'خدماتنا — شركة باء البناء',
+        'og_locale':         'ar_SA',
+
+        # Structured data
+        'schema_org_name':        'شركة باء البناء',
+        'schema_description':     'شركة سعودية متخصصة في الإنشاء والتصميم المعماري والحلول الهندسية المتكاملة منذ أكثر من 10 سنوات.',
     },
 
     # ---- English ----
@@ -534,5 +569,35 @@ CONTENT = {
             'Engineering Dispute Resolution & Forensic Expertise',
             'Quality & Compliance Certification',
         ],
+
+        'seo_title_home':     'Baa Al-Bina Company | Licensed Construction & Architecture Contractor in Saudi Arabia',
+        'seo_title_studio':   'Our Studio — Architecture & Construction Portfolio | Baa Al-Bina Company',
+        'seo_title_contact':  'Contact Us | Baa Al-Bina Construction Company',
+        'seo_title_services': 'Our Services | Architectural Design, Construction & Real Estate | Baa Al-Bina',
+        'seo_title_privacy':  'Privacy Policy | Baa Al-Bina Company',
+        'seo_title_terms':    'Terms & Conditions | Baa Al-Bina Company',
+
+        'meta_description_home':     'Baa Al-Bina Company — licensed construction contractor in Saudi Arabia. Architectural design, construction, real estate development, renovation and engineering consultancy. 10+ years, 500+ projects.',
+        'meta_description_studio':   'Explore Baa Al-Bina portfolio: 21 architectural projects, 42 construction projects, and 9 designs delivered across Saudi Arabia. See the quality of our execution.',
+        'meta_description_contact':  'Contact Baa Al-Bina Construction Company in Saudi Arabia. Call +966593394747 or email us for a free consultation.',
+        'meta_description_services': 'Baa Al-Bina services: architectural design, construction, real estate development, renovation & restoration, and engineering consultancy across Saudi Arabia.',
+        'meta_description_privacy':  'Privacy Policy of Baa Al-Bina Company — learn how we collect, use, and protect your personal data when you use our website.',
+        'meta_description_terms':    'Terms & Conditions of Baa Al-Bina Company — read the usage terms and policies for our construction and architectural services.',
+
+        'meta_keywords_home':     'construction company Saudi Arabia, contractor Riyadh, architectural design KSA, real estate development Saudi, Baa Al-Bina',
+        'meta_keywords_studio':   'construction portfolio Saudi Arabia, architectural projects KSA, engineering designs, Baa Al-Bina',
+        'meta_keywords_contact':  'contact construction company Saudi Arabia, engineering consultancy phone, free consultation KSA',
+        'meta_keywords_services': 'construction services Saudi Arabia, architectural design, real estate development, renovation KSA',
+        'meta_keywords_privacy':  'privacy policy, data protection',
+        'meta_keywords_terms':    'terms and conditions, usage policy',
+
+        'og_title_home':     'Baa Al-Bina Company — Building the Future With Trusted Experts',
+        'og_title_studio':   'Our Studio — Baa Al-Bina Company',
+        'og_title_contact':  'Contact Us — Baa Al-Bina Company',
+        'og_title_services': 'Our Services — Baa Al-Bina Company',
+        'og_locale':         'en_US',
+
+        'schema_org_name':    'Baa Al-Bina Company',
+        'schema_description': 'Saudi construction company specializing in architectural design, construction, real estate development, renovation, and engineering consultancy for over 10 years.',
     },
 }

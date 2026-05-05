@@ -5,6 +5,92 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{{ company_name }}{% endblock %}</title>
+
+  <!-- SEO: Primary -->
+  <meta name="description" content="{{ meta_description }}">
+  <meta name="keywords" content="{{ meta_keywords }}">
+  <meta name="author" content="{{ company_name }}">
+  <meta name="robots" content="{{ meta_robots }}">
+  <meta name="theme-color" content="#0a0a0a">
+  <meta name="geo.region" content="SA">
+  <meta name="geo.placename" content="Saudi Arabia">
+
+  <!-- Canonical + hreflang -->
+  <link rel="canonical" href="{{ canonical_url }}">
+  <link rel="alternate" hreflang="ar-SA" href="{{ hreflang_ar_url }}">
+  <link rel="alternate" hreflang="ar"    href="{{ hreflang_ar_url }}">
+  <link rel="alternate" hreflang="en"    href="{{ hreflang_en_url }}">
+  <link rel="alternate" hreflang="x-default" href="{{ hreflang_ar_url }}">
+
+  <!-- Open Graph -->
+  <meta property="og:type"              content="website">
+  <meta property="og:site_name"         content="{{ company_name }}">
+  <meta property="og:locale"            content="{{ og_locale }}">
+  <meta property="og:url"               content="{{ canonical_url }}">
+  <meta property="og:title"             content="{{ og_title }}">
+  <meta property="og:description"       content="{{ og_description }}">
+  <meta property="og:image"             content="{{ og_image_url }}">
+  <meta property="og:image:width"       content="1200">
+  <meta property="og:image:height"      content="630">
+  <meta property="og:image:alt"         content="{{ og_title }}">
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:title"       content="{{ og_title }}">
+  <meta name="twitter:description" content="{{ og_description }}">
+  <meta name="twitter:image"       content="{{ og_image_url }}">
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'website/img/favicon-32.png' %}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'website/img/favicon-16.png' %}">
+  <link rel="apple-touch-icon" sizes="180x180"    href="{% static 'website/img/apple-touch-icon.png' %}">
+  <link rel="manifest" href="/site.webmanifest">
+
+  <!-- Sitemap discovery -->
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+
+  <!-- JSON-LD: Organization + LocalBusiness (every page) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": ["Organization", "GeneralContractor", "LocalBusiness"],
+        "@id": "https://www.bconstructions.org/#organization",
+        "name": "شركة باء البناء",
+        "alternateName": ["Baa Al-Bina Company", "Baa Construction"],
+        "url": "https://www.bconstructions.org/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.bconstructions.org/static/website/img/logo.png",
+          "width": 512,
+          "height": 512
+        },
+        "image": "https://www.bconstructions.org/static/website/img/logo.png",
+        "description": "شركة سعودية متخصصة في الإنشاء والتصميم المعماري والحلول الهندسية المتكاملة منذ أكثر من 10 سنوات.",
+        "foundingDate": "2015",
+        "numberOfEmployees": { "@type": "QuantitativeValue", "value": 120 },
+        "telephone": "+966593394747",
+        "email": "b.construction.med@gmail.com",
+        "priceRange": "$$$",
+        "areaServed": { "@type": "Country", "name": "Saudi Arabia" },
+        "knowsAbout": ["Architectural Design","Construction","Real Estate Development","Renovation","Engineering Consultancy"]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://www.bconstructions.org/#website",
+        "url": "https://www.bconstructions.org/",
+        "name": "شركة باء البناء",
+        "publisher": { "@id": "https://www.bconstructions.org/#organization" },
+        "inLanguage": "{{ lang }}"
+      }
+    ]
+  }
+  </script>
+
+  <!-- Page-specific schema -->
+  {% block schema %}{% endblock %}
+
     <link rel="stylesheet" href="{% static 'website/css/styles.css' %}">
     <link rel="stylesheet" href="{% static 'website/css/loading.css' %}">
     <link rel="stylesheet" href="{% static 'website/css/coming-soon.css' %}">

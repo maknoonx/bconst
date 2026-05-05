@@ -2,6 +2,8 @@ from django.shortcuts import render, Http404
 from django.urls import reverse
 from .translations import CONTENT
 
+SITE_BASE = 'https://www.bconstructions.org'
+
 # Slug → service_key mapping
 SLUG_TO_KEY = {
     'architectural-design': 'architectural_design',
@@ -58,6 +60,39 @@ def _build_ctx(lang, page, slug=None):
     else:
         ctx['url_lang_switch'] = reverse('home_en' if lang == 'ar' else 'home')
 
+    # SEO: canonical and hreflang URLs
+    ar_route_map = {'home': 'home', 'studio': 'studio', 'contact': 'contact',
+                    'privacy': 'privacy', 'terms': 'terms', 'services': 'services',
+                    'coming_soon': 'coming_soon'}
+    en_route_map = {'home': 'home_en', 'studio': 'studio_en', 'contact': 'contact_en',
+                    'privacy': 'privacy_en', 'terms': 'terms_en', 'services': 'services_en',
+                    'coming_soon': 'coming_soon_en'}
+
+    if page == 'services' and slug:
+        ar_url = SITE_BASE + reverse('service_detail', kwargs={'slug': slug})
+        en_url = SITE_BASE + reverse('service_detail_en', kwargs={'slug': slug})
+    elif page in ar_route_map:
+        ar_url = SITE_BASE + reverse(ar_route_map[page])
+        en_url = SITE_BASE + reverse(en_route_map[page])
+    else:
+        ar_url = SITE_BASE + '/'
+        en_url = SITE_BASE + '/en/'
+
+    ctx['canonical_url'] = ar_url if lang == 'ar' else en_url
+    ctx['hreflang_ar_url'] = ar_url
+    ctx['hreflang_en_url'] = en_url
+
+    # SEO: meta tags from translations (with fallbacks)
+    seo_page = 'services' if (page == 'services') else page
+    ctx['page_title']       = ctx.get(f'seo_title_{seo_page}', ctx.get(f'page_title_{seo_page}', ctx.get('company_name', '')))
+    ctx['meta_description'] = ctx.get(f'meta_description_{seo_page}', '')
+    ctx['meta_keywords']    = ctx.get(f'meta_keywords_{seo_page}', '')
+    ctx['og_title']         = ctx.get(f'og_title_{seo_page}', ctx['page_title'])
+    ctx['og_description']   = ctx['meta_description']
+    ctx['og_image_url']     = f"{SITE_BASE}/static/website/img/og-{seo_page}-{lang}.jpg"
+    ctx['meta_robots']      = 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1'
+    ctx['site_base_url']    = SITE_BASE
+
     return ctx
 
 
@@ -70,7 +105,9 @@ def studio(request, lang='ar'):
 
 
 def coming_soon(request, lang='ar'):
-    return render(request, 'website/coming-soon.html', _build_ctx(lang, 'coming_soon'))
+    ctx = _build_ctx(lang, 'coming_soon')
+    ctx['meta_robots'] = 'noindex,follow'
+    return render(request, 'website/coming-soon.html', ctx)
 
 
 def contact(request, lang='ar'):
@@ -116,5 +153,11 @@ def service_detail(request, slug, lang='ar'):
     ctx['service_sub']   = ctx[f'{full_key}_sub']
     ctx['service_slug']  = slug
     ctx['page_title']    = ctx['service_title'] + ' — ' + ctx['company_name']
+
+    # In service_detail view, after setting page_title:
+    ctx['meta_description'] = ctx.get(f'svc_{key}_desc', '')[:200]  # use service desc as meta
+    ctx['og_title'] = ctx['service_title']
+    ctx['og_description'] = ctx['meta_description']
+    ctx['og_image_url'] = f"{SITE_BASE}/static/website/img/og-services-{lang}.jpg"
 
     return render(request, 'website/service-detail.html', ctx)

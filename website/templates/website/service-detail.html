@@ -3,6 +3,38 @@
 
 {% block title %}{{ page_title }}{% endblock %}
 
+{% block schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "{% if lang == 'ar' %}الرئيسية{% else %}Home{% endif %}", "item": "{{ site_base_url }}{% if lang == 'en' %}/en{% endif %}/" },
+        { "@type": "ListItem", "position": 2, "name": "{% if lang == 'ar' %}خدماتنا{% else %}Services{% endif %}", "item": "{{ url_services }}" },
+        { "@type": "ListItem", "position": 3, "name": "{{ service_title }}", "item": "{{ canonical_url }}" }
+      ]
+    },
+    {
+      "@type": "Service",
+      "serviceType": "{{ service_title }}",
+      "name": "{{ service_title }}",
+      "description": "{{ service_desc }}",
+      "provider": { "@id": "https://www.bconstructions.org/#organization" },
+      "areaServed": { "@type": "Country", "name": "Saudi Arabia" },
+      "url": "{{ canonical_url }}",
+      "offers": {
+        "@type": "Offer",
+        "priceCurrency": "SAR",
+        "availability": "https://schema.org/InStock"
+      }
+    }
+  ]
+}
+</script>
+{% endblock %}
+
 {% block content %}
 
 <!-- شريط التنقل -->
