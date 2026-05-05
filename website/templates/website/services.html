@@ -1,0 +1,110 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+
+<!-- شريط التنقل -->
+<header class="site-header studio-header" id="siteHeader">
+    <div class="header-inner">
+        <nav class="navbar">
+            <div class="logo">
+                <div class="logo-mark">
+                    <img src="{% static 'website/img/logo.png' %}" alt="{{ company_name }}">
+                </div>
+                <div class="logo-info">
+                    <span class="logo-name">{{ company_name }}</span>
+                </div>
+            </div>
+
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="{{ url_home }}"          class="nav-link">{{ nav_home }}</a></li>
+                <li><a href="{{ url_home }}#about"    class="nav-link">{{ nav_about }}</a></li>
+                <li><a href="{{ url_studio }}"        class="nav-link">{{ nav_studio }}</a></li>
+                <li><a href="{{ url_services }}"      class="nav-link {% if active_page == 'services' %}active{% endif %}">{{ footer_link_services_page }}</a></li>
+                <li><a href="{{ url_home }}#partners" class="nav-link">{{ nav_partners }}</a></li>
+                <li><a href="{{ url_contact }}"       class="nav-link">{{ nav_contact }}</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <a href="{{ url_lang_switch }}" class="lang-switch">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="2" y1="12" x2="22" y2="12"/>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                    </svg>
+                    {{ lang_label }}
+                </a>
+                <a href="{{ url_coming_soon }}" class="btn-nav">{{ nav_cta }}</a>
+                <a href="{{ url_coming_soon }}" class="btn-employee-login">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                    {{ btn_employee_login }}
+                </a>
+                <button class="menu-toggle" id="menuToggle" aria-label="menu">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<!-- رأس صفحة الخدمات -->
+<section class="studio-page-hero">
+    <div class="container">
+        <div class="studio-hero-content">
+            <span class="section-badge">{{ services_badge }}</span>
+            <h1 class="studio-hero-title">{{ services_title_1 }} <em>{{ services_title_2 }}</em></h1>
+            <p class="studio-hero-desc">{{ services_intro }}</p>
+        </div>
+    </div>
+</section>
+
+<!-- قائمة الخدمات -->
+<section class="services-page">
+    <div class="container">
+        <div class="services-grid">
+            {% for service in services %}
+            <a href="{{ service.url }}" class="service-card">
+                <div class="service-card-inner">
+                    <div class="service-card-icon">
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                            {% if service.slug == 'architectural-design' %}
+                            <path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/>
+                            {% elif service.slug == 'construction' %}
+                            <rect x="2" y="7" width="20" height="15" rx="2"/>
+                            <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+                            <line x1="12" y1="12" x2="12" y2="16"/>
+                            <line x1="10" y1="14" x2="14" y2="14"/>
+                            {% elif service.slug == 'real-estate' %}
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                            <polyline points="9 22 9 12 15 12 15 22"/>
+                            {% elif service.slug == 'renovation' %}
+                            <path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/>
+                            {% elif service.slug == 'consultancy' %}
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                            <line x1="12" y1="17" x2="12.01" y2="17"/>
+                            {% endif %}
+                        </svg>
+                    </div>
+                    <h3 class="service-card-title">{{ service.title }}</h3>
+                    <p class="service-card-desc">{{ service.desc }}</p>
+                    <span class="service-card-link">
+                        {{ services_learn_more }}
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                            <polyline points="12 5 19 12 12 19"/>
+                        </svg>
+                    </span>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}

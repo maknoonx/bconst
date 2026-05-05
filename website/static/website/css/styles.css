@@ -1118,3 +1118,493 @@ ul { list-style:none; }
 
 /* === التحديد === */
 ::selection { background:var(--gold); color:var(--dark); }
+
+
+/* ====================================================
+   الإضافات الجديدة
+   ==================================================== */
+
+/* --- زر واتساب العائم --- */
+.whatsapp-float {
+    position: fixed;
+    bottom: 32px;
+    left: 32px;
+    width: 56px;
+    height: 56px;
+    background: #25D366;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    box-shadow: 0 6px 24px rgba(37,211,102,.45);
+    transition: var(--transition);
+}
+.whatsapp-float:hover {
+    background: #1EBE57;
+    transform: translateY(-3px) scale(1.06);
+    box-shadow: 0 10px 32px rgba(37,211,102,.55);
+}
+
+/* --- زر دخول الموظفين --- */
+.btn-employee-login {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border: 1.5px solid var(--gold-border);
+    border-radius: var(--radius-pill);
+    color: var(--gold);
+    font-size: 13px;
+    font-weight: 600;
+    background: transparent;
+    transition: var(--transition-fast);
+    white-space: nowrap;
+}
+.btn-employee-login:hover {
+    background: var(--gold-pale);
+    border-color: var(--gold);
+    color: var(--gold);
+}
+
+/* --- الفوتر: قائمة التواصل --- */
+.footer-contact-list a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.footer-contact-list a svg {
+    flex-shrink: 0;
+    color: var(--gold);
+}
+
+/* ====================================================
+   صفحة التواصل
+   ==================================================== */
+.contact-page-hero { /* امتداد للهيرو القائم */ }
+
+.contact-page {
+    padding: 80px 0 100px;
+    background: var(--earth-3);
+}
+
+.contact-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 28px;
+    margin-top: 16px;
+}
+
+.contact-card {
+    background: #fff;
+    border: 1px solid var(--earth-2);
+    border-radius: var(--radius-lg);
+    padding: 36px 28px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+}
+.contact-card:hover {
+    box-shadow: var(--shadow);
+    transform: translateY(-4px);
+    border-color: var(--gold-border);
+}
+.contact-card--whatsapp .contact-card-icon {
+    color: #25D366;
+}
+.contact-card--whatsapp .contact-card-action {
+    color: #25D366;
+}
+.contact-card--whatsapp .contact-card-action:hover {
+    color: #1EBE57;
+}
+
+.contact-card-icon {
+    flex-shrink: 0;
+    width: 64px;
+    height: 64px;
+    background: var(--gold-pale);
+    border: 1px solid var(--gold-border);
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold);
+}
+
+.contact-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+.contact-card-label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.contact-card-value {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--dark);
+    word-break: break-all;
+    transition: var(--transition-fast);
+}
+.contact-card-value--email {
+    font-size: 14px;
+}
+.contact-card-value:hover {
+    color: var(--gold);
+}
+
+.contact-card-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gold);
+    margin-top: 4px;
+    transition: var(--transition-fast);
+}
+.contact-card-action:hover {
+    gap: 8px;
+    color: var(--dark);
+}
+
+/* ====================================================
+   صفحات السياسة (الخصوصية / الشروط)
+   ==================================================== */
+.policy-page {
+    padding: 72px 0 100px;
+    background: var(--earth-3);
+}
+
+.policy-article {
+    max-width: 820px;
+    margin: 0 auto;
+    background: #fff;
+    border: 1px solid var(--earth-2);
+    border-radius: var(--radius-lg);
+    padding: 56px 48px;
+    box-shadow: var(--shadow-sm);
+}
+
+.policy-intro {
+    font-size: 16px;
+    line-height: 1.85;
+    color: var(--text-2);
+    margin-bottom: 40px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--earth-2);
+}
+
+.policy-section {
+    margin-bottom: 32px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--earth-2);
+}
+.policy-section:last-of-type {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.policy-section h2 {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 10px;
+}
+
+.policy-section p {
+    font-size: 15px;
+    line-height: 1.85;
+    color: var(--text-2);
+}
+
+.policy-contact-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 36px;
+    padding: 20px 24px;
+    background: var(--gold-pale);
+    border: 1px solid var(--gold-border);
+    border-radius: var(--radius);
+    font-size: 14px;
+    color: var(--text-2);
+    line-height: 1.75;
+}
+.policy-contact-note svg {
+    flex-shrink: 0;
+    color: var(--gold);
+    margin-top: 2px;
+}
+
+/* ====================================================
+   صفحة الخدمات (قائمة)
+   ==================================================== */
+.services-page {
+    padding: 80px 0 100px;
+    background: var(--earth-3);
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 28px;
+}
+
+.service-card {
+    display: block;
+    background: #fff;
+    border: 1px solid var(--earth-2);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+    color: inherit;
+}
+.service-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-gold);
+    border-color: var(--gold-border);
+}
+
+.service-card-inner {
+    padding: 36px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    height: 100%;
+}
+
+.service-card-icon {
+    width: 68px;
+    height: 68px;
+    background: var(--gold-pale);
+    border: 1px solid var(--gold-border);
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold);
+    flex-shrink: 0;
+}
+
+.service-card-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--dark);
+    margin: 0;
+}
+
+.service-card-desc {
+    font-size: 14px;
+    line-height: 1.75;
+    color: var(--text-muted);
+    flex: 1;
+}
+
+.service-card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-top: auto;
+    transition: var(--transition-fast);
+}
+.service-card:hover .service-card-link {
+    gap: 10px;
+}
+
+/* ====================================================
+   صفحة تفاصيل الخدمة
+   ==================================================== */
+.service-detail-page {
+    padding: 72px 0 100px;
+    background: var(--earth-3);
+}
+
+.service-detail-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gold);
+    margin-bottom: 16px;
+    transition: var(--transition-fast);
+}
+.service-detail-back:hover { gap: 10px; color: var(--dark); }
+
+.service-detail-layout {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 40px;
+    align-items: start;
+}
+
+.service-sub-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.service-sub-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--earth-2);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--dark);
+    line-height: 1.5;
+}
+.service-sub-item:last-child { border-bottom: none; }
+
+.service-sub-icon {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    background: var(--gold-pale);
+    border: 1px solid var(--gold-border);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold);
+    margin-top: 2px;
+}
+
+/* صندوق CTA الجانبي */
+.service-detail-aside { position: sticky; top: 110px; }
+
+.service-aside-card {
+    background: var(--dark);
+    border-radius: var(--radius-lg);
+    padding: 36px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+    align-items: center;
+}
+
+.service-aside-icon {
+    width: 72px;
+    height: 72px;
+    background: var(--gold-pale);
+    border: 1px solid var(--gold-border);
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold);
+}
+
+.service-aside-card h3 {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-light);
+    margin: 0;
+}
+.service-aside-card p {
+    font-size: 13px;
+    color: rgba(250,248,242,.65);
+    line-height: 1.7;
+}
+
+.btn-aside-cta {
+    display: block;
+    width: 100%;
+    padding: 13px 20px;
+    background: var(--gold);
+    color: var(--dark);
+    border-radius: var(--radius-pill);
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+    transition: var(--transition-fast);
+}
+.btn-aside-cta:hover { background: var(--gold-light); }
+
+.btn-aside-whatsapp {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 20px;
+    background: #25D366;
+    color: #fff;
+    border-radius: var(--radius-pill);
+    font-size: 14px;
+    font-weight: 700;
+    transition: var(--transition-fast);
+    width: 100%;
+    justify-content: center;
+}
+.btn-aside-whatsapp:hover { background: #1EBE57; }
+
+/* ====================================================
+   متجاوب — شاشات صغيرة
+   ==================================================== */
+@media (max-width: 900px) {
+    .service-detail-layout {
+        grid-template-columns: 1fr;
+    }
+    .service-detail-aside { position: static; }
+}
+
+@media (max-width: 600px) {
+    .contact-cards-grid {
+        grid-template-columns: 1fr;
+    }
+    .policy-article {
+        padding: 32px 20px;
+    }
+    .services-grid {
+        grid-template-columns: 1fr;
+    }
+    .whatsapp-float {
+        bottom: 20px;
+        left: 20px;
+        width: 48px;
+        height: 48px;
+    }
+    .btn-employee-login {
+        display: none;
+    }
+}
+
+/* ====================================================
+   دعم LTR للصفحات الجديدة
+   ==================================================== */
+[dir="ltr"] .whatsapp-float {
+    left: auto;
+    right: 32px;
+}
+[dir="ltr"] .service-detail-back svg {
+    transform: scaleX(-1);
+}
+[dir="ltr"] .contact-card-action svg {
+    transform: scaleX(-1);
+}
+[dir="ltr"] .service-card-link svg {
+    transform: scaleX(-1);
+}
+[dir="ltr"] .footer-contact-list a {
+    direction: ltr;
+}
+

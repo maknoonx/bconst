@@ -4,6 +4,25 @@
 {% block title %}{{ page_title }}{% endblock %}
 
 {% block content %}
+<style>
+/* Watermark on gallery items */
+.gallery-item::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40%;
+    height: 40%;
+    background-image: url("{% static 'website/img/logo.png' %}");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.15;
+    pointer-events: none;
+    z-index: 2;
+}
+</style>
 
 <!-- شريط التنقل -->
 <header class="site-header studio-header" id="siteHeader">
@@ -22,8 +41,9 @@
                 <li><a href="{{ url_home }}"        class="nav-link">{{ nav_home }}</a></li>
                 <li><a href="{{ url_home }}#about"  class="nav-link">{{ nav_about }}</a></li>
                 <li><a href="{{ url_studio }}"      class="nav-link {% if active_page == 'studio' %}active{% endif %}">{{ nav_studio }}</a></li>
+                <li><a href="{{ url_services }}"    class="nav-link {% if active_page == 'services' %}active{% endif %}">{{ footer_link_services_page }}</a></li>
                 <li><a href="{{ url_home }}#partners" class="nav-link">{{ nav_partners }}</a></li>
-                <li><a href="{{ url_coming_soon }}" class="nav-link">{{ nav_contact }}</a></li>
+                <li><a href="{{ url_contact }}" class="nav-link">{{ nav_contact }}</a></li>
             </ul>
 
             <div class="nav-actions">
@@ -36,6 +56,13 @@
                     {{ lang_label }}
                 </a>
                 <a href="{{ url_coming_soon }}" class="btn-nav">{{ nav_cta }}</a>
+                <a href="{{ url_coming_soon }}" class="btn-employee-login">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                    {{ btn_employee_login }}
+                </a>
                 <button class="menu-toggle" id="menuToggle" aria-label="menu">
                     <span></span><span></span><span></span>
                 </button>
@@ -109,14 +136,6 @@
             </div>
             <div class="lightbox-footer">
                 <span class="lightbox-counter" id="lightboxCounter"></span>
-                <a href="" class="lightbox-download" id="lightboxDownload" download>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                        <polyline points="7 10 12 15 17 10"/>
-                        <line x1="12" y1="15" x2="12" y2="3"/>
-                    </svg>
-                    {{ download_btn }}
-                </a>
             </div>
         </div>
     </div>
@@ -235,7 +254,6 @@
     var lb = document.getElementById('lightbox');
     var lbImg = document.getElementById('lightboxImg');
     var lbCounter = document.getElementById('lightboxCounter');
-    var lbDownload = document.getElementById('lightboxDownload');
     var curPanel = 'arch', curIndex = 0;
 
     function openLightbox(panel, index) {
@@ -248,8 +266,6 @@
     function showImage() {
         var src = galleryData[curPanel][curIndex];
         lbImg.src = src;
-        lbDownload.href = src;
-        lbDownload.download = tabLabels[curPanel] + '-' + (curIndex + 1) + '.svg';
         lbCounter.textContent = (curIndex + 1) + ' / ' + galleryData[curPanel].length;
     }
     function prev() { var l = galleryData[curPanel].length; curIndex = (curIndex - 1 + l) % l; showImage(); }

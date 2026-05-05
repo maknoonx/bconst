@@ -1,0 +1,115 @@
+/* ====================================================
+   شاشة الانتظار — loading.css
+   ==================================================== */
+.preloader {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(145deg, #1A1812 0%, #2E2B1F 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity .55s ease, visibility .55s ease;
+}
+
+.preloader.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loader-wrap {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+}
+
+/* الشعار */
+.loader-logo {
+    width: 90px;
+    height: 90px;
+    margin-bottom: 20px;
+    animation: logoPulse 2s ease-in-out infinite;
+}
+.loader-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+@keyframes logoPulse {
+    0%, 100% { transform: scale(1);    opacity: 1;   }
+    50%       { transform: scale(1.06); opacity: .85; }
+}
+
+/* اسم الشركة */
+.loader-brand {
+    font-family: 'Bahij', 'Cairo', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: #FAF8F2;
+    line-height: 1.2;
+    margin-bottom: 4px;
+}
+.loader-sub {
+    font-family: 'Bahij', 'Cairo', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #C8920A;
+    letter-spacing: .08em;
+    margin-bottom: 32px;
+}
+
+/* دائرة الدوران */
+.loader-ring {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 3px solid rgba(200,146,10,.18);
+    border-top-color: #C8920A;
+    animation: spin 1s linear infinite;
+    margin-bottom: 28px;
+}
+.loader-ring-inner {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 2px solid rgba(200,146,10,.1);
+    border-bottom-color: #E8B84A;
+    animation: spinReverse 1.5s linear infinite;
+    margin: 6px auto 0;
+}
+
+@keyframes spin        { to { transform: rotate(360deg);  } }
+@keyframes spinReverse { to { transform: rotate(-360deg); } }
+
+/* شريط التقدم */
+.loader-bar-wrap {
+    width: 220px;
+    height: 3px;
+    background: rgba(250,248,242,.08);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 18px;
+}
+.loader-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #C8920A, #E8B84A);
+    width: 0%;
+    border-radius: 2px;
+    animation: loadBar 2.2s cubic-bezier(.4,0,.2,1) forwards;
+}
+@keyframes loadBar {
+    0%   { width: 0%; }
+    60%  { width: 75%; }
+    100% { width: 100%; }
+}
+
+/* رسالة التحميل */
+.loader-msg {
+    font-family: 'Bahij', 'Cairo', sans-serif;
+    font-size: 14px;
+    color: rgba(250,248,242,.45);
+    font-weight: 500;
+}

@@ -23,8 +23,9 @@
                     <li><a href="{{ url_home }}"        class="nav-link {% if active_page == 'home' %}active{% endif %}">{{ nav_home }}</a></li>
                     <li><a href="#about"                class="nav-link">{{ nav_about }}</a></li>
                     <li><a href="{{ url_studio }}"      class="nav-link">{{ nav_studio }}</a></li>
+                    <li><a href="{{ url_services }}"    class="nav-link">{{ footer_link_services_page }}</a></li>
                     <li><a href="#partners"             class="nav-link">{{ nav_partners }}</a></li>
-                    <li><a href="{{ url_coming_soon }}" class="nav-link">{{ nav_contact }}</a></li>
+                    <li><a href="{{ url_contact }}"     class="nav-link">{{ nav_contact }}</a></li>
                 </ul>
 
                 <div class="nav-actions">
@@ -37,6 +38,13 @@
                         {{ lang_label }}
                     </a>
                     <a href="{{ url_coming_soon }}" class="btn-nav">{{ nav_cta }}</a>
+                    <a href="{{ url_coming_soon }}" class="btn-employee-login">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                        {{ btn_employee_login }}
+                    </a>
                     <button class="menu-toggle" id="menuToggle" aria-label="{{ nav_home }}">
                         <span></span><span></span><span></span>
                     </button>
@@ -44,7 +52,7 @@
             </nav>
         </div>
     </header>
-
+ 
     <div class="hero-media">
         <video autoplay muted loop playsinline class="hero-video">
             <source src="{% static 'website/vid/heroimg.mp4' %}" type="video/mp4">

@@ -1,308 +1,133 @@
-// Mobile menu toggle
-document.addEventListener('DOMContentLoaded', function() {
-    const hamburger = document.querySelector('.hamburger');
-    const navMenu = document.querySelector('.nav-menu');
-    
-    if (hamburger) {
-        hamburger.addEventListener('click', function() {
-            navMenu.classList.toggle('active');
-            this.classList.toggle('active');
+/* ====================================================
+   شركة باء البناء — script.js
+   ==================================================== */
+
+(function () {
+    'use strict';
+
+    /* ------------------------------------------------
+       القائمة للجوال
+       ------------------------------------------------ */
+    var toggle   = document.getElementById('menuToggle');
+    var navMenu  = document.getElementById('navMenu');
+    var overlay  = document.getElementById('navOverlay');
+
+    function openMenu() {
+        navMenu.classList.add('open');
+        toggle.classList.add('active');
+        overlay.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeMenu() {
+        navMenu.classList.remove('open');
+        toggle.classList.remove('active');
+        overlay.classList.remove('show');
+        document.body.style.overflow = '';
+    }
+
+    if (toggle) {
+        toggle.addEventListener('click', function () {
+            navMenu.classList.contains('open') ? closeMenu() : openMenu();
         });
     }
-});
 
-// Close menu when clicking on a link
-document.addEventListener('DOMContentLoaded', function() {
-    const navLinks = document.querySelectorAll('.nav-menu a');
-    
-    navLinks.forEach(link => {
-        link.addEventListener('click', function() {
-            const navMenu = document.querySelector('.nav-menu');
-            const hamburger = document.querySelector('.hamburger');
-            
-            if (window.innerWidth <= 768) {
-                navMenu.classList.remove('active');
-                hamburger.classList.remove('active');
-            }
-        });
-    });
-});
-
-// Close menu when clicking outside
-document.addEventListener('click', function(event) {
-    const navMenu = document.querySelector('.nav-menu');
-    const hamburger = document.querySelector('.hamburger');
-    const navbar = document.querySelector('.navbar');
-    
-    if (navbar && navMenu && hamburger) {
-        if (!navbar.contains(event.target) && navMenu.classList.contains('active')) {
-            navMenu.classList.remove('active');
-            hamburger.classList.remove('active');
-        }
+    if (overlay) {
+        overlay.addEventListener('click', closeMenu);
     }
-});
 
-// Smooth scrolling for navigation links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            const headerOffset = 70;
-            const elementPosition = target.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-            
-            window.scrollTo({
-                top: offsetPosition,
-                behavior: 'smooth'
-            });
-        }
-    });
-});
-
-// Scroll to contact section function
-function scrollToContact() {
-    const contactSection = document.querySelector('#contact');
-    if (contactSection) {
-        const headerOffset = 70;
-        const elementPosition = contactSection.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-        
-        window.scrollTo({
-            top: offsetPosition,
-            behavior: 'smooth'
+    /* إغلاق عند الضغط على رابط */
+    if (navMenu) {
+        navMenu.querySelectorAll('.nav-link').forEach(function (link) {
+            link.addEventListener('click', closeMenu);
         });
     }
-}
 
-// Add event listeners to all "تواصل معنا" buttons
-document.addEventListener('DOMContentLoaded', function() {
-    // Hero section button
-    const heroButton = document.querySelector('.hero .btn-primary');
-    if (heroButton) {
-        heroButton.addEventListener('click', scrollToContact);
-    }
-    
-    // Stats section button
-    const statsButton = document.querySelector('.stats .btn-dark');
-    if (statsButton) {
-        statsButton.addEventListener('click', scrollToContact);
-    }
-    
-    // Dark CTA section button
-    const ctaButton = document.querySelector('.dark-cta .btn-primary');
-    if (ctaButton) {
-        ctaButton.addEventListener('click', scrollToContact);
-    }
-    
-    // About section button
-    const aboutButton = document.querySelector('.about .btn-dark');
-    if (aboutButton) {
-        aboutButton.addEventListener('click', scrollToContact);
-    }
-    
-    // Customer service link in navigation
-    const supportLink = document.querySelector('a[href="#support"]');
-    if (supportLink) {
-        supportLink.addEventListener('click', function(e) {
-            e.preventDefault();
-            scrollToContact();
-        });
-    }
-});
-
-// Form submission
-document.addEventListener('DOMContentLoaded', function() {
-    const contactForm = document.getElementById('contactForm');
-    
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('تم إرسال النموذج بنجاح! سنتواصل معك قريباً.');
-            this.reset();
-        });
-    }
-});
-
-// WhatsApp button
-function openWhatsApp() {
-    window.open('https://api.whatsapp.com/send/?phone=966593394747&text&app_absent=0', '_blank');
-}
-
-// Partners slider functionality
-let currentPartnerIndex = 0;
-
-function scrollPartners(direction) {
-    const track = document.querySelector('.partners-track');
-    const items = document.querySelectorAll('.partner-item');
-    
-    if (!track || items.length === 0) return;
-    
-    const itemsVisible = getVisiblePartnersCount();
-    const maxIndex = items.length - itemsVisible;
-    
-    currentPartnerIndex += direction;
-    
-    if (currentPartnerIndex < 0) {
-        currentPartnerIndex = 0;
-    } else if (currentPartnerIndex > maxIndex) {
-        currentPartnerIndex = maxIndex;
-    }
-    
-    const itemWidth = items[0].offsetWidth;
-    const gap = 30;
-    const offset = currentPartnerIndex * (itemWidth + gap);
-    
-    track.style.transform = `translateX(${offset}px)`;
-}
-
-function getVisiblePartnersCount() {
-    const width = window.innerWidth;
-    if (width <= 480) return 1;
-    if (width <= 768) return 2;
-    if (width <= 1024) return 3;
-    return 5;
-}
-
-// Reset partner slider on window resize
-window.addEventListener('resize', function() {
-    currentPartnerIndex = 0;
-    const track = document.querySelector('.partners-track');
-    if (track) {
-        track.style.transform = 'translateX(0)';
-    }
-});
-
-// Service buttons functionality
-document.addEventListener('DOMContentLoaded', function() {
-    const serviceButtons = document.querySelectorAll('.btn-service');
-    serviceButtons.forEach((button, index) => {
-        button.addEventListener('click', function() {
-            // Define service URLs
-            const serviceUrls = [
-                '/architectural-services/',  // الخدمات المعمارية
-                '/structural-services/',     // الخدمات الإنشائية
-                '/design-services/'          // التصاميم
-            ];
-            
-            // Redirect to the appropriate service page
-            if (serviceUrls[index]) {
-                window.location.href = serviceUrls[index];
-            }
-        });
-    });
-    
-    // Project cards functionality
-    const projectCards = document.querySelectorAll('.project-card');
-    projectCards.forEach((card, index) => {
-        card.style.cursor = 'pointer';
-        card.addEventListener('click', function() {
-            // For now, redirect to project 1 (you can create more project pages later)
-            window.location.href = `/project/${index + 1}/`;
-        });
-    });
-});
-
-// Navbar background on scroll
-window.addEventListener('scroll', function() {
-    const navbar = document.querySelector('.navbar');
-    if (navbar) {
-        if (window.scrollY > 50) {
-            navbar.style.background = 'rgba(255, 255, 255, 0.95)';
-            navbar.style.boxShadow = '0 4px 10px rgba(0, 0, 0, 0.15)';
+    /* ------------------------------------------------
+       تأثير الشريط عند التمرير
+       ------------------------------------------------ */
+    window.addEventListener('scroll', function () {
+        var header = document.querySelector('.header-inner');
+        if (!header) return;
+        if (window.scrollY > 60) {
+            header.style.background = 'rgba(26,24,18,.96)';
+            header.style.boxShadow  = '0 8px 40px rgba(0,0,0,.35)';
         } else {
-            navbar.style.background = 'rgba(255, 255, 255, 0.6)';
-            navbar.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+            header.style.background = 'rgba(26,24,18,.88)';
+            header.style.boxShadow  = 'none';
         }
-    }
-});
+    }, { passive: true });
 
-// Animate stats on scroll
-function animateStats() {
-    const stats = document.querySelectorAll('.stat-number');
-    if (stats.length === 0) return;
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const target = entry.target;
-                const text = target.textContent;
-                const number = parseInt(text.replace(/[^\d]/g, ''));
-                const prefix = text.replace(/[\d,]/g, '');
-                let current = 0;
-                const increment = number / 100;
-                
-                const timer = setInterval(() => {
-                    current += increment;
-                    if (current >= number) {
-                        current = number;
-                        clearInterval(timer);
-                    }
-                    target.textContent = prefix + Math.floor(current).toLocaleString();
-                }, 20);
-                
-                observer.unobserve(target);
+    /* ------------------------------------------------
+       ظهور محتوى الهيرو بعد تحميل الصفحة
+       ------------------------------------------------ */
+    document.addEventListener('DOMContentLoaded', function () {
+        setTimeout(function () {
+            var content = document.getElementById('heroContent');
+            if (content) {
+                content.style.opacity    = '1';
+                content.style.transform  = 'translateY(0)';
+            }
+        }, 400);
+    });
+
+    /* ------------------------------------------------
+       التمرير السلس للروابط الداخلية
+       ------------------------------------------------ */
+    document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
+        anchor.addEventListener('click', function (e) {
+            var href = this.getAttribute('href');
+            if (href === '#' || href === '') return;
+            var target = document.querySelector(href);
+            if (!target) return;
+            e.preventDefault();
+            var offset = 90;
+            var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+            window.scrollTo({ top: top, behavior: 'smooth' });
+        });
+    });
+
+    /* ------------------------------------------------
+       ظهور العناصر عند الظهور في الشاشة
+       ------------------------------------------------ */
+    if ('IntersectionObserver' in window) {
+        var ioOptions = { threshold: 0.12, rootMargin: '0px 0px -60px 0px' };
+        var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity   = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    io.unobserve(entry.target);
+                }
+            });
+        }, ioOptions);
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var els = document.querySelectorAll(
+                '.about-card, .feature-row, .partner-item, .section-header'
+            );
+            els.forEach(function (el) {
+                el.style.opacity   = '0';
+                el.style.transform = 'translateY(24px)';
+                el.style.transition = 'opacity .6s ease, transform .6s ease';
+                io.observe(el);
+            });
+        });
+    }
+
+    /* ------------------------------------------------
+       النشرة البريدية
+       ------------------------------------------------ */
+    var newsletterForms = document.querySelectorAll('.newsletter-form');
+    newsletterForms.forEach(function (form) {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var input = this.querySelector('input[type="email"]');
+            if (input && input.value) {
+                alert('شكراً للاشتراك في نشرتنا الإخبارية!');
+                input.value = '';
             }
         });
-    }, { threshold: 0.5 });
-    
-    stats.forEach(stat => observer.observe(stat));
-}
-
-// Animate elements on scroll
-function animateOnScroll() {
-    const elements = document.querySelectorAll('.project-card, .service-card, .stat-item, .about-images img, .partner-item');
-    
-    if (elements.length === 0) return;
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, { threshold: 0.1 });
-    
-    elements.forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(20px)';
-        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(el);
     });
-}
 
-// Initialize animations when page loads
-window.addEventListener('load', function() {
-    animateStats();
-    animateOnScroll();
-});
-
-// Add loading animation for images
-document.querySelectorAll('img').forEach(img => {
-    img.addEventListener('load', function() {
-        this.style.opacity = '1';
-    });
-    
-    if (!img.complete) {
-        img.style.opacity = '0';
-        img.style.transition = 'opacity 0.3s ease';
-    }
-});
-
-// Handle window resize
-let resizeTimer;
-window.addEventListener('resize', function() {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(function() {
-        const navMenu = document.querySelector('.nav-menu');
-        const hamburger = document.querySelector('.hamburger');
-        
-        if (navMenu && hamburger) {
-            if (window.innerWidth > 768) {
-                navMenu.classList.remove('active');
-                hamburger.classList.remove('active');
-            }
-        }
-    }, 250);
-});
+})();

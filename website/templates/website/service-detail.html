@@ -1,0 +1,117 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+
+<!-- شريط التنقل -->
+<header class="site-header studio-header" id="siteHeader">
+    <div class="header-inner">
+        <nav class="navbar">
+            <div class="logo">
+                <div class="logo-mark">
+                    <img src="{% static 'website/img/logo.png' %}" alt="{{ company_name }}">
+                </div>
+                <div class="logo-info">
+                    <span class="logo-name">{{ company_name }}</span>
+                </div>
+            </div>
+
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="{{ url_home }}"          class="nav-link">{{ nav_home }}</a></li>
+                <li><a href="{{ url_home }}#about"    class="nav-link">{{ nav_about }}</a></li>
+                <li><a href="{{ url_studio }}"        class="nav-link">{{ nav_studio }}</a></li>
+                <li><a href="{{ url_services }}"      class="nav-link {% if active_page == 'services' %}active{% endif %}">{{ footer_link_services_page }}</a></li>
+                <li><a href="{{ url_home }}#partners" class="nav-link">{{ nav_partners }}</a></li>
+                <li><a href="{{ url_contact }}"       class="nav-link">{{ nav_contact }}</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <a href="{{ url_lang_switch }}" class="lang-switch">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="2" y1="12" x2="22" y2="12"/>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                    </svg>
+                    {{ lang_label }}
+                </a>
+                <a href="{{ url_coming_soon }}" class="btn-nav">{{ nav_cta }}</a>
+                <a href="{{ url_coming_soon }}" class="btn-employee-login">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                    {{ btn_employee_login }}
+                </a>
+                <button class="menu-toggle" id="menuToggle" aria-label="menu">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<!-- رأس صفحة تفاصيل الخدمة -->
+<section class="studio-page-hero">
+    <div class="container">
+        <div class="studio-hero-content">
+            <a href="{{ url_services }}" class="service-detail-back">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <line x1="19" y1="12" x2="5" y2="12"/>
+                    <polyline points="12 19 5 12 12 5"/>
+                </svg>
+                {{ services_badge }}
+            </a>
+            <h1 class="studio-hero-title"><em>{{ service_title }}</em></h1>
+            <p class="studio-hero-desc">{{ service_desc }}</p>
+        </div>
+    </div>
+</section>
+
+<!-- تفاصيل الخدمة -->
+<section class="service-detail-page">
+    <div class="container">
+        <div class="service-detail-layout">
+
+            <!-- قائمة الخدمات الفرعية -->
+            <div class="service-detail-main">
+                <ul class="service-sub-list">
+                    {% for item in service_sub %}
+                    <li class="service-sub-item">
+                        <span class="service-sub-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        </span>
+                        {{ item }}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- صندوق CTA جانبي -->
+            <aside class="service-detail-aside">
+                <div class="service-aside-card">
+                    <div class="service-aside-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.9v2.02z"/>
+                        </svg>
+                    </div>
+                    <h3>{{ cta_eyebrow }}</h3>
+                    <p>{{ cta_subtitle }}</p>
+                    <a href="{{ url_contact }}" class="btn-aside-cta">{{ btn_cta }}</a>
+                    <a href="{{ url_whatsapp }}" target="_blank" rel="noopener noreferrer" class="btn-aside-whatsapp">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                        </svg>
+                        WhatsApp
+                    </a>
+                </div>
+            </aside>
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}

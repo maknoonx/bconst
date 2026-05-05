@@ -1,0 +1,126 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+
+<!-- شريط التنقل -->
+<header class="site-header studio-header" id="siteHeader">
+    <div class="header-inner">
+        <nav class="navbar">
+            <div class="logo">
+                <div class="logo-mark">
+                    <img src="{% static 'website/img/logo.png' %}" alt="{{ company_name }}">
+                </div>
+                <div class="logo-info">
+                    <span class="logo-name">{{ company_name }}</span>
+                </div>
+            </div>
+
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="{{ url_home }}"          class="nav-link">{{ nav_home }}</a></li>
+                <li><a href="{{ url_home }}#about"    class="nav-link">{{ nav_about }}</a></li>
+                <li><a href="{{ url_studio }}"        class="nav-link">{{ nav_studio }}</a></li>
+                <li><a href="{{ url_services }}"      class="nav-link">{{ footer_link_services_page }}</a></li>
+                <li><a href="{{ url_home }}#partners" class="nav-link">{{ nav_partners }}</a></li>
+                <li><a href="{{ url_contact }}"       class="nav-link">{{ nav_contact }}</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <a href="{{ url_lang_switch }}" class="lang-switch">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="2" y1="12" x2="22" y2="12"/>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                    </svg>
+                    {{ lang_label }}
+                </a>
+                <a href="{{ url_coming_soon }}" class="btn-nav">{{ nav_cta }}</a>
+                <a href="{{ url_coming_soon }}" class="btn-employee-login">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                    {{ btn_employee_login }}
+                </a>
+                <button class="menu-toggle" id="menuToggle" aria-label="menu">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<!-- رأس الصفحة -->
+<section class="studio-page-hero">
+    <div class="container">
+        <div class="studio-hero-content">
+            <span class="section-badge">{{ privacy_badge }}</span>
+            <h1 class="studio-hero-title">{{ privacy_title }}</h1>
+            <p class="studio-hero-desc">{{ privacy_updated }}</p>
+        </div>
+    </div>
+</section>
+
+<!-- محتوى سياسة الخصوصية -->
+<section class="policy-page">
+    <div class="container">
+        <div class="policy-article">
+
+            <p class="policy-intro">{{ privacy_intro }}</p>
+
+            <div class="policy-section">
+                <h2>{{ privacy_s1_title }}</h2>
+                <p>{{ privacy_s1_body }}</p>
+            </div>
+
+            <div class="policy-section">
+                <h2>{{ privacy_s2_title }}</h2>
+                <p>{{ privacy_s2_body }}</p>
+            </div>
+
+            <div class="policy-section">
+                <h2>{{ privacy_s3_title }}</h2>
+                <p>{{ privacy_s3_body }}</p>
+            </div>
+
+            <div class="policy-section">
+                <h2>{{ privacy_s4_title }}</h2>
+                <p>{{ privacy_s4_body }}</p>
+            </div>
+
+            <div class="policy-section">
+                <h2>{{ privacy_s5_title }}</h2>
+                <p>{{ privacy_s5_body }}</p>
+            </div>
+
+            <div class="policy-section">
+                <h2>{{ privacy_s6_title }}</h2>
+                <p>{{ privacy_s6_body }}</p>
+            </div>
+
+            <div class="policy-section">
+                <h2>{{ privacy_s7_title }}</h2>
+                <p>{{ privacy_s7_body }}</p>
+            </div>
+
+            <div class="policy-section">
+                <h2>{{ privacy_s8_title }}</h2>
+                <p>{{ privacy_s8_body }}</p>
+            </div>
+
+            <div class="policy-contact-note">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="8" x2="12" y2="12"/>
+                    <line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+                {{ privacy_contact_note }}
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}
