@@ -220,7 +220,7 @@
                     {% if quote.valid_until %}<div style="display:flex;justify-content:space-between"><span style="color:var(--text-muted)">صالح حتى</span><span>{{ quote.valid_until|date:"j/n/Y" }}</span></div>{% endif %}
                     <div style="display:flex;justify-content:space-between"><span style="color:var(--text-muted)">العميل</span><span style="font-weight:600">{{ quote.client.name }}</span></div>
                     {% if quote.project %}<div style="display:flex;justify-content:space-between"><span style="color:var(--text-muted)">المشروع</span><span>{{ quote.project.name }}</span></div>{% endif %}
-                    <div style="display:flex;justify-content:space-between"><span style="color:var(--text-muted)">أنشئ بواسطة</span><span>{{ quote.created_by.get_full_name|default:quote.created_by.username|default:"—" }}</span></div>
+                    <div style="display:flex;justify-content:space-between"><span style="color:var(--text-muted)">أنشئ بواسطة</span><span>{% if quote.created_by %}{{ quote.created_by.get_full_name|default:quote.created_by.username }}{% else %}—{% endif %}</span></div>
                 </div>
             </div>
         </div>

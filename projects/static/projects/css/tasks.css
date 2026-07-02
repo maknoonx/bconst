@@ -75,7 +75,8 @@
     background: #fff;
     border: 1px solid var(--earth-2);
     border-radius: 20px;
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 .tk-table {
     width: 100%; border-collapse: collapse;

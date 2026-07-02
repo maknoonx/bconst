@@ -23,6 +23,7 @@
     display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px;
 }
 @media(max-width:1000px){ .acc-stats { grid-template-columns: repeat(2,1fr); } }
+@media(max-width:480px){ .acc-stats { grid-template-columns: 1fr; } }
 
 .acc-stat {
     background: #fff; border: 1px solid var(--earth-2); border-radius: 16px;
@@ -43,7 +44,7 @@
 /* ── generic table ── */
 .acc-table-wrap {
     background: #fff; border: 1px solid var(--earth-2);
-    border-radius: 20px; overflow: hidden;
+    border-radius: 20px; overflow-x: auto; overflow-y: hidden;
 }
 .acc-table { width: 100%; border-collapse: collapse; }
 .acc-table thead th {

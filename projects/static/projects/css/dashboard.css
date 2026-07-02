@@ -611,6 +611,23 @@ body.sidebar-open .main-content {
     .project-progress-wrap { display: none; }
 }
 
+/* ── phones: sidebar becomes an overlay drawer instead of pushing content ── */
+@media (max-width: 640px) {
+    body.sidebar-open .main-content {
+        margin-right: var(--sidebar-w);
+    }
+    body.sidebar-open::after {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background: rgba(26, 24, 18, .45);
+        z-index: 90;
+    }
+    .sidebar.expanded {
+        box-shadow: -8px 0 32px rgba(0, 0, 0, .35);
+    }
+}
+
 /* ── global loading overlay ── */
 #globalLoadingOverlay {
     position: fixed;

@@ -19,6 +19,7 @@
 }
 @media(max-width:1200px){ .inv-stats { grid-template-columns: repeat(3,1fr); } }
 @media(max-width:800px){ .inv-stats { grid-template-columns: repeat(2,1fr); } }
+@media(max-width:480px){ .inv-stats { grid-template-columns: 1fr; } }
 .inv-stat {
     background: #fff; border: 1px solid var(--earth-2); border-radius: 16px;
     padding: 18px 20px; display: flex; align-items: center; gap: 14px;
@@ -69,7 +70,7 @@
 /* ── table ── */
 .inv-table-wrap {
     background: #fff; border: 1px solid var(--earth-2);
-    border-radius: 20px; overflow: hidden;
+    border-radius: 20px; overflow-x: auto; overflow-y: hidden;
 }
 .inv-table { width: 100%; border-collapse: collapse; }
 .inv-table thead th {

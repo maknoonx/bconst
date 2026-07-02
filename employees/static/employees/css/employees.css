@@ -108,7 +108,8 @@
 
 /* ── users table ── */
 .users-table-wrap {
-    background: #fff; border: 1px solid var(--earth-2); border-radius: 20px; overflow: hidden;
+    background: #fff; border: 1px solid var(--earth-2); border-radius: 20px;
+    overflow-x: auto; overflow-y: hidden;
 }
 .users-table { width: 100%; border-collapse: collapse; }
 .users-table thead th {
