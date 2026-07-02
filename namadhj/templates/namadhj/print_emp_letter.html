@@ -1,0 +1,216 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>{{ letter_title }} – {{ emp }}</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Arial', sans-serif; font-size: 13pt; color: #1a1a1a; background: #fff; direction: rtl; }
+
+@page { size: A4; margin: 18mm 18mm 18mm 18mm; }
+@media print {
+    body { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    .no-print { display: none !important; }
+}
+
+.page { max-width: 800px; margin: 0 auto; padding: 20px; }
+
+/* Header */
+.doc-header { display: flex; align-items: stretch; justify-content: space-between; border: 2px solid #C8920A; border-radius: 10px; overflow: hidden; margin-bottom: 18px; }
+.header-logo-box { background: #C8920A; padding: 14px 18px; display: flex; align-items: center; justify-content: center; min-width: 90px; }
+.doc-logo { width: 65px; height: 65px; object-fit: contain; }
+.logo-placeholder { width: 65px; height: 65px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 26pt; font-weight: 900; }
+.header-main { flex: 1; padding: 12px 16px; text-align: center; border-right: 2px solid #C8920A; border-left: 2px solid #C8920A; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
+.company-name-ar { font-size: 17pt; font-weight: 900; color: #C8920A; }
+.company-name-en { font-size: 10pt; color: #555; }
+.header-info { padding: 10px 16px; display: flex; flex-direction: column; justify-content: center; gap: 5px; min-width: 200px; font-size: 9.5pt; color: #444; }
+.header-info-row { display: flex; gap: 6px; align-items: baseline; }
+.header-info-row .lbl { color: #C8920A; font-weight: 700; white-space: nowrap; }
+
+/* Band */
+.doc-band { background: #C8920A; color: #fff; text-align: center; padding: 9px 20px; margin-bottom: 20px; font-size: 13pt; font-weight: 700; letter-spacing: 1px; }
+
+/* Recipient line */
+.to-line { margin-bottom: 20px; font-size: 12pt; }
+.to-line strong { color: #C8920A; }
+
+/* Body text */
+.doc-body { line-height: 2.2; font-size: 12pt; text-align: justify; }
+.doc-body p { margin-bottom: 14px; }
+.highlight { font-weight: 700; color: #1a1a1a; border-bottom: 1px solid #C8920A; padding-bottom: 1px; }
+
+/* Info table */
+.emp-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 11.5pt; }
+.emp-table td { padding: 9px 14px; border: 1px solid #e0d4bc; }
+.emp-table tr:nth-child(odd) td { background: #faf8f4; }
+.emp-table .td-lbl { font-weight: 700; color: #C8920A; width: 40%; }
+
+/* Footer */
+.doc-footer { border-top: 2px solid #e8dcc8; padding-top: 20px; display: flex; justify-content: space-between; align-items: flex-end; margin-top: 50px; }
+.sig-box { text-align: center; min-width: 180px; }
+.sig-line { border-top: 1.5px solid #333; padding-top: 6px; margin-top: 55px; font-weight: 700; font-size: 11pt; }
+.date-box { font-size: 11pt; color: #555; }
+.stamp-box { text-align: center; }
+.stamp-circle { width: 80px; height: 80px; border-radius: 50%; border: 2px dashed #C8920A; display: flex; align-items: center; justify-content: center; font-size: 9pt; color: #C8920A; margin: 0 auto; }
+
+/* Print button */
+.print-btn { position: fixed; bottom: 24px; left: 24px; background: #C8920A; color: #fff; border: none; padding: 12px 28px; border-radius: 12px; font-size: 14pt; font-weight: 700; cursor: pointer; box-shadow: 0 4px 16px rgba(200,146,10,.35); z-index: 999; font-family: Arial, sans-serif; }
+.print-btn:hover { background: #b07d08; }
+</style>
+</head>
+<body>
+<div class="page">
+
+    <!-- ═══ HEADER ═══ -->
+    <div class="doc-header">
+        <div class="header-logo-box">
+            {% if company and company.company_logo %}
+                <img class="doc-logo" src="{{ company.company_logo.url }}" alt="">
+            {% else %}
+                <div class="logo-placeholder">ب</div>
+            {% endif %}
+        </div>
+        <div class="header-main">
+            <div class="company-name-ar">{{ company.company_name_ar|default:"باء البناء" }}</div>
+            {% if company.company_name_en %}<div class="company-name-en">{{ company.company_name_en }}</div>{% endif %}
+        </div>
+        <div class="header-info">
+            {% if company.cr_number %}
+            <div class="header-info-row"><span class="lbl">السجل التجاري:</span><span>{{ company.cr_number }}</span></div>
+            {% endif %}
+            {% if company.unified_number %}
+            <div class="header-info-row"><span class="lbl">الرقم الوطني الموحد:</span><span>{{ company.unified_number }}</span></div>
+            {% endif %}
+            {% if company.tax_registration_number %}
+            <div class="header-info-row"><span class="lbl">الرقم الضريبي:</span><span>{{ company.tax_registration_number }}</span></div>
+            {% endif %}
+            {% if company.address_city %}
+            <div class="header-info-row"><span class="lbl">العنوان:</span><span>{{ company.address_district }}{% if company.address_district and company.address_city %} – {% endif %}{{ company.address_city }}</span></div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- ═══ BAND ═══ -->
+    <div class="doc-band">{{ letter_title }}</div>
+
+    <!-- ═══ TO LINE ═══ -->
+    <div class="to-line">إلى من يهمه الأمر</div>
+
+    <!-- ═══ BODY per type ═══ -->
+
+    {% if letter_type == 'salary' %}
+    <div class="doc-body">
+        <p>نشهد نحن <span class="highlight">{{ company.company_name_ar|default:"باء البناء" }}</span> بأن الموظف / الموظفة:</p>
+        <table class="emp-table">
+            <tr><td class="td-lbl">الاسم الكامل</td><td>{{ emp }}</td></tr>
+            <tr><td class="td-lbl">المسمى الوظيفي</td><td>{{ emp.job_title }}</td></tr>
+            <tr><td class="td-lbl">الجنسية</td><td>{{ emp.nationality }}</td></tr>
+            <tr><td class="td-lbl">{{ emp.get_id_type_display }}</td><td>{{ emp.id_number }}</td></tr>
+            {% if emp.employment_date %}<tr><td class="td-lbl">تاريخ الالتحاق</td><td>{{ emp.employment_date|date:"j / n / Y" }}</td></tr>{% endif %}
+            {% if extra.salary_basic %}<tr><td class="td-lbl">الراتب الأساسي</td><td><strong>{{ extra.salary_basic }} ريال</strong></td></tr>{% endif %}
+            {% if extra.salary_housing %}<tr><td class="td-lbl">بدل السكن</td><td>{{ extra.salary_housing }} ريال</td></tr>{% endif %}
+            {% if extra.salary_transport %}<tr><td class="td-lbl">بدل المواصلات</td><td>{{ extra.salary_transport }} ريال</td></tr>{% endif %}
+            {% if extra.salary_other %}<tr><td class="td-lbl">بدلات أخرى</td><td>{{ extra.salary_other }} ريال</td></tr>{% endif %}
+            {% if extra.salary_total %}<tr><td class="td-lbl">إجمالي الراتب</td><td><strong style="color:#C8920A;font-size:13pt;">{{ extra.salary_total }} ريال</strong></td></tr>{% endif %}
+        </table>
+        <p>وقد أُصدرت هذه الشهادة بناءً على طلبه/طلبها لتقديمها لمن يلزم، وذلك دون أي مسؤولية على الشركة.</p>
+        {% if extra.notes %}<p>ملاحظات: {{ extra.notes }}</p>{% endif %}
+    </div>
+
+    {% elif letter_type == 'employment' %}
+    <div class="doc-body">
+        <p>نشهد نحن <span class="highlight">{{ company.company_name_ar|default:"باء البناء" }}</span> بأن الموظف / الموظفة:</p>
+        <table class="emp-table">
+            <tr><td class="td-lbl">الاسم الكامل</td><td>{{ emp }}</td></tr>
+            <tr><td class="td-lbl">المسمى الوظيفي</td><td>{{ emp.job_title }}</td></tr>
+            <tr><td class="td-lbl">الجنسية</td><td>{{ emp.nationality }}</td></tr>
+            <tr><td class="td-lbl">{{ emp.get_id_type_display }}</td><td>{{ emp.id_number }}</td></tr>
+            {% if emp.employment_date %}<tr><td class="td-lbl">تاريخ الالتحاق</td><td>{{ emp.employment_date|date:"j / n / Y" }}</td></tr>{% endif %}
+        </table>
+        <p>يعمل/تعمل لدينا بصفة <span class="highlight">{{ emp.job_title }}</span> وهو/هي موضع ثقة إدارتنا.</p>
+        <p>وقد أُصدرت هذه الشهادة بناءً على طلبه/طلبها لتقديمها لمن يلزم.</p>
+        {% if extra.notes %}<p>ملاحظات: {{ extra.notes }}</p>{% endif %}
+    </div>
+
+    {% elif letter_type == 'experience' %}
+    <div class="doc-body">
+        <p>نشهد نحن <span class="highlight">{{ company.company_name_ar|default:"باء البناء" }}</span> بأن:</p>
+        <table class="emp-table">
+            <tr><td class="td-lbl">الاسم الكامل</td><td>{{ emp }}</td></tr>
+            <tr><td class="td-lbl">المسمى الوظيفي</td><td>{{ emp.job_title }}</td></tr>
+            <tr><td class="td-lbl">الجنسية</td><td>{{ emp.nationality }}</td></tr>
+            <tr><td class="td-lbl">{{ emp.get_id_type_display }}</td><td>{{ emp.id_number }}</td></tr>
+            {% if emp.employment_date %}<tr><td class="td-lbl">فترة العمل من</td><td>{{ emp.employment_date|date:"j / n / Y" }}</td></tr>{% endif %}
+            {% if extra.end_date %}<tr><td class="td-lbl">إلى</td><td>{{ extra.end_date }}</td></tr>{% endif %}
+        </table>
+        <p>قد عمل/عملت لدينا بمسمى <span class="highlight">{{ emp.job_title }}</span>، وقد أثبت/أثبتت خلال فترة عمله/عملها كفاءةً وإخلاصًا تامًا في أداء واجباته/واجباتها، وحسن التعامل مع زملائه/زملائها والعملاء.</p>
+        <p>ونُصدر هذه الشهادة بناءً على طلبه/طلبها ونتمنى له/لها مزيدًا من التوفيق والنجاح.</p>
+        {% if extra.notes %}<p>ملاحظات: {{ extra.notes }}</p>{% endif %}
+    </div>
+
+    {% elif letter_type == 'vacation' %}
+    <div class="doc-body">
+        <p>نفيدكم بأنه قد مُنح الموظف / الموظفة:</p>
+        <table class="emp-table">
+            <tr><td class="td-lbl">الاسم الكامل</td><td>{{ emp }}</td></tr>
+            <tr><td class="td-lbl">المسمى الوظيفي</td><td>{{ emp.job_title }}</td></tr>
+            <tr><td class="td-lbl">{{ emp.get_id_type_display }}</td><td>{{ emp.id_number }}</td></tr>
+            {% if extra.vacation_days %}<tr><td class="td-lbl">عدد أيام الإجازة</td><td><strong>{{ extra.vacation_days }} يوم</strong></td></tr>{% endif %}
+            {% if extra.vacation_from %}<tr><td class="td-lbl">من تاريخ</td><td>{{ extra.vacation_from }}</td></tr>{% endif %}
+            {% if extra.vacation_to %}<tr><td class="td-lbl">إلى تاريخ</td><td>{{ extra.vacation_to }}</td></tr>{% endif %}
+            {% if extra.vacation_type %}<tr><td class="td-lbl">نوع الإجازة</td><td>{{ extra.vacation_type }}</td></tr>{% endif %}
+        </table>
+        <p>على أن يعود إلى عمله فور انقضاء مدة الإجازة المشار إليها أعلاه.</p>
+        {% if extra.notes %}<p>ملاحظات: {{ extra.notes }}</p>{% endif %}
+    </div>
+
+    {% elif letter_type == 'end_service' %}
+    <div class="doc-body">
+        <p>نُفيد بأن:</p>
+        <table class="emp-table">
+            <tr><td class="td-lbl">الاسم الكامل</td><td>{{ emp }}</td></tr>
+            <tr><td class="td-lbl">المسمى الوظيفي</td><td>{{ emp.job_title }}</td></tr>
+            <tr><td class="td-lbl">الجنسية</td><td>{{ emp.nationality }}</td></tr>
+            <tr><td class="td-lbl">{{ emp.get_id_type_display }}</td><td>{{ emp.id_number }}</td></tr>
+            {% if emp.employment_date %}<tr><td class="td-lbl">تاريخ الالتحاق</td><td>{{ emp.employment_date|date:"j / n / Y" }}</td></tr>{% endif %}
+            {% if extra.end_date %}<tr><td class="td-lbl">تاريخ انتهاء الخدمة</td><td>{{ extra.end_date }}</td></tr>{% endif %}
+            {% if extra.end_reason %}<tr><td class="td-lbl">سبب الإنهاء</td><td>{{ extra.end_reason }}</td></tr>{% endif %}
+        </table>
+        <p>قد أنهى/أنهت خدمته/خدمتها لدى <span class="highlight">{{ company.company_name_ar|default:"باء البناء" }}</span>، ونشهد بأنه/أنها أدى/أدّت عمله/عملها بصدق وأمانة، ولا يوجد عليه/عليها أي التزامات مالية تجاه الشركة.</p>
+        {% if extra.notes %}<p>ملاحظات: {{ extra.notes }}</p>{% endif %}
+    </div>
+
+    {% elif letter_type == 'tazkia' %}
+    <div class="doc-body">
+        <p>نشهد نحن <span class="highlight">{{ company.company_name_ar|default:"باء البناء" }}</span> بأن الموظف / الموظفة:</p>
+        <table class="emp-table">
+            <tr><td class="td-lbl">الاسم الكامل</td><td>{{ emp }}</td></tr>
+            <tr><td class="td-lbl">المسمى الوظيفي</td><td>{{ emp.job_title }}</td></tr>
+            <tr><td class="td-lbl">الجنسية</td><td>{{ emp.nationality }}</td></tr>
+            {% if emp.employment_date %}<tr><td class="td-lbl">تاريخ الالتحاق</td><td>{{ emp.employment_date|date:"j / n / Y" }}</td></tr>{% endif %}
+        </table>
+        <p>يتمتع/تتمتع بمستوى مهني ممتاز، وأخلاق راقية، وقدرة عالية على العمل الجماعي والتعامل مع مختلف الفرق. كما أثبت/أثبتت كفاءته/كفاءتها وإخلاصه/إخلاصها في تأدية مهامه/مهامها الوظيفية على أكمل وجه.</p>
+        <p>نوصي به/بها بكل ثقة، ونتمنى له/لها مزيدًا من التقدم والنجاح في مسيرته/مسيرتها المهنية.</p>
+        {% if extra.notes %}<p>ملاحظات: {{ extra.notes }}</p>{% endif %}
+    </div>
+    {% endif %}
+
+    <!-- ═══ FOOTER ═══ -->
+    <div class="doc-footer">
+        <div class="date-box">
+            التاريخ: {% now "j / n / Y" %}
+        </div>
+        <div class="stamp-box">
+            <div class="stamp-circle">الختم الرسمي</div>
+        </div>
+        <div class="sig-box">
+            <div class="sig-line">{{ company.manager_name|default:"المدير العام" }}</div>
+        </div>
+    </div>
+
+</div>
+
+<button class="print-btn no-print" onclick="window.print()">🖨 طباعة</button>
+</body>
+</html>

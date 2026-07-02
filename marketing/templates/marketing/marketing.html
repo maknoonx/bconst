@@ -1,0 +1,643 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>التسويق – {{ company.company_name_ar|default:"باء البناء" }}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'projects/css/dashboard.css' %}">
+<link rel="stylesheet" href="{% static 'invoices/css/invoices.css' %}">
+<style>
+/* ── override: make inv-tabs sit inline with toolbar ── */
+.mkt-toolbar { display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; gap:12px; flex-wrap:wrap; }
+.mkt-search  { padding:9px 14px; border:1px solid var(--earth-2); border-radius:10px; font-family:inherit; font-size:13px; background:var(--earth-3); color:var(--text); outline:none; width:220px; direction:rtl; }
+.mkt-search:focus { border-color:var(--gold); background:#fff; box-shadow:0 0 0 3px var(--gold-pale); }
+
+/* slide panel */
+.panel-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:400; }
+.panel-overlay.active { display:block; }
+.slide-panel { position:fixed; top:0; left:0; bottom:0; width:520px; background:#fff; box-shadow:var(--shadow-md); z-index:401; display:flex; flex-direction:column; transform:translateX(-100%); transition:transform .3s cubic-bezier(.4,0,.2,1); overflow-y:auto; }
+.slide-panel.active { transform:translateX(0); }
+.panel-header { display:flex; align-items:center; justify-content:space-between; padding:18px 22px; border-bottom:1px solid var(--earth-2); }
+.panel-header h2 { font-size:17px; font-weight:700; color:var(--text); }
+.panel-close { background:none; border:none; cursor:pointer; font-size:22px; color:var(--text-muted); line-height:1; padding:0 4px; }
+.panel-close:hover { color:var(--text); }
+.panel-body { padding:22px; flex:1; }
+.form-actions { display:flex; gap:10px; justify-content:flex-end; padding:16px 22px; border-top:1px solid var(--earth-2); }
+
+/* form inside panel */
+.pf-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.pf-grid.single { grid-template-columns:1fr; }
+.pf-group { display:flex; flex-direction:column; gap:6px; }
+.pf-group label { font-size:12px; font-weight:600; color:var(--text-2); }
+.pf-group input, .pf-group select, .pf-group textarea {
+    padding:10px 12px; border:1px solid var(--earth-2); border-radius:10px;
+    font-family:inherit; font-size:13px; color:var(--text); background:var(--earth-3);
+    outline:none; direction:rtl; transition:border-color .2s, box-shadow .2s;
+}
+.pf-group input:focus, .pf-group select:focus, .pf-group textarea:focus {
+    border-color:var(--gold); background:#fff; box-shadow:0 0 0 3px var(--gold-pale);
+}
+.pf-group textarea { resize:vertical; }
+.pf-full { grid-column:1/-1; }
+
+/* sub-section inside panel */
+.sub-section { margin:18px 0; }
+.sub-section-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+.sub-section-header h3 { font-size:14px; font-weight:700; color:var(--text); }
+.sub-table { width:100%; border-collapse:collapse; font-size:13px; }
+.sub-table thead tr { background:var(--gold-pale); }
+.sub-table thead th { padding:8px 10px; text-align:right; font-weight:600; color:var(--gold); font-size:12px; }
+.sub-table tbody td { padding:7px 10px; border-bottom:1px solid var(--earth-2); }
+.sub-table tbody tr:last-child td { border-bottom:none; }
+.sub-table input, .sub-table select { padding:6px 8px; border:1px solid var(--earth-2); border-radius:7px; font-family:inherit; font-size:12px; background:var(--earth-3); color:var(--text); width:100%; outline:none; direction:rtl; }
+.sub-table input:focus, .sub-table select:focus { border-color:var(--gold); background:#fff; }
+.btn-row-del { background:none; border:none; cursor:pointer; color:#ef4444; font-size:16px; padding:2px 6px; border-radius:6px; }
+.btn-row-del:hover { background:rgba(239,68,68,.1); }
+
+/* delete modal */
+.del-modal { display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#fff; border-radius:16px; padding:28px 32px; box-shadow:var(--shadow-md); z-index:500; width:380px; text-align:center; }
+.del-modal.active { display:block; }
+.del-modal h3 { font-size:16px; font-weight:700; margin-bottom:10px; }
+.del-modal p  { font-size:13px; color:var(--text-2); margin-bottom:20px; line-height:1.7; }
+.del-name { font-weight:700; color:var(--text); }
+.del-actions { display:flex; gap:10px; justify-content:center; }
+
+/* action btn group in table */
+.tbl-acts { display:flex; gap:5px; }
+.tbl-act { padding:5px 10px; border-radius:7px; border:none; cursor:pointer; font-size:12px; font-weight:600; font-family:inherit; transition:background .15s, color .15s; }
+.tbl-act-view { background:var(--earth-2); color:var(--text-2); }
+.tbl-act-view:hover { background:#ddd; }
+.tbl-act-edit { background:rgba(200,146,10,.1); color:var(--gold); }
+.tbl-act-edit:hover { background:rgba(200,146,10,.18); }
+.tbl-act-approve { background:rgba(34,197,94,.1); color:#16a34a; }
+.tbl-act-approve:hover { background:rgba(34,197,94,.18); }
+.tbl-act-del { background:rgba(239,68,68,.08); color:#ef4444; }
+.tbl-act-del:hover { background:rgba(239,68,68,.16); }
+
+/* view panel sections */
+.vp-section { margin-bottom:20px; }
+.vp-section h4 { font-size:13px; font-weight:700; color:var(--gold); margin-bottom:10px; padding-bottom:6px; border-bottom:1px solid var(--earth-2); }
+.vp-row { display:flex; gap:8px; font-size:13px; line-height:1.9; }
+.vp-lbl { color:var(--text-muted); min-width:110px; }
+.vp-val { font-weight:600; color:var(--text); }
+.vp-chip { display:inline-block; padding:2px 10px; border-radius:20px; font-size:11px; font-weight:700; background:var(--earth-2); color:var(--text-2); margin:2px 3px 2px 0; }
+</style>
+</head>
+<body>
+
+<!-- ── Sidebar ── -->
+<aside class="sidebar" id="sidebar">
+    <button class="sidebar-toggle" id="sidebarToggle" title="توسيع / تقليص">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div class="sidebar-logo">
+        <div class="logo-mark">
+            {% if company and company.company_logo %}
+            <img src="{{ company.company_logo.url }}" alt="{{ company.company_name_ar|default:'النظام' }}">
+            {% else %}
+            <img src="{% static 'website/img/logo.png' %}" alt="باء البناء">
+            {% endif %}
+        </div>
+        <span class="logo-text">{{ company.company_name_ar|default:"باء البناء" }}</span>
+    </div>
+    <nav class="sidebar-nav">
+        <a href="{% url 'projects_dashboard' %}" class="nav-item" title="الرئيسية"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span class="nav-label">الرئيسية</span></a>
+        <a href="{% url 'client_list' %}" class="nav-item" title="العملاء"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="nav-label">العملاء</span></a>
+        <a href="{% url 'invoices_home' %}" class="nav-item" title="الفواتير"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><span class="nav-label">الفواتير</span></a>
+        <a href="{% url 'project_list' %}" class="nav-item" title="المشاريع"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg><span class="nav-label">المشاريع</span></a>
+        <a href="{% url 'task_list' %}" class="nav-item" title="المهام"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span class="nav-label">المهام</span></a>
+        <a href="{% url 'inventory_home' %}" class="nav-item" title="المخزون"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg><span class="nav-label">المخزون</span></a>
+        <a href="{% url 'accounting_home' %}" class="nav-item" title="المحاسبة"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg><span class="nav-label">المحاسبة</span></a>
+        <a href="{% url 'marketing_home' %}" class="nav-item active" title="التسويق"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span class="nav-label">التسويق</span></a>
+        <a href="{% url 'employee_list' %}" class="nav-item" title="الفريق"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="nav-label">الفريق</span></a>
+        <a href="{% url 'reports_home' %}" class="nav-item" title="التقارير"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span class="nav-label">التقارير</span></a>
+        <a href="{% url 'attendance_checkin' %}" class="nav-item" title="الحضور والانصراف"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span class="nav-label">الحضور والانصراف</span></a>
+        <a href="{% url 'namadhj_home' %}" class="nav-item" title="النماذج"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg><span class="nav-label">النماذج</span></a>
+    </nav>
+    <div class="sidebar-bottom">
+        <a href="{% url 'company_home' %}" class="nav-item" title="الإعدادات"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg><span class="nav-label">الإعدادات</span></a>
+        <a href="{% url 'employee_logout' %}" class="nav-item logout-item" title="تسجيل الخروج"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span class="nav-label">خروج</span></a>
+        <div class="sidebar-user">
+            <div class="user-avatar">{{ request.user.get_full_name|default:request.user.username|slice:":1"|upper }}</div>
+            <div class="user-info">
+                <div class="user-name">{{ request.user.get_full_name|default:request.user.username }}</div>
+                <div class="user-role">مدير النظام</div>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<!-- ── Main ── -->
+<main class="main-content">
+    <header class="page-header">
+        <div class="page-header-info">
+            <h1 class="page-title">التسويق</h1>
+            <p class="page-subtitle">الخطط الشهرية والمسوقون الخارجيون</p>
+        </div>
+    </header>
+
+    <!-- ── Stat cards ── -->
+    <div class="inv-stats" style="margin-bottom:24px">
+        <div class="inv-stat is-gold">
+            <div class="inv-stat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+            <div><div class="inv-stat-val">{{ total_plans }}</div><div class="inv-stat-lbl">إجمالي الخطط</div></div>
+        </div>
+        <div class="inv-stat is-green">
+            <div class="inv-stat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div><div class="inv-stat-val">{{ active_plans }}</div><div class="inv-stat-lbl">خطط معتمدة</div></div>
+        </div>
+        <div class="inv-stat is-blue">
+            <div class="inv-stat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+            <div><div class="inv-stat-val">{{ done_plans }}</div><div class="inv-stat-lbl">خطط مكتملة</div></div>
+        </div>
+        <div class="inv-stat is-purple">
+            <div class="inv-stat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+            <div><div class="inv-stat-val">{{ total_marketers }}</div><div class="inv-stat-lbl">مسوقون نشطون</div></div>
+        </div>
+    </div>
+
+    <!-- ── Tabs ── -->
+    <div class="inv-tabs" style="margin-bottom:18px">
+        <button class="inv-tab active" data-tab="plans">الخطط الشهرية</button>
+        <button class="inv-tab" data-tab="marketers">المسوقون الخارجيون</button>
+    </div>
+
+    <!-- ── Tab: Plans ── -->
+    <div id="tab-plans">
+        <div class="mkt-toolbar">
+            <input type="text" class="mkt-search" id="planSearch" placeholder="بحث في الخطط...">
+            <button class="btn-primary" onclick="openAddPlan()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                خطة جديدة
+            </button>
+        </div>
+        <div class="inv-table-wrap">
+            <table class="inv-table" id="plansTable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>العنوان</th>
+                        <th>الشهر</th>
+                        <th>الحالة</th>
+                        <th>إجمالي الميزانية</th>
+                        <th>إجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in plans %}
+                    <tr>
+                        <td style="color:var(--text-muted);font-size:12px">{{ forloop.counter }}</td>
+                        <td style="font-weight:600">{{ p.title }}</td>
+                        <td>{{ p.month|date:"Y/m" }}</td>
+                        <td>
+                            {% if p.status == 'draft' %}<span class="inv-badge inv-badge badge-draft">مسودة</span>
+                            {% elif p.status == 'approved' %}<span class="inv-badge inv-badge badge-partial">معتمدة</span>
+                            {% else %}<span class="inv-badge inv-badge badge-paid">مكتملة</span>{% endif %}
+                        </td>
+                        <td style="color:var(--gold);font-weight:700">{{ p.total_budget|floatformat:0 }} ر.س</td>
+                        <td>
+                            <div class="tbl-acts">
+                                <button class="tbl-act tbl-act-view" onclick="viewPlan({{ p.pk }})">عرض</button>
+                                <button class="tbl-act tbl-act-edit" onclick="editPlan({{ p.pk }})">تعديل</button>
+                                {% if p.status == 'draft' %}
+                                <button class="tbl-act tbl-act-approve" onclick="approvePlan({{ p.pk }}, '{{ p.title|escapejs }}')">اعتماد</button>
+                                {% endif %}
+                                {% if p.status == 'approved' %}
+                                <button class="tbl-act tbl-act-approve" onclick="completePlan({{ p.pk }}, '{{ p.title|escapejs }}')">إتمام</button>
+                                {% endif %}
+                                <button class="tbl-act tbl-act-del" onclick="setPending('{% url 'mkt_plan_delete' p.pk %}', '{{ p.title|escapejs }}')">حذف</button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text-muted)">لا توجد خطط تسويقية بعد</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ── Tab: Marketers ── -->
+    <div id="tab-marketers" style="display:none">
+        <div class="mkt-toolbar">
+            <input type="text" class="mkt-search" id="marketerSearch" placeholder="بحث في المسوقين...">
+            <button class="btn-primary" onclick="openAddMarketer()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                مسوق جديد
+            </button>
+        </div>
+        <div class="inv-table-wrap">
+            <table class="inv-table" id="marketersTable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>الاسم</th>
+                        <th>الهاتف</th>
+                        <th>البريد</th>
+                        <th>العمولة %</th>
+                        <th>جدول التسوية</th>
+                        <th>الحالة</th>
+                        <th>إجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for m in marketers %}
+                    <tr>
+                        <td style="color:var(--text-muted);font-size:12px">{{ forloop.counter }}</td>
+                        <td style="font-weight:600">{{ m.name }}</td>
+                        <td>{{ m.phone|default:"—" }}</td>
+                        <td style="color:var(--text-muted)">{{ m.email|default:"—" }}</td>
+                        <td><span style="font-weight:700;color:var(--gold)">{{ m.commission_rate }}%</span></td>
+                        <td>{{ m.get_settlement_schedule_display }}</td>
+                        <td>
+                            {% if m.is_active %}<span class="inv-badge inv-badge badge-paid">نشط</span>
+                            {% else %}<span class="inv-badge inv-badge badge-cancelled">موقوف</span>{% endif %}
+                        </td>
+                        <td>
+                            <div class="tbl-acts">
+                                <button class="tbl-act tbl-act-edit" onclick="editMarketer({{ m.pk }},'{{ m.name|escapejs }}','{{ m.phone|escapejs }}','{{ m.email|escapejs }}','{{ m.bank|escapejs }}','{{ m.iban|escapejs }}',{{ m.commission_rate }},'{{ m.settlement_schedule }}','{{ m.notes|escapejs }}')">تعديل</button>
+                                <button class="tbl-act tbl-act-del" onclick="setPending('{% url 'mkt_marketer_delete' m.pk %}','{{ m.name|escapejs }}')">حذف</button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="8" style="text-align:center;padding:32px;color:var(--text-muted)">لا يوجد مسوقون خارجيون بعد</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<!-- ════ PLAN FORM PANEL ════ -->
+<div class="panel-overlay" id="planOverlay"></div>
+<div class="slide-panel" id="planPanel">
+    <div class="panel-header">
+        <h2 id="planModalTitle">خطة جديدة</h2>
+        <button class="panel-close" onclick="closePlanModal()">×</button>
+    </div>
+    <div class="panel-body">
+        <div class="pf-grid" style="margin-bottom:14px">
+            <div class="pf-group">
+                <label>العنوان</label>
+                <input type="text" id="planTitle" placeholder="عنوان الخطة">
+            </div>
+            <div class="pf-group">
+                <label>الشهر</label>
+                <input type="month" id="planMonth">
+            </div>
+            <div class="pf-group pf-full">
+                <label>ملاحظات</label>
+                <textarea id="planNotes" rows="2" placeholder="ملاحظات اختيارية..."></textarea>
+            </div>
+        </div>
+
+        <div class="sub-section">
+            <div class="sub-section-header">
+                <h3>الأهداف</h3>
+                <button class="tbl-act tbl-act-edit" onclick="addObjectiveRow('','')">+ إضافة</button>
+            </div>
+            <table class="sub-table"><thead><tr><th>العنوان</th><th>الهدف</th><th></th></tr></thead>
+            <tbody id="objBody"></tbody></table>
+        </div>
+
+        <div class="sub-section">
+            <div class="sub-section-header">
+                <h3>الميزانية</h3>
+                <button class="tbl-act tbl-act-edit" onclick="addBudgetRow('',0)">+ إضافة</button>
+            </div>
+            <table class="sub-table"><thead><tr><th>البند</th><th>المبلغ (ر.س)</th><th></th></tr></thead>
+            <tbody id="budBody"></tbody></table>
+        </div>
+
+        <div class="sub-section">
+            <div class="sub-section-header">
+                <h3>قنوات التسويق</h3>
+                <button class="tbl-act tbl-act-edit" onclick="addChannelRow('')">+ إضافة</button>
+            </div>
+            <table class="sub-table"><thead><tr><th>القناة</th><th></th></tr></thead>
+            <tbody id="chBody"></tbody></table>
+        </div>
+
+        <div class="sub-section">
+            <div class="sub-section-header">
+                <h3>المستهدفات</h3>
+                <button class="tbl-act tbl-act-edit" onclick="addTargetRow('general','',0)">+ إضافة</button>
+            </div>
+            <table class="sub-table"><thead><tr><th>النوع</th><th>الوصف</th><th>القيمة</th><th></th></tr></thead>
+            <tbody id="tgtBody"></tbody></table>
+        </div>
+    </div>
+    <div class="form-actions">
+        <button class="btn-cancel" onclick="closePlanModal()">إلغاء</button>
+        <button class="btn-primary" onclick="submitPlan()">حفظ الخطة</button>
+    </div>
+</div>
+
+<!-- ════ PLAN VIEW PANEL ════ -->
+<div class="panel-overlay" id="planViewOverlay"></div>
+<div class="slide-panel" id="planViewPanel">
+    <div class="panel-header">
+        <h2>تفاصيل الخطة</h2>
+        <button class="panel-close" onclick="closePlanView()">×</button>
+    </div>
+    <div class="panel-body" id="planViewBody"></div>
+</div>
+
+<!-- ════ MARKETER FORM PANEL ════ -->
+<div class="panel-overlay" id="mktOverlay"></div>
+<div class="slide-panel" id="mktPanel">
+    <div class="panel-header">
+        <h2 id="mktModalTitle">مسوق جديد</h2>
+        <button class="panel-close" onclick="closeMktModal()">×</button>
+    </div>
+    <div class="panel-body">
+        <div class="pf-grid">
+            <div class="pf-group"><label>الاسم</label><input type="text" id="mName" placeholder="اسم المسوق"></div>
+            <div class="pf-group"><label>الهاتف</label><input type="text" id="mPhone" placeholder="05xxxxxxxx"></div>
+            <div class="pf-group"><label>البريد الإلكتروني</label><input type="email" id="mEmail" placeholder="email@domain.com"></div>
+            <div class="pf-group"><label>نسبة العمولة %</label><input type="number" id="mRate" min="0" max="100" step="0.01" placeholder="0"></div>
+            <div class="pf-group"><label>البنك</label><input type="text" id="mBank" placeholder="اسم البنك"></div>
+            <div class="pf-group"><label>رقم الآيبان</label><input type="text" id="mIban" placeholder="SA..."></div>
+            <div class="pf-group">
+                <label>جدول التسوية</label>
+                <select id="mSchedule">
+                    <option value="monthly">شهري</option>
+                    <option value="quarterly">ربع سنوي</option>
+                    <option value="project">بالمشروع</option>
+                </select>
+            </div>
+            <div class="pf-group pf-full"><label>ملاحظات</label><textarea id="mNotes" rows="2"></textarea></div>
+        </div>
+    </div>
+    <div class="form-actions">
+        <button class="btn-cancel" onclick="closeMktModal()">إلغاء</button>
+        <button class="btn-primary" onclick="submitMarketer()">حفظ</button>
+    </div>
+</div>
+
+<!-- ════ DELETE MODAL ════ -->
+<div class="panel-overlay" id="mktDelOverlay"></div>
+<div class="del-modal" id="mktDelModal">
+    <h3>تأكيد الحذف</h3>
+    <p>هل أنت متأكد من حذف <span class="del-name" id="delName"></span>؟<br>لا يمكن التراجع عن هذا الإجراء.</p>
+    <div class="del-actions">
+        <button class="btn-cancel" id="delCancelBtn">إلغاء</button>
+        <button style="background:#ef4444;color:#fff;border:none;padding:10px 22px;border-radius:10px;font-weight:700;cursor:pointer;font-family:inherit" id="delConfirmBtn">حذف</button>
+    </div>
+</div>
+
+<script>
+var CSRF             = '{{ csrf_token }}';
+var PLANS_DATA       = {{ plans_json|safe }};
+var URL_PLAN_CREATE  = '{% url "mkt_plan_create" %}';
+var URL_PLAN_EDIT    = '{% url "mkt_plan_edit" 0 %}';
+var URL_PLAN_APPROVE = '{% url "mkt_plan_approve" 0 %}';
+var URL_PLAN_COMPLETE= '{% url "mkt_plan_complete" 0 %}';
+var URL_MKT_CREATE   = '{% url "mkt_marketer_create" %}';
+var URL_MKT_EDIT     = '{% url "mkt_marketer_edit" 0 %}';
+
+/* ── Tabs ── */
+document.querySelectorAll('.inv-tab').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.querySelectorAll('.inv-tab').forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+        var tab = this.dataset.tab;
+        document.getElementById('tab-plans').style.display     = tab === 'plans'     ? '' : 'none';
+        document.getElementById('tab-marketers').style.display = tab === 'marketers' ? '' : 'none';
+    });
+});
+
+/* ── Search ── */
+document.getElementById('planSearch').addEventListener('input', function() {
+    var q = this.value.trim().toLowerCase();
+    document.querySelectorAll('#plansTable tbody tr').forEach(r => {
+        r.style.display = r.textContent.toLowerCase().includes(q) ? '' : 'none';
+    });
+});
+document.getElementById('marketerSearch').addEventListener('input', function() {
+    var q = this.value.trim().toLowerCase();
+    document.querySelectorAll('#marketersTable tbody tr').forEach(r => {
+        r.style.display = r.textContent.toLowerCase().includes(q) ? '' : 'none';
+    });
+});
+
+/* ── Panel helpers ── */
+function openPanel(ov, pn) {
+    document.getElementById(ov).classList.add('active');
+    document.getElementById(pn).classList.add('active');
+}
+function closePanel(ov, pn) {
+    document.getElementById(ov).classList.remove('active');
+    document.getElementById(pn).classList.remove('active');
+}
+document.getElementById('planOverlay').onclick     = () => closePanel('planOverlay','planPanel');
+document.getElementById('planViewOverlay').onclick = () => closePanel('planViewOverlay','planViewPanel');
+document.getElementById('mktOverlay').onclick      = () => closePanel('mktOverlay','mktPanel');
+document.getElementById('mktDelOverlay').onclick   = () => closeDel();
+
+/* ── Plan modal ── */
+var editingPlanId = null;
+function openAddPlan() {
+    editingPlanId = null;
+    document.getElementById('planModalTitle').textContent = 'خطة جديدة';
+    document.getElementById('planTitle').value = '';
+    document.getElementById('planMonth').value = '';
+    document.getElementById('planNotes').value = '';
+    document.getElementById('objBody').innerHTML = '';
+    document.getElementById('budBody').innerHTML = '';
+    document.getElementById('chBody').innerHTML  = '';
+    document.getElementById('tgtBody').innerHTML = '';
+    openPanel('planOverlay','planPanel');
+}
+function closePlanModal() { closePanel('planOverlay','planPanel'); }
+
+function editPlan(id) {
+    var p = PLANS_DATA.find(x => x.pk == id);
+    if (!p) return;
+    editingPlanId = id;
+    document.getElementById('planModalTitle').textContent = 'تعديل الخطة';
+    document.getElementById('planTitle').value = p.title;
+    document.getElementById('planMonth').value = p.month;
+    document.getElementById('planNotes').value = p.notes || '';
+    document.getElementById('objBody').innerHTML = '';
+    (p.objectives||[]).forEach(o => addObjectiveRow(o.title, o.goal));
+    document.getElementById('budBody').innerHTML = '';
+    (p.budgets||[]).forEach(b => addBudgetRow(b.budget_type, b.amount));
+    document.getElementById('chBody').innerHTML = '';
+    (p.channels||[]).forEach(c => addChannelRow(c.name));
+    document.getElementById('tgtBody').innerHTML = '';
+    (p.targets||[]).forEach(t => addTargetRow(t.target_type, t.label, t.target_value));
+    openPanel('planOverlay','planPanel');
+}
+
+function addObjectiveRow(title, goal) {
+    var tr = document.createElement('tr');
+    tr.innerHTML = '<td><input value="'+escH(title)+'" placeholder="العنوان"></td><td><input value="'+escH(goal)+'" placeholder="الهدف"></td><td><button class="btn-row-del" onclick="this.closest(\'tr\').remove()">×</button></td>';
+    document.getElementById('objBody').appendChild(tr);
+}
+function addBudgetRow(type, amt) {
+    var tr = document.createElement('tr');
+    tr.innerHTML = '<td><input value="'+escH(type)+'" placeholder="بند الميزانية"></td><td><input type="number" value="'+amt+'" placeholder="0" min="0"></td><td><button class="btn-row-del" onclick="this.closest(\'tr\').remove()">×</button></td>';
+    document.getElementById('budBody').appendChild(tr);
+}
+function addChannelRow(name) {
+    var tr = document.createElement('tr');
+    tr.innerHTML = '<td><input value="'+escH(name)+'" placeholder="اسم القناة"></td><td><button class="btn-row-del" onclick="this.closest(\'tr\').remove()">×</button></td>';
+    document.getElementById('chBody').appendChild(tr);
+}
+function addTargetRow(type, label, val) {
+    var tr = document.createElement('tr');
+    tr.innerHTML = '<td><select><option value="revenue"'+(type=='revenue'?' selected':'')+'>إيرادات</option><option value="contracts"'+(type=='contracts'?' selected':'')+'>عقود</option><option value="leads"'+(type=='leads'?' selected':'')+'>عملاء محتملون</option><option value="general"'+(type=='general'?' selected':'')+'>عام</option></select></td>'
+        +'<td><input value="'+escH(label)+'" placeholder="الوصف"></td>'
+        +'<td><input type="number" value="'+val+'" placeholder="0" min="0"></td>'
+        +'<td><button class="btn-row-del" onclick="this.closest(\'tr\').remove()">×</button></td>';
+    document.getElementById('tgtBody').appendChild(tr);
+}
+
+function submitPlan() {
+    var fd = new FormData();
+    fd.append('csrfmiddlewaretoken', CSRF);
+    fd.append('title', document.getElementById('planTitle').value);
+    fd.append('month', document.getElementById('planMonth').value + '-01');
+    fd.append('notes', document.getElementById('planNotes').value);
+    document.querySelectorAll('#objBody tr').forEach(tr => {
+        var ins = tr.querySelectorAll('input');
+        fd.append('obj_title', ins[0].value); fd.append('obj_goal', ins[1].value);
+    });
+    document.querySelectorAll('#budBody tr').forEach(tr => {
+        var ins = tr.querySelectorAll('input');
+        fd.append('bud_type', ins[0].value); fd.append('bud_amount', ins[1].value);
+    });
+    document.querySelectorAll('#chBody tr').forEach(tr => {
+        fd.append('ch_name', tr.querySelector('input').value);
+    });
+    document.querySelectorAll('#tgtBody tr').forEach(tr => {
+        fd.append('tgt_type', tr.querySelector('select').value);
+        var ins = tr.querySelectorAll('input');
+        fd.append('tgt_label', ins[0].value); fd.append('tgt_value', ins[1].value);
+    });
+    var url = editingPlanId ? URL_PLAN_EDIT.replace('/0/', '/'+editingPlanId+'/') : URL_PLAN_CREATE;
+    fetch(url, { method:'POST', body:fd })
+        .then(r => r.json())
+        .then(d => { if (d.ok) location.reload(); });
+}
+
+/* ── Plan view ── */
+function viewPlan(id) {
+    var p = PLANS_DATA.find(x => x.pk == id);
+    if (!p) return;
+    var statusMap = {draft:'مسودة', approved:'معتمدة', completed:'مكتملة'};
+    var html = '<div class="vp-section">'
+        +'<h4>معلومات الخطة</h4>'
+        +'<div class="vp-row"><span class="vp-lbl">العنوان:</span><span class="vp-val">'+escH(p.title)+'</span></div>'
+        +'<div class="vp-row"><span class="vp-lbl">الشهر:</span><span class="vp-val">'+escH(p.month)+'</span></div>'
+        +'<div class="vp-row"><span class="vp-lbl">الحالة:</span><span class="vp-val">'+escH(statusMap[p.status]||p.status)+'</span></div>'
+        +(p.notes ? '<div class="vp-row"><span class="vp-lbl">ملاحظات:</span><span class="vp-val">'+escH(p.notes)+'</span></div>' : '')
+        +'</div>';
+    if (p.objectives && p.objectives.length) {
+        html += '<div class="vp-section"><h4>الأهداف</h4>';
+        p.objectives.forEach(o => { html += '<div class="vp-row"><span class="vp-lbl">'+escH(o.title)+'</span><span class="vp-val">'+escH(o.goal)+'</span></div>'; });
+        html += '</div>';
+    }
+    if (p.budgets && p.budgets.length) {
+        html += '<div class="vp-section"><h4>الميزانية</h4>';
+        var total = 0;
+        p.budgets.forEach(b => { total += parseFloat(b.amount)||0; html += '<div class="vp-row"><span class="vp-lbl">'+escH(b.budget_type)+'</span><span class="vp-val" style="color:var(--gold)">'+parseFloat(b.amount).toLocaleString()+' ر.س</span></div>'; });
+        html += '<div class="vp-row" style="border-top:1px solid var(--earth-2);margin-top:6px;padding-top:6px"><span class="vp-lbl" style="font-weight:700">الإجمالي:</span><span class="vp-val" style="color:var(--gold);font-size:15px">'+total.toLocaleString()+' ر.س</span></div>';
+        html += '</div>';
+    }
+    if (p.channels && p.channels.length) {
+        html += '<div class="vp-section"><h4>قنوات التسويق</h4><div>';
+        p.channels.forEach(c => { html += '<span class="vp-chip">'+escH(c.name)+'</span>'; });
+        html += '</div></div>';
+    }
+    document.getElementById('planViewBody').innerHTML = html;
+    openPanel('planViewOverlay','planViewPanel');
+}
+function closePlanView() { closePanel('planViewOverlay','planViewPanel'); }
+
+/* ── Approve / Complete ── */
+function approvePlan(id, name) {
+    if (!confirm('اعتماد الخطة: '+name+'؟')) return;
+    var fd = new FormData(); fd.append('csrfmiddlewaretoken', CSRF);
+    fetch(URL_PLAN_APPROVE.replace('/0/', '/'+id+'/'), { method:'POST', body:fd })
+        .then(r => r.json()).then(d => { if (d.ok) location.reload(); });
+}
+function completePlan(id, name) {
+    if (!confirm('إتمام الخطة: '+name+'؟')) return;
+    var fd = new FormData(); fd.append('csrfmiddlewaretoken', CSRF);
+    fetch(URL_PLAN_COMPLETE.replace('/0/', '/'+id+'/'), { method:'POST', body:fd })
+        .then(r => r.json()).then(d => { if (d.ok) location.reload(); });
+}
+
+/* ── Marketer modal ── */
+var editingMktId = null;
+function openAddMarketer() {
+    editingMktId = null;
+    document.getElementById('mktModalTitle').textContent = 'مسوق جديد';
+    ['mName','mPhone','mEmail','mBank','mIban','mNotes'].forEach(id => document.getElementById(id).value='');
+    document.getElementById('mRate').value = 0;
+    document.getElementById('mSchedule').value = 'monthly';
+    openPanel('mktOverlay','mktPanel');
+}
+function closeMktModal() { closePanel('mktOverlay','mktPanel'); }
+function editMarketer(id, name, phone, email, bank, iban, rate, schedule, notes) {
+    editingMktId = id;
+    document.getElementById('mktModalTitle').textContent = 'تعديل بيانات المسوق';
+    document.getElementById('mName').value    = name;
+    document.getElementById('mPhone').value   = phone;
+    document.getElementById('mEmail').value   = email;
+    document.getElementById('mBank').value    = bank;
+    document.getElementById('mIban').value    = iban;
+    document.getElementById('mRate').value    = rate;
+    document.getElementById('mSchedule').value= schedule;
+    document.getElementById('mNotes').value   = notes;
+    openPanel('mktOverlay','mktPanel');
+}
+function submitMarketer() {
+    var fd = new FormData();
+    fd.append('csrfmiddlewaretoken', CSRF);
+    fd.append('name',                document.getElementById('mName').value);
+    fd.append('phone',               document.getElementById('mPhone').value);
+    fd.append('email',               document.getElementById('mEmail').value);
+    fd.append('bank',                document.getElementById('mBank').value);
+    fd.append('iban',                document.getElementById('mIban').value);
+    fd.append('commission_rate',     document.getElementById('mRate').value);
+    fd.append('settlement_schedule', document.getElementById('mSchedule').value);
+    fd.append('notes',               document.getElementById('mNotes').value);
+    var url = editingMktId ? URL_MKT_EDIT.replace('/0/', '/'+editingMktId+'/') : URL_MKT_CREATE;
+    fetch(url, { method:'POST', body:fd })
+        .then(r => r.json()).then(d => { if (d.ok) location.reload(); });
+}
+
+/* ── Delete ── */
+var pendingDelUrl = null;
+function setPending(url, name) {
+    pendingDelUrl = url;
+    document.getElementById('delName').textContent = name;
+    document.getElementById('mktDelOverlay').classList.add('active');
+    document.getElementById('mktDelModal').classList.add('active');
+}
+function closeDel() {
+    pendingDelUrl = null;
+    document.getElementById('mktDelOverlay').classList.remove('active');
+    document.getElementById('mktDelModal').classList.remove('active');
+}
+document.getElementById('delCancelBtn').onclick  = closeDel;
+document.getElementById('delConfirmBtn').onclick = function() {
+    if (!pendingDelUrl) return;
+    var fd = new FormData(); fd.append('csrfmiddlewaretoken', CSRF);
+    fetch(pendingDelUrl, { method:'POST', body:fd })
+        .then(r => r.json()).then(d => { if (d.ok) location.reload(); });
+};
+
+/* ── util ── */
+function escH(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+</script>
+<script src="{% static 'projects/js/dashboard.js' %}?v=2"></script>
+</body>
+</html>

@@ -1,0 +1,583 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ project.name }} — {{ company.company_name_ar|default:"باء البناء" }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'projects/css/dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'projects/css/projects.css' %}">
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+    <button class="sidebar-toggle" id="sidebarToggle" title="توسيع / تقليص">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div class="sidebar-logo">
+        <div class="logo-mark">
+            {% if company and company.company_logo %}
+            <img src="{{ company.company_logo.url }}" alt="{{ company.company_name_ar|default:'النظام' }}">
+            {% else %}
+            <img src="{% static 'website/img/logo.png' %}" alt="باء البناء">
+            {% endif %}
+        </div>
+        <span class="logo-text">{{ company.company_name_ar|default:"باء البناء" }}</span>
+    </div>
+    <nav class="sidebar-nav">
+        <a href="{% url 'projects_dashboard' %}" class="nav-item" title="الرئيسية">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            <span class="nav-label">الرئيسية</span>
+        </a>
+        <a href="{% url 'client_list' %}" class="nav-item" title="العملاء">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span class="nav-label">العملاء</span>
+        </a>
+
+        <a href="{% url 'invoices_home' %}" class="nav-item" title="الفواتير">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            <span class="nav-label">الفواتير</span>
+        </a>
+        <a href="{% url 'project_list' %}" class="nav-item active" title="المشاريع">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            <span class="nav-label">المشاريع</span>
+        </a>
+        <a href="{% url 'task_list' %}" class="nav-item" title="المهام">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            <span class="nav-label">المهام</span>
+        </a>
+        <a href="{% url 'inventory_home' %}" class="nav-item" title="المخزون">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+            <span class="nav-label">المخزون</span>
+        </a>
+        <a href="{% url 'accounting_home' %}" class="nav-item" title="المحاسبة">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            <span class="nav-label">المحاسبة</span>
+        </a>        <a href="{% url 'marketing_home' %}" class="nav-item" title="التسويق">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            <span class="nav-label">التسويق</span>
+        </a>
+        <a href="{% url 'employee_list' %}" class="nav-item" title="الفريق">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span class="nav-label">الفريق</span>
+        </a>
+        <a href="{% url 'reports_home' %}" class="nav-item" title="التقارير"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span class="nav-label">التقارير</span></a>
+                <a href="{% url 'attendance_checkin' %}" class="nav-item" title="الحضور والانصراف"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span class="nav-label">الحضور والانصراف</span></a>
+                <a href="{% url 'namadhj_home' %}" class="nav-item" title="النماذج"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg><span class="nav-label">النماذج</span></a>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            <span class="nav-label">التقارير</span>
+        </a>
+    </nav>
+    <div class="sidebar-bottom">
+        <a href="{% url 'company_home' %}" class="nav-item" title="الإعدادات">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+            <span class="nav-label">الإعدادات</span>
+        </a>
+        <a href="{% url 'employee_logout' %}" class="nav-item logout-item" title="تسجيل الخروج">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            <span class="nav-label">خروج</span>
+        </a>
+        <div class="sidebar-user">
+            <div class="user-avatar">{{ request.user.get_full_name|default:request.user.username|slice:":1"|upper }}</div>
+            <div class="user-info">
+                <div class="user-name">{{ request.user.get_full_name|default:request.user.username }}</div>
+                <div class="user-role">مدير النظام</div>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<main class="main-content">
+
+    <!-- BREADCRUMB + HEADER -->
+    <div class="pd-header">
+        <div class="pd-breadcrumb">
+            <a href="{% url 'project_list' %}">المشاريع</a>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+            <span>{{ project.name }}</span>
+        </div>
+        <div class="pd-title-row">
+            <div class="pd-title-left">
+                <div class="pd-avatar pav-1">{{ project.name|first|upper }}</div>
+                <div>
+                    <h1 class="pd-name">{{ project.name }}</h1>
+                    {% if project.client %}<p class="pd-client">{{ project.client }}</p>{% endif %}
+                </div>
+                <span class="pbadge pbadge-{{ project.status }} pbadge-lg">{{ project.get_status_display }}</span>
+            </div>
+            <div class="pd-header-actions">
+                <button class="btn-outline" id="btnEditProject"
+                    onclick="editProjectDetail({{ project.id }})">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    تعديل المشروع
+                </button>
+                <button class="btn-danger-outline"
+                    onclick="deleteProjectDetail({{ project.id }}, '{{ project.name|escapejs }}')">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
+                    حذف
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="pd-grid">
+
+        <!-- COL MAIN -->
+        <div class="pd-col-main">
+
+            <!-- PROGRESS -->
+            <div class="card pd-progress-card">
+                <div class="pd-prog-header">
+                    <div>
+                        <h3 class="card-title">نسبة الإنجاز الكلية</h3>
+                        <p class="card-sub">آخر تحديث بواسطة النظام</p>
+                    </div>
+                    <span class="pd-prog-pct">{{ project.progress }}%</span>
+                </div>
+                <div class="pd-prog-bar">
+                    <div class="pd-prog-fill" style="width:{{ project.progress }}%"></div>
+                </div>
+                <div class="pd-prog-phases">
+                    <span class="phase-dot phase-done"></span><span>منجز</span>
+                    <span class="phase-dot phase-active"></span><span>جارٍ</span>
+                    <span class="phase-dot phase-pending"></span><span>متبقٍّ</span>
+                </div>
+            </div>
+
+            <!-- DESCRIPTION -->
+            {% if project.description %}
+            <div class="card">
+                <h3 class="card-title" style="margin-bottom:12px">وصف المشروع</h3>
+                <p class="pd-desc">{{ project.description }}</p>
+            </div>
+            {% endif %}
+
+            <!-- TASKS -->
+            <div class="card pd-tasks-card">
+                <div class="card-header">
+                    <div>
+                        <h3 class="card-title">المهام</h3>
+                        <p class="card-sub">{{ todo }} لم تبدأ · {{ in_prog }} جارية · {{ done }} مكتملة</p>
+                    </div>
+                    <button class="btn-primary btn-sm" id="btnAddTask">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        إضافة مهمة
+                    </button>
+                </div>
+
+                <!-- task filters -->
+                <div class="task-filters">
+                    <button class="tfbtn tfbtn-active" data-f="all">الكل</button>
+                    <button class="tfbtn" data-f="todo">لم تبدأ</button>
+                    <button class="tfbtn" data-f="in_progress">جارية</button>
+                    <button class="tfbtn" data-f="done">مكتملة</button>
+                </div>
+
+                <div class="task-list" id="taskList">
+                    {% for t in tasks %}
+                    <div class="task-item" data-status="{{ t.status }}" data-id="{{ t.id }}">
+                        <button class="task-toggle ts-{{ t.status }}"
+                            onclick="toggleTask({{ project.id }}, {{ t.id }}, this)"
+                            title="تغيير الحالة">
+                            {% if t.status == 'done' %}
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            {% elif t.status == 'in_progress' %}
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><circle cx="12" cy="12" r="4" fill="currentColor"/></svg>
+                            {% endif %}
+                        </button>
+                        <div class="task-content">
+                            <span class="task-title {% if t.status == 'done' %}task-done-text{% endif %}">{{ t.title }}</span>
+                            <div class="task-meta">
+                                {% if t.assigned_to %}<span class="task-assignee">{{ t.assigned_to.get_full_name|default:t.assigned_to.username }}</span>{% endif %}
+                                {% if t.due_date %}<span class="task-due">{{ t.due_date|date:"j/n/Y" }}</span>{% endif %}
+                            </div>
+                        </div>
+                        <span class="task-badge ts-badge-{{ t.status }}">{{ t.get_status_display }}</span>
+                        <button class="task-del" onclick="deleteTask({{ project.id }}, {{ t.id }}, this)" title="حذف">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                        </button>
+                    </div>
+                    {% empty %}
+                    <div class="task-empty" id="taskEmpty">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                        <p>لا توجد مهام بعد</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+
+        <!-- COL SIDE -->
+        <div class="pd-col-side">
+
+            <!-- PROJECT INFO -->
+            <div class="card pd-info-card">
+                <h3 class="card-title" style="margin-bottom:16px">معلومات المشروع</h3>
+                <div class="info-rows">
+                    {% if project.location %}
+                    <div class="info-row">
+                        <span class="info-icon">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        </span>
+                        <div><span class="info-lbl">الموقع</span><span class="info-val">{{ project.location }}</span></div>
+                    </div>
+                    {% endif %}
+                    {% if project.manager %}
+                    <div class="info-row">
+                        <span class="info-icon">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        </span>
+                        <div><span class="info-lbl">مدير المشروع</span><span class="info-val">{{ project.manager.get_full_name|default:project.manager.username }}</span></div>
+                    </div>
+                    {% endif %}
+                    {% if project.start_date %}
+                    <div class="info-row">
+                        <span class="info-icon">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        </span>
+                        <div><span class="info-lbl">تاريخ البدء</span><span class="info-val">{{ project.start_date|date:"j F Y" }}</span></div>
+                    </div>
+                    {% endif %}
+                    {% if project.end_date %}
+                    <div class="info-row">
+                        <span class="info-icon">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        </span>
+                        <div><span class="info-lbl">تاريخ الانتهاء</span><span class="info-val">{{ project.end_date|date:"j F Y" }}</span></div>
+                    </div>
+                    {% endif %}
+                    <div class="info-row">
+                        <span class="info-icon">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        </span>
+                        <div><span class="info-lbl">تاريخ الإنشاء</span><span class="info-val">{{ project.created_at|date:"j F Y" }}</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BUDGET -->
+            <div class="card pd-budget-card">
+                <h3 class="card-title" style="margin-bottom:16px">الميزانية والمصروف</h3>
+                <div class="budget-gauge">
+                    <div class="gauge-ring">
+                        <svg viewBox="0 0 80 80" width="80" height="80">
+                            <circle cx="40" cy="40" r="34" fill="none" stroke="var(--earth-2)" stroke-width="8"/>
+                            <circle cx="40" cy="40" r="34" fill="none" stroke="var(--gold)" stroke-width="8"
+                                stroke-dasharray="{{ project.budget_percent|default:0 }} 100"
+                                stroke-dashoffset="25"
+                                stroke-linecap="round"
+                                transform="rotate(-90 40 40)"
+                                style="stroke-dasharray: calc({{ project.budget_percent }} * 2.136px) 213.6px"/>
+                        </svg>
+                        <span class="gauge-pct">{{ project.budget_percent }}%</span>
+                    </div>
+                    <div class="gauge-info">
+                        <div class="gauge-row">
+                            <span class="gauge-dot" style="background:var(--gold)"></span>
+                            <div>
+                                <span class="gauge-lbl">المصروف</span>
+                                <span class="gauge-val">{{ project.spent|floatformat:0 }} ر.س</span>
+                            </div>
+                        </div>
+                        <div class="gauge-row">
+                            <span class="gauge-dot" style="background:var(--earth-2)"></span>
+                            <div>
+                                <span class="gauge-lbl">الميزانية</span>
+                                <span class="gauge-val">{{ project.budget|floatformat:0 }} ر.س</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="budget-bar-wrap">
+                    <div class="budget-bar">
+                        <div class="budget-fill" style="width:{{ project.budget_percent }}%"></div>
+                    </div>
+                    <span class="budget-remaining">
+                        متبقٍّ: {{ project.budget|add:0 }} ر.س
+                    </span>
+                </div>
+            </div>
+
+            <!-- TEAM -->
+            <div class="card pd-team-card">
+                <h3 class="card-title" style="margin-bottom:14px">
+                    الفريق
+                    <span class="team-count-badge">{{ project.team.count }}</span>
+                </h3>
+                {% if project.team.exists %}
+                <div class="pd-team-list">
+                    {% for u in project.team.all %}
+                    <div class="pd-team-member">
+                        <div class="team-av-lg">{{ u.username|first|upper }}</div>
+                        <div>
+                            <span class="tm-fullname">{{ u.get_full_name|default:u.username }}</span>
+                            <span class="tm-username">@{{ u.username }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p style="color:var(--text-muted);font-size:13px">لا يوجد أعضاء فريق</p>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+</main>
+
+<!-- MODAL: إضافة مهمة -->
+<div class="modal-overlay" id="taskOverlay"></div>
+<div class="modal-panel modal-sm" id="taskPanel">
+    <div class="modal-header">
+        <h2 class="modal-title">إضافة مهمة جديدة</h2>
+        <button class="modal-close" id="taskClose">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form id="taskForm" novalidate>
+            {% csrf_token %}
+            <div class="form-grid">
+                <div class="fg fg-full">
+                    <label>عنوان المهمة <span class="req">*</span></label>
+                    <input type="text" name="title" id="tTitle" required placeholder="مثال: صب الأساسات — القطعة A">
+                </div>
+                <div class="fg">
+                    <label>الحالة</label>
+                    <select name="status" id="tStatus">
+                        <option value="todo">لم تبدأ</option>
+                        <option value="in_progress">جارية</option>
+                        <option value="done">مكتملة</option>
+                    </select>
+                </div>
+                <div class="fg">
+                    <label>تاريخ الاستحقاق</label>
+                    <input type="date" name="due_date" id="tDue">
+                </div>
+                <div class="fg fg-full">
+                    <label>المسؤول</label>
+                    <select name="assigned_to" id="tAssigned">
+                        <option value="">— اختر —</option>
+                        {% for u in users %}
+                        <option value="{{ u.id }}">{{ u.get_full_name|default:u.username }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-cancel" id="taskCancel">إلغاء</button>
+                <button type="submit" class="btn-save">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    إضافة المهمة
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL: تعديل المشروع -->
+<div class="modal-overlay" id="editOverlay"></div>
+<div class="modal-panel" id="editPanel">
+    <div class="modal-header">
+        <h2 class="modal-title">تعديل المشروع</h2>
+        <button class="modal-close" id="editClose">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form id="editForm" novalidate>
+            {% csrf_token %}
+            <div class="form-grid">
+                <div class="fg fg-full"><label>اسم المشروع <span class="req">*</span></label><input type="text" name="name" id="efName" required></div>
+                <div class="fg"><label>العميل</label><input type="text" name="client" id="efClient"></div>
+                <div class="fg"><label>الموقع</label><input type="text" name="location" id="efLocation"></div>
+                <div class="fg">
+                    <label>الحالة</label>
+                    <select name="status" id="efStatus">
+                        <option value="planning">قيد التخطيط</option>
+                        <option value="active">نشط</option>
+                        <option value="paused">متوقف</option>
+                        <option value="completed">مكتمل</option>
+                    </select>
+                </div>
+                <div class="fg">
+                    <label>مدير المشروع</label>
+                    <select name="manager" id="efManager">
+                        <option value="">— اختر —</option>
+                        {% for u in users %}
+                        <option value="{{ u.id }}">{{ u.get_full_name|default:u.username }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="fg"><label>تاريخ البدء</label><input type="date" name="start_date" id="efStart"></div>
+                <div class="fg"><label>تاريخ الانتهاء</label><input type="date" name="end_date" id="efEnd"></div>
+                <div class="fg"><label>الميزانية (ر.س)</label><input type="number" name="budget" id="efBudget" min="0"></div>
+                <div class="fg"><label>المصروف (ر.س)</label><input type="number" name="spent" id="efSpent" min="0"></div>
+                <div class="fg fg-full">
+                    <label>نسبة الإنجاز: <strong id="efProgressVal">0</strong>%</label>
+                    <input type="range" name="progress" id="efProgress" min="0" max="100" value="0">
+                </div>
+                <div class="fg fg-full">
+                    <label>أعضاء الفريق</label>
+                    <div class="team-select" id="efTeamSelect">
+                        {% for u in users %}
+                        <label class="team-member-opt">
+                            <input type="checkbox" name="team" value="{{ u.id }}" {% if u in project.team.all %}checked{% endif %}>
+                            <span class="tm-av">{{ u.username|first|upper }}</span>
+                            <span class="tm-name">{{ u.get_full_name|default:u.username }}</span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="fg fg-full"><label>وصف المشروع</label><textarea name="description" id="efDesc" rows="3"></textarea></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-cancel" id="editCancel">إلغاء</button>
+                <button type="submit" class="btn-save">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    حفظ التعديلات
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL: تأكيد الحذف -->
+<div class="modal-overlay" id="deleteOverlay"></div>
+<div class="delete-modal" id="deleteModal">
+    <div class="del-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
+    </div>
+    <h3>حذف المشروع</h3>
+    <p>هل أنت متأكد من حذف "<strong id="delName"></strong>"؟ لا يمكن التراجع.</p>
+    <div class="del-actions">
+        <button class="btn-cancel" id="delCancel">إلغاء</button>
+        <button class="btn-delete" id="delConfirm">نعم، احذف</button>
+    </div>
+</div>
+
+<script src="{% static 'projects/js/dashboard.js' %}"></script>
+<script>
+    const CSRF     = '{{ csrf_token }}';
+    const URL_LIST = '{% url "project_list" %}';
+    const PROJECT_ID = {{ project.id }};
+
+    function getEditUrl(id)    { return `/projects/${id}/edit/`; }
+    function getDeleteUrl(id)  { return `/projects/${id}/delete/`; }
+    function getTaskUrl(pid)   { return `/projects/${pid}/task/create/`; }
+    function getTaskDelUrl(pid, tid) { return `/projects/${pid}/task/${tid}/delete/`; }
+    function getTaskTogUrl(pid, tid) { return `/projects/${pid}/task/${tid}/toggle/`; }
+
+    /* ── edit from detail page ── */
+    function editProjectDetail(id) {
+        fetch(getEditUrl(id))
+            .then(r => r.json())
+            .then(d => {
+                document.getElementById('efName').value     = d.name;
+                document.getElementById('efClient').value   = d.client;
+                document.getElementById('efLocation').value = d.location;
+                document.getElementById('efDesc').value     = d.description;
+                document.getElementById('efStatus').value   = d.status;
+                document.getElementById('efBudget').value   = d.budget;
+                document.getElementById('efSpent').value    = d.spent;
+                document.getElementById('efStart').value    = d.start_date;
+                document.getElementById('efEnd').value      = d.end_date;
+                document.getElementById('efManager').value  = d.manager;
+                document.getElementById('efProgress').value = d.progress;
+                document.getElementById('efProgressVal').textContent = d.progress;
+                document.querySelectorAll('#efTeamSelect input[type=checkbox]').forEach(cb => {
+                    cb.checked = d.team.includes(parseInt(cb.value));
+                });
+                openModal('editOverlay', 'editPanel');
+            });
+    }
+
+    document.getElementById('efProgress').addEventListener('input', function() {
+        document.getElementById('efProgressVal').textContent = this.value;
+    });
+
+    document.getElementById('editForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const fd = new FormData(this);
+        fetch(getEditUrl(PROJECT_ID), { method:'POST', body: fd })
+            .then(r => r.json())
+            .then(d => { if(d.ok) location.reload(); });
+    });
+
+    document.getElementById('editClose').onclick = () => closeModal('editOverlay','editPanel');
+    document.getElementById('editCancel').onclick = () => closeModal('editOverlay','editPanel');
+    document.getElementById('editOverlay').onclick = () => closeModal('editOverlay','editPanel');
+
+    /* ── delete from detail page ── */
+    function deleteProjectDetail(id, name) {
+        document.getElementById('delName').textContent = name;
+        document.getElementById('delConfirm').onclick = () => {
+            fetch(getDeleteUrl(id), { method:'POST', headers:{'X-CSRFToken': CSRF} })
+                .then(r => r.json())
+                .then(d => { if(d.ok) window.location.href = URL_LIST; });
+        };
+        openModal('deleteOverlay','deleteModal');
+    }
+
+    document.getElementById('delCancel').onclick  = () => closeModal('deleteOverlay','deleteModal');
+    document.getElementById('deleteOverlay').onclick = () => closeModal('deleteOverlay','deleteModal');
+
+    /* ── task modal ── */
+    document.getElementById('btnAddTask').onclick  = () => openModal('taskOverlay','taskPanel');
+    document.getElementById('taskClose').onclick   = () => closeModal('taskOverlay','taskPanel');
+    document.getElementById('taskCancel').onclick  = () => closeModal('taskOverlay','taskPanel');
+    document.getElementById('taskOverlay').onclick = () => closeModal('taskOverlay','taskPanel');
+
+    document.getElementById('taskForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const fd = new FormData(this);
+        fetch(getTaskUrl(PROJECT_ID), { method:'POST', body: fd })
+            .then(r => r.json())
+            .then(d => { if(d.ok) location.reload(); });
+    });
+
+    /* ── task toggle ── */
+    function toggleTask(pid, tid, btn) {
+        fetch(getTaskTogUrl(pid, tid), { method:'POST', headers:{'X-CSRFToken': CSRF} })
+            .then(r => r.json())
+            .then(d => { if(d.ok) location.reload(); });
+    }
+
+    /* ── task delete ── */
+    function deleteTask(pid, tid, btn) {
+        if (!confirm('حذف هذه المهمة؟')) return;
+        fetch(getTaskDelUrl(pid, tid), { method:'POST', headers:{'X-CSRFToken': CSRF} })
+            .then(r => r.json())
+            .then(d => { if(d.ok) btn.closest('.task-item').remove(); });
+    }
+
+    /* ── task filter ── */
+    document.querySelectorAll('.tfbtn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.tfbtn').forEach(b => b.classList.remove('tfbtn-active'));
+            this.classList.add('tfbtn-active');
+            const f = this.dataset.f;
+            document.querySelectorAll('.task-item').forEach(item => {
+                item.style.display = (f === 'all' || item.dataset.status === f) ? '' : 'none';
+            });
+        });
+    });
+
+    function openModal(overlayId, panelId) {
+        document.getElementById(overlayId).classList.add('active');
+        document.getElementById(panelId).classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeModal(overlayId, panelId) {
+        document.getElementById(overlayId).classList.remove('active');
+        document.getElementById(panelId).classList.remove('active');
+        document.body.style.overflow = '';
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,446 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المهام — {{ company.company_name_ar|default:"باء البناء" }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'projects/css/dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'projects/css/tasks.css' %}">
+</head>
+<body>
+
+<!-- ═══ SIDEBAR ═══ -->
+<aside class="sidebar" id="sidebar">
+    <button class="sidebar-toggle" id="sidebarToggle" title="توسيع / تقليص">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div class="sidebar-logo">
+        <div class="logo-mark">
+            {% if company and company.company_logo %}
+            <img src="{{ company.company_logo.url }}" alt="{{ company.company_name_ar|default:'النظام' }}">
+            {% else %}
+            <img src="{% static 'website/img/logo.png' %}" alt="باء البناء">
+            {% endif %}
+        </div>
+        <span class="logo-text">{{ company.company_name_ar|default:"باء البناء" }}</span>
+    </div>
+    <nav class="sidebar-nav">
+        <a href="{% url 'projects_dashboard' %}" class="nav-item" title="الرئيسية">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            <span class="nav-label">الرئيسية</span>
+        </a>
+        <a href="{% url 'client_list' %}" class="nav-item" title="العملاء">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span class="nav-label">العملاء</span>
+        </a>
+
+        <a href="{% url 'invoices_home' %}" class="nav-item" title="الفواتير">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            <span class="nav-label">الفواتير</span>
+        </a>
+        <a href="{% url 'project_list' %}" class="nav-item" title="المشاريع">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            <span class="nav-label">المشاريع</span>
+        </a>
+        <a href="{% url 'task_list' %}" class="nav-item active" title="المهام">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            <span class="nav-label">المهام</span>
+        </a>
+        <a href="{% url 'inventory_home' %}" class="nav-item" title="المخزون">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+            <span class="nav-label">المخزون</span>
+        </a>
+        <a href="{% url 'accounting_home' %}" class="nav-item" title="المحاسبة">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            <span class="nav-label">المحاسبة</span>
+        </a>        <a href="{% url 'marketing_home' %}" class="nav-item" title="التسويق">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            <span class="nav-label">التسويق</span>
+        </a>
+        <a href="{% url 'employee_list' %}" class="nav-item" title="الفريق">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span class="nav-label">الفريق</span>
+        </a>
+        <a href="{% url 'reports_home' %}" class="nav-item" title="التقارير"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span class="nav-label">التقارير</span></a>
+                <a href="{% url 'attendance_checkin' %}" class="nav-item" title="الحضور والانصراف"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span class="nav-label">الحضور والانصراف</span></a>
+                <a href="{% url 'namadhj_home' %}" class="nav-item" title="النماذج"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg><span class="nav-label">النماذج</span></a>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            <span class="nav-label">التقارير</span>
+        </a>
+    </nav>
+    <div class="sidebar-bottom">
+        <a href="{% url 'company_home' %}" class="nav-item" title="الإعدادات">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+            <span class="nav-label">الإعدادات</span>
+        </a>
+        <a href="{% url 'employee_logout' %}" class="nav-item logout-item" title="تسجيل الخروج">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            <span class="nav-label">خروج</span>
+        </a>
+        <div class="sidebar-user">
+            <div class="user-avatar">{{ request.user.username|first|upper }}</div>
+            <div class="user-info">
+                <div class="user-name">{{ request.user.get_full_name|default:request.user.username }}</div>
+                <div class="user-role">موظف</div>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<!-- ═══ MAIN ═══ -->
+<main class="main-content">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+        <div class="topbar-greeting">
+            <h1>إدارة المهام</h1>
+            <p>تتبّع وإدارة جميع مهام المشاريع</p>
+        </div>
+        <div class="topbar-actions">
+            <div class="search-box">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" id="searchInput" placeholder="بحث في المهام..." value="{{ search }}">
+            </div>
+            <button class="btn-primary" id="btnAddTask">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                مهمة جديدة
+            </button>
+        </div>
+    </header>
+
+    <!-- STAT CARDS -->
+    <div class="tk-stats">
+        <div class="tk-stat">
+            <div class="tk-stat-icon tk-icon-all">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            </div>
+            <div class="tk-stat-body">
+                <span class="tk-stat-val">{{ total }}</span>
+                <span class="tk-stat-lbl">إجمالي المهام</span>
+            </div>
+        </div>
+        <div class="tk-stat tk-stat-blue">
+            <div class="tk-stat-icon tk-icon-todo">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <div class="tk-stat-body">
+                <span class="tk-stat-val">{{ todo }}</span>
+                <span class="tk-stat-lbl">لم تبدأ</span>
+            </div>
+        </div>
+        <div class="tk-stat tk-stat-gold">
+            <div class="tk-stat-icon tk-icon-prog">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div class="tk-stat-body">
+                <span class="tk-stat-val">{{ in_prog }}</span>
+                <span class="tk-stat-lbl">جارية</span>
+            </div>
+        </div>
+        <div class="tk-stat tk-stat-green">
+            <div class="tk-stat-icon tk-icon-done">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <div class="tk-stat-body">
+                <span class="tk-stat-val">{{ done }}</span>
+                <span class="tk-stat-lbl">مكتملة</span>
+            </div>
+        </div>
+        <div class="tk-stat tk-stat-red">
+            <div class="tk-stat-icon tk-icon-over">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+            <div class="tk-stat-body">
+                <span class="tk-stat-val">{{ overdue }}</span>
+                <span class="tk-stat-lbl">متأخرة</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- FILTERS -->
+    <div class="tk-filters">
+        <div class="tk-filter-tabs">
+            <button class="ftab {% if status_filter == 'todo' %}active{% endif %}" data-status="todo">لم تبدأ <span class="ftab-count">{{ todo }}</span></button>
+            <button class="ftab {% if status_filter == 'in_progress' %}active{% endif %}" data-status="in_progress">جارية <span class="ftab-count">{{ in_prog }}</span></button>
+            <button class="ftab {% if status_filter == 'done' %}active{% endif %}" data-status="done">مكتملة <span class="ftab-count">{{ done }}</span></button>
+        </div>
+        <div class="tk-filter-selects">
+            <select id="filterAssignee" onchange="applyFilters()">
+                <option value="">كل المسؤولين</option>
+                {% for u in users %}
+                <option value="{{ u.id }}" {% if assignee_filter == u.id|stringformat:"s" %}selected{% endif %}>{{ u.get_full_name|default:u.username }}</option>
+                {% endfor %}
+            </select>
+            <select id="filterPriority" onchange="applyFilters()">
+                <option value="">كل الأولويات</option>
+                <option value="urgent" {% if priority_filter == 'urgent' %}selected{% endif %}>عاجلة</option>
+                <option value="high"   {% if priority_filter == 'high'   %}selected{% endif %}>عالية</option>
+                <option value="medium" {% if priority_filter == 'medium' %}selected{% endif %}>متوسطة</option>
+                <option value="low"    {% if priority_filter == 'low'    %}selected{% endif %}>منخفضة</option>
+            </select>
+            <select id="filterProject" onchange="applyFilters()">
+                <option value="">كل المشاريع</option>
+                {% for p in projects %}
+                <option value="{{ p.id }}" {% if project_filter == p.id|stringformat:"s" %}selected{% endif %}>{{ p.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <!-- TASKS TABLE -->
+    <div class="tk-table-wrap">
+        {% if tasks %}
+        <table class="tk-table">
+            <thead>
+                <tr>
+                    <th>المهمة</th>
+                    <th>المشروع</th>
+                    <th>المسؤول</th>
+                    <th>الأولوية</th>
+                    <th>الحالة</th>
+                    <th>تاريخ الاستحقاق</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for task in tasks %}
+            <tr class="tk-row {% if task.is_overdue %}tk-row-overdue{% endif %}" id="tkrow-{{ task.id }}">
+                <td class="tk-title-cell">
+                    <div class="tk-check-wrap">
+                        <button class="tk-check {% if task.status == 'done' %}tk-checked{% endif %}" onclick="toggleStatus({{ task.id }}, '{{ task.status }}')" title="تغيير الحالة">
+                            {% if task.status == 'done' %}
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            {% endif %}
+                        </button>
+                    </div>
+                    <div class="tk-title-info">
+                        <span class="tk-title {% if task.status == 'done' %}tk-done-title{% endif %}">{{ task.title }}</span>
+                        {% if task.description %}
+                        <span class="tk-desc">{{ task.description|truncatechars:60 }}</span>
+                        {% endif %}
+                    </div>
+                </td>
+                <td>
+                    {% if task.project %}
+                    <a href="{% url 'project_detail' task.project.id %}" class="tk-project-link">
+                        <span class="tk-project-dot"></span>
+                        {{ task.project.name|truncatechars:30 }}
+                    </a>
+                    {% else %}
+                    <span class="tk-unassigned">—</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if task.assigned_to %}
+                    <div class="tk-user">
+                        <div class="tk-user-av">{{ task.assigned_to.username|first|upper }}</div>
+                        <span>{{ task.assigned_to.get_full_name|default:task.assigned_to.username }}</span>
+                    </div>
+                    {% else %}
+                    <span class="tk-unassigned">—</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <span class="tk-priority tk-p-{{ task.priority }}">
+                        {% if task.priority == 'urgent' %}عاجلة
+                        {% elif task.priority == 'high' %}عالية
+                        {% elif task.priority == 'medium' %}متوسطة
+                        {% else %}منخفضة{% endif %}
+                    </span>
+                </td>
+                <td>
+                    <span class="tk-status tk-s-{{ task.status }}">
+                        {% if task.status == 'todo' %}لم تبدأ
+                        {% elif task.status == 'in_progress' %}جارية
+                        {% else %}مكتملة{% endif %}
+                    </span>
+                </td>
+                <td>
+                    {% if task.due_date %}
+                    <span class="tk-due {% if task.is_overdue %}tk-due-late{% endif %}">
+                        {% if task.is_overdue %}
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+                        {% endif %}
+                        {{ task.due_date|date:"j/n/Y" }}{% if task.due_time %} — {{ task.due_time|time:"g:i A" }}{% endif %}
+                    </span>
+                    {% else %}
+                    <span class="tk-unassigned">—</span>
+                    {% endif %}
+                </td>
+                <td class="tk-actions-cell">
+                    <button class="tk-btn-edit" onclick="editTask({{ task.id }})" title="تعديل">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    </button>
+                    <button class="tk-btn-del" onclick="deleteTask({{ task.id }}, '{{ task.title|escapejs }}')" title="حذف">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="tk-empty">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            <p>لا توجد مهام{% if search or status_filter or priority_filter or project_filter or assignee_filter %} تطابق الفلتر{% endif %}</p>
+            <button class="btn-primary" onclick="openAddModal()">إضافة مهمة جديدة</button>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- PAGINATION -->
+    {% if page.paginator.num_pages > 1 %}
+    <div class="tk-pagination">
+        <span class="tk-page-info">{{ page.start_index }}–{{ page.end_index }} من {{ page.paginator.count }} مهمة</span>
+        <div class="tk-page-btns">
+            {% if page.has_previous %}
+            <a class="tk-page-btn" href="?{% for k,v in request.GET.items %}{% if k != 'page' %}{{ k }}={{ v }}&{% endif %}{% endfor %}page={{ page.previous_page_number }}">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            </a>
+            {% endif %}
+            {% for num in page.paginator.page_range %}
+                {% if page.number == num %}
+                <span class="tk-page-btn active">{{ num }}</span>
+                {% elif num >= page.number|add:"-2" and num <= page.number|add:"2" %}
+                <a class="tk-page-btn" href="?{% for k,v in request.GET.items %}{% if k != 'page' %}{{ k }}={{ v }}&{% endif %}{% endfor %}page={{ num }}">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+            {% if page.has_next %}
+            <a class="tk-page-btn" href="?{% for k,v in request.GET.items %}{% if k != 'page' %}{{ k }}={{ v }}&{% endif %}{% endfor %}page={{ page.next_page_number }}">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+</main>
+
+<!-- ═══ OVERLAY ═══ -->
+<div class="modal-overlay" id="modalOverlay"></div>
+
+<!-- ═══ ADD / EDIT PANEL ═══ -->
+<div class="modal-panel" id="modalPanel">
+    <div class="modal-header">
+        <h2 class="modal-title" id="modalTitle">مهمة جديدة</h2>
+        <button class="modal-close" id="modalClose">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form id="taskForm">
+            {% csrf_token %}
+            <input type="hidden" id="editId">
+
+            <div class="form-grid">
+                <div class="fg fg-full">
+                    <label>عنوان المهمة <span class="req">*</span></label>
+                    <input type="text" id="fTitle" name="title" required placeholder="وصف المهمة بإيجاز...">
+                </div>
+                <div class="fg fg-full">
+                    <label>المشروع</label>
+                    <select id="fProject" name="project">
+                        <option value="">— بدون مشروع —</option>
+                        {% for p in projects %}
+                        <option value="{{ p.id }}">{{ p.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="fg">
+                    <label>الحالة</label>
+                    <select id="fStatus" name="status">
+                        <option value="todo">لم تبدأ</option>
+                        <option value="in_progress">جارية</option>
+                        <option value="done">مكتملة</option>
+                    </select>
+                </div>
+                <div class="fg">
+                    <label>الأولوية</label>
+                    <select id="fPriority" name="priority">
+                        <option value="low">منخفضة</option>
+                        <option value="medium" selected>متوسطة</option>
+                        <option value="high">عالية</option>
+                        <option value="urgent">عاجلة</option>
+                    </select>
+                </div>
+                <div class="fg">
+                    <label>المسؤول</label>
+                    <select id="fAssigned" name="assigned_to">
+                        <option value="">— اختر موظفاً —</option>
+                        {% for u in users %}
+                        <option value="{{ u.id }}">{{ u.get_full_name|default:u.username }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="fg">
+                    <label>تاريخ الاستحقاق</label>
+                    <input type="date" id="fDue" name="due_date">
+                </div>
+                <div class="fg">
+                    <label>الوقت <span style="font-size:11px;color:var(--text-muted);font-weight:400">(اختياري)</span></label>
+                    <div style="display:flex;flex-direction:row-reverse;align-items:center;gap:6px">
+                        <select id="fTimeHour" name="due_time_hour" style="flex:2;min-width:0;padding:10px 6px;border:1px solid var(--earth-2);border-radius:10px;font-family:inherit;font-size:13px;background:var(--earth-3);color:var(--text);outline:none;direction:ltr;text-align:center">
+                            <option value="">--</option>
+                            <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+                            <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+                            <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+                            <option value="10">10</option><option value="11">11</option><option value="12">12</option>
+                        </select>
+                        <span style="font-size:16px;font-weight:700;color:var(--text-muted);flex-shrink:0">:</span>
+                        <select id="fTimeMin" name="due_time_min" style="flex:2;min-width:0;padding:10px 6px;border:1px solid var(--earth-2);border-radius:10px;font-family:inherit;font-size:13px;background:var(--earth-3);color:var(--text);outline:none;direction:ltr;text-align:center">
+                            <option value="">--</option>
+                            <option value="00">00</option><option value="15">15</option>
+                            <option value="30">30</option><option value="45">45</option>
+                        </select>
+                        <select id="fTimeAmpm" name="due_time_ampm" style="flex:1;min-width:0;padding:10px 6px;border:1px solid var(--earth-2);border-radius:10px;font-family:inherit;font-size:13px;background:var(--earth-3);color:var(--text);outline:none;direction:ltr;text-align:center">
+                            <option value="AM">ص</option>
+                            <option value="PM">م</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="fg fg-full">
+                    <label>تفاصيل المهمة</label>
+                    <textarea id="fDesc" name="description" rows="4" placeholder="وصف تفصيلي، خطوات التنفيذ، ملاحظات..."></textarea>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn-cancel" id="modalCancel">إلغاء</button>
+                <button type="submit" class="btn-save">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    حفظ المهمة
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ═══ DELETE MODAL ═══ -->
+<div class="modal-overlay" id="deleteOverlay"></div>
+<div class="delete-modal" id="deleteModal">
+    <div class="del-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+    </div>
+    <h3>حذف المهمة</h3>
+    <p>هل أنت متأكد من حذف مهمة "<strong id="delName"></strong>"؟ لا يمكن التراجع.</p>
+    <div class="del-actions">
+        <button class="btn-cancel" id="delCancel">إلغاء</button>
+        <button class="btn-danger" id="delConfirm">حذف</button>
+    </div>
+</div>
+
+<script>
+const CSRF        = '{{ csrf_token }}';
+const URL_LIST    = '{% url "task_list" %}';
+const URL_CREATE  = '{% url "task_list_create" %}';
+const STORAGE_KEY = 'sidebar_expanded';
+function getDetailUrl(id) { return `/projects/tasks/${id}/`; }
+function getEditUrl(id)   { return `/projects/tasks/${id}/edit/`; }
+function getDeleteUrl(id) { return `/projects/tasks/${id}/delete/`; }
+</script>
+<script src="{% static 'projects/js/tasks.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>عرض سعر — {{ quote.quote_number }}</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: 'Segoe UI', Tahoma, Arial, sans-serif; font-size:13px; color:#1a1a1a; background:#fff; direction:rtl; }
+.page { max-width:794px; margin:0 auto; padding:28px 32px; }
+
+/* ── Header ── */
+.header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0; }
+.header-right { display:flex; align-items:flex-start; gap:14px; }
+.logo-box img { height:70px; object-fit:contain; display:block; }
+.seller-info h1 { font-size:20px; font-weight:800; color:#c8a84b; margin-bottom:3px; }
+.seller-info p  { font-size:11px; color:#444; line-height:1.75; }
+.doc-label  { text-align:left; }
+.doc-label .title-ar { font-size:26px; font-weight:800; color:#1a1a1a; letter-spacing:.5px; }
+.doc-label .title-en { font-size:13px; color:#777; margin-top:2px; }
+.doc-label .doc-num  { font-size:13px; font-weight:700; color:#c8a84b; margin-top:4px; font-family:monospace; }
+
+/* ── Divider ── */
+.divider { height:3px; background:linear-gradient(90deg,#c8a84b,#e8d48a,#c8a84b); margin:14px 0; border-radius:2px; }
+
+/* ── Validity banner ── */
+.validity-box { background:#fffbeb; border:1.5px dashed #f59e0b; border-radius:8px; padding:10px 16px; margin-bottom:16px; text-align:center; font-size:12px; color:#92400e; font-weight:600; }
+
+/* ── Info grid ── */
+.info-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:18px; }
+.info-box  { background:#f8f5ee; border-radius:8px; padding:12px 14px; border-right:3px solid #c8a84b; }
+.info-box-title { font-size:10px; font-weight:800; color:#c8a84b; text-transform:uppercase; letter-spacing:.6px; margin-bottom:7px; }
+.info-row  { display:flex; gap:6px; font-size:12px; line-height:1.7; }
+.info-row .lbl { color:#888; min-width:90px; }
+.info-row .val { font-weight:600; color:#1a1a1a; }
+
+/* ── Status badge ── */
+.status-badge { display:inline-block; padding:3px 12px; border-radius:20px; font-size:11px; font-weight:700; }
+.s-draft    { background:rgba(100,116,139,.12); color:#64748b; }
+.s-sent     { background:rgba(59,130,246,.12);  color:#3b82f6; }
+.s-accepted { background:rgba(34,197,94,.12);   color:#22c55e; }
+.s-rejected { background:rgba(239,68,68,.12);   color:#ef4444; }
+.s-expired  { background:rgba(245,158,11,.12);  color:#f59e0b; }
+
+/* ── Table ── */
+.lines-table { width:100%; border-collapse:collapse; margin-bottom:16px; font-size:12px; }
+.lines-table thead tr { background:#c8a84b; color:#fff; }
+.lines-table thead th { padding:9px 11px; font-weight:700; text-align:right; }
+.lines-table tbody tr { border-bottom:1px solid #ede8db; }
+.lines-table tbody tr:last-child { border-bottom:none; }
+.lines-table tbody td { padding:9px 11px; }
+.lines-table tbody tr:nth-child(even) { background:#fbf9f4; }
+.line-total { font-weight:700; color:#c8a84b; }
+.line-num   { color:#bbb; font-size:10px; }
+
+/* ── Totals ── */
+.totals-section { display:flex; justify-content:flex-end; margin-bottom:20px; }
+.totals-table { width:280px; border-collapse:collapse; }
+.totals-table td { padding:6px 10px; font-size:12px; }
+.tot-label { color:#555; }
+.tot-val   { font-weight:600; text-align:left; }
+.tot-divider td { border-top:1px solid #ddd; }
+.tot-grand td { background:#c8a84b; color:#fff !important; font-size:14px; font-weight:800; padding:9px 10px; }
+.tot-discount td { color:#ef4444; }
+
+/* ── Notes box ── */
+.notes-box { background:#f8f5ee; border-radius:8px; padding:11px 14px; margin-bottom:18px; font-size:12px; color:#555; border-right:3px solid #ddd; }
+.notes-box .notes-lbl { font-size:10px; font-weight:800; color:#aaa; text-transform:uppercase; margin-bottom:4px; }
+
+/* ── Signatures ── */
+.signatures { display:grid; grid-template-columns:1fr 1fr; gap:40px; margin-top:30px; }
+.sig-box { text-align:center; }
+.sig-line { border-top:1px solid #bbb; padding-top:7px; margin-top:38px; font-size:11px; color:#666; }
+
+/* ── Footer ── */
+.footer { border-top:2px solid #ede8db; margin-top:20px; padding-top:10px; text-align:center; font-size:10px; color:#aaa; }
+
+/* ── VAT stamp ── */
+.vat-stamp { display:inline-block; background:#f8f5ee; border:1px solid #c8a84b; border-radius:6px; padding:3px 10px; font-size:11px; font-weight:700; color:#c8a84b; margin-top:4px; }
+
+@media print {
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    body { font-size:11px; }
+    .page { padding:14px 20px; }
+    @page { margin:.8cm; size:A4; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+    <!-- ── Header ── -->
+    <div class="header">
+        <div class="header-right">
+            {% if logo_b64 %}
+            <div class="logo-box"><img src="{{ logo_b64 }}" alt="شعار الشركة"></div>
+            {% endif %}
+            <div class="seller-info">
+                <h1>{{ company.company_name_ar|default:"" }}</h1>
+                {% if company.company_name_en %}<div style="font-size:12px;color:#888;margin-bottom:3px">{{ company.company_name_en }}</div>{% endif %}
+                <p>
+                    {% if company.address_street %}{{ company.address_street }}{% if company.address_district %}، {{ company.address_district }}{% endif %}{% if company.address_city %}، {{ company.address_city }}{% endif %}<br>{% endif %}
+                    {% if company.address_building_number %}مبنى رقم: {{ company.address_building_number }}{% if company.address_postal_code %} — الرمز البريدي: {{ company.address_postal_code }}{% endif %}<br>{% endif %}
+                    {% if company.pr_mobile %}هاتف: {{ company.pr_mobile }}<br>{% endif %}
+                    {% if company.pr_email %}بريد: {{ company.pr_email }}<br>{% endif %}
+                    {% if company.cr_number %}السجل التجاري: {{ company.cr_number }}<br>{% endif %}
+                    {% if company.tax_registration_number %}
+                    <span class="vat-stamp">الرقم الضريبي: {{ company.tax_registration_number }}</span>
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+        <div class="doc-label">
+            <div class="title-ar">عرض سعر</div>
+            <div class="title-en">Price Quotation</div>
+            <div class="doc-num">{{ quote.quote_number }}</div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ── Validity ── -->
+    {% if quote.valid_until %}
+    <div class="validity-box">
+        ⏳ هذا العرض صالح حتى تاريخ {{ quote.valid_until|date:"j/n/Y" }} — يرجى التواصل معنا لتأكيد القبول
+    </div>
+    {% endif %}
+
+    <!-- ── Info grid ── -->
+    <div class="info-grid">
+        <div class="info-box">
+            <div class="info-box-title">بيانات العميل — Bill To</div>
+            <div class="info-row"><span class="lbl">الاسم:</span><span class="val">{{ quote.client.name }}</span></div>
+            {% if quote.client.phone %}<div class="info-row"><span class="lbl">هاتف:</span><span class="val">{{ quote.client.phone }}</span></div>{% endif %}
+            {% if quote.client.email %}<div class="info-row"><span class="lbl">بريد:</span><span class="val">{{ quote.client.email }}</span></div>{% endif %}
+            {% if quote.client.tax_number %}<div class="info-row"><span class="lbl">الرقم الضريبي:</span><span class="val">{{ quote.client.tax_number }}</span></div>{% endif %}
+            {% if quote.project %}<div class="info-row"><span class="lbl">المشروع:</span><span class="val">{{ quote.project.name }}</span></div>{% endif %}
+        </div>
+        <div class="info-box">
+            <div class="info-box-title">بيانات العرض — Quote Details</div>
+            <div class="info-row"><span class="lbl">رقم العرض:</span><span class="val" style="font-family:monospace">{{ quote.quote_number }}</span></div>
+            <div class="info-row"><span class="lbl">تاريخ الإصدار:</span><span class="val">{{ quote.issue_date|date:"j/n/Y" }}</span></div>
+            {% if quote.valid_until %}<div class="info-row"><span class="lbl">صالح حتى:</span><span class="val">{{ quote.valid_until|date:"j/n/Y" }}</span></div>{% endif %}
+            <div class="info-row"><span class="lbl">الحالة:</span><span class="val">
+                {% if quote.status == 'draft' %}<span class="status-badge s-draft">مسودة</span>
+                {% elif quote.status == 'sent' %}<span class="status-badge s-sent">مُرسل</span>
+                {% elif quote.status == 'accepted' %}<span class="status-badge s-accepted">مقبول</span>
+                {% elif quote.status == 'rejected' %}<span class="status-badge s-rejected">مرفوض</span>
+                {% else %}<span class="status-badge s-expired">منتهي الصلاحية</span>{% endif %}
+            </span></div>
+            <div class="info-row"><span class="lbl">العملة:</span><span class="val">ريال سعودي (SAR)</span></div>
+        </div>
+    </div>
+
+    <!-- ── Lines ── -->
+    <table class="lines-table">
+        <thead>
+            <tr>
+                <th style="width:4%">#</th>
+                <th style="width:48%">الوصف / Description</th>
+                <th style="width:10%">الكمية</th>
+                <th style="width:10%">الوحدة</th>
+                <th style="width:14%">سعر الوحدة</th>
+                <th style="width:14%">الإجمالي</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for line in lines %}
+        <tr>
+            <td class="line-num">{{ forloop.counter }}</td>
+            <td>{{ line.description }}</td>
+            <td>{{ line.qty|floatformat:2 }}</td>
+            <td style="color:#888;font-size:11px">{{ line.unit|default:"—" }}</td>
+            <td>{{ line.unit_price|floatformat:2 }}</td>
+            <td class="line-total">{{ line.total|floatformat:2 }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6" style="text-align:center;color:#aaa;padding:18px">لا توجد بنود</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- ── Totals ── -->
+    <div class="totals-section">
+        <table class="totals-table">
+            <tr>
+                <td class="tot-label">المجموع قبل الضريبة</td>
+                <td class="tot-val">{{ quote.subtotal|floatformat:2 }} ر.س</td>
+            </tr>
+            {% if quote.discount_amount %}
+            <tr class="tot-discount">
+                <td class="tot-label">الخصم</td>
+                <td class="tot-val" style="color:#ef4444">− {{ quote.discount_amount|floatformat:2 }} ر.س</td>
+            </tr>
+            {% endif %}
+            <tr>
+                <td class="tot-label">ضريبة القيمة المضافة ({{ quote.vat_rate }}%)</td>
+                <td class="tot-val">{{ quote.vat_amount|floatformat:2 }} ر.س</td>
+            </tr>
+            <tr class="tot-divider"><td colspan="2"></td></tr>
+            <tr class="tot-grand">
+                <td class="tot-label" style="color:#fff">الإجمالي الكلي</td>
+                <td class="tot-val" style="color:#fff">{{ quote.total_amount|floatformat:2 }} ر.س</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- ── Notes ── -->
+    {% if quote.notes %}
+    <div class="notes-box">
+        <div class="notes-lbl">ملاحظات — Notes</div>
+        {{ quote.notes }}
+    </div>
+    {% endif %}
+
+    <!-- ── Signatures ── -->
+    <div class="signatures">
+        <div class="sig-box">
+            <div style="height:50px"></div>
+            <div class="sig-line">
+                <strong>المُصدِر / Seller</strong><br>
+                {{ company.company_name_ar|default:"" }}
+            </div>
+        </div>
+        <div class="sig-box">
+            <div style="height:50px"></div>
+            <div class="sig-line">
+                <strong>العميل / Buyer</strong><br>
+                {{ quote.client.name }}
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Footer ── -->
+    <div class="footer">
+        <p>
+            {{ company.company_name_ar|default:"" }}
+            {% if company.tax_registration_number %} · الرقم الضريبي: {{ company.tax_registration_number }}{% endif %}
+            {% if company.website_link %} · {{ company.website_link }}{% endif %}
+            · شكراً لتعاملكم معنا
+        </p>
+    </div>
+
+</div>
+<script>window.onload = function(){ window.print(); };</script>
+</body>
+</html>

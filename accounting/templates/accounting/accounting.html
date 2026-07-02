@@ -1,0 +1,741 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>المحاسبة – {{ company.company_name_ar|default:"باء البناء" }}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'projects/css/dashboard.css' %}">
+<link rel="stylesheet" href="{% static 'accounting/css/accounting.css' %}">
+</head>
+<body>
+
+<!-- ── Sidebar ── -->
+<aside class="sidebar" id="sidebar">
+    <button class="sidebar-toggle" id="sidebarToggle" title="توسيع / تقليص">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div class="sidebar-logo">
+        <div class="logo-mark">
+            {% if company and company.company_logo %}
+            <img src="{{ company.company_logo.url }}" alt="{{ company.company_name_ar|default:'النظام' }}">
+            {% else %}
+            <img src="{% static 'website/img/logo.png' %}" alt="باء البناء">
+            {% endif %}
+        </div>
+        <span class="logo-text">{{ company.company_name_ar|default:"باء البناء" }}</span>
+    </div>
+    <nav class="sidebar-nav">
+        <a href="{% url 'projects_dashboard' %}" class="nav-item" title="الرئيسية">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            <span class="nav-label">الرئيسية</span>
+        </a>
+        <a href="{% url 'client_list' %}" class="nav-item" title="العملاء">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span class="nav-label">العملاء</span>
+        </a>
+
+        <a href="{% url 'invoices_home' %}" class="nav-item" title="الفواتير">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            <span class="nav-label">الفواتير</span>
+        </a>
+        <a href="{% url 'project_list' %}" class="nav-item" title="المشاريع">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            <span class="nav-label">المشاريع</span>
+        </a>
+        <a href="{% url 'task_list' %}" class="nav-item" title="المهام">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            <span class="nav-label">المهام</span>
+        </a>
+        <a href="{% url 'inventory_home' %}" class="nav-item" title="المخزون">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+            <span class="nav-label">المخزون</span>
+        </a>
+        <a href="{% url 'accounting_home' %}" class="nav-item active" title="المحاسبة">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            <span class="nav-label">المحاسبة</span>
+        </a>        <a href="{% url 'marketing_home' %}" class="nav-item" title="التسويق">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            <span class="nav-label">التسويق</span>
+        </a>
+        <a href="{% url 'employee_list' %}" class="nav-item" title="الفريق">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span class="nav-label">الفريق</span>
+        </a>
+        <a href="{% url 'reports_home' %}" class="nav-item" title="التقارير"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span class="nav-label">التقارير</span></a>
+                <a href="{% url 'attendance_checkin' %}" class="nav-item" title="الحضور والانصراف"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span class="nav-label">الحضور والانصراف</span></a>
+                <a href="{% url 'namadhj_home' %}" class="nav-item" title="النماذج"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg><span class="nav-label">النماذج</span></a>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            <span class="nav-label">التقارير</span>
+        </a>
+    </nav>
+    <div class="sidebar-bottom">
+        <a href="{% url 'company_home' %}" class="nav-item" title="الإعدادات">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+            <span class="nav-label">الإعدادات</span>
+        </a>
+        <a href="{% url 'employee_logout' %}" class="nav-item logout-item" title="تسجيل الخروج">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            <span class="nav-label">خروج</span>
+        </a>
+        <div class="sidebar-user">
+            <div class="user-avatar">{{ request.user.get_full_name|default:request.user.username|slice:":1"|upper }}</div>
+            <div class="user-info">
+                <div class="user-name">{{ request.user.get_full_name|default:request.user.username }}</div>
+                <div class="user-role">مدير النظام</div>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<!-- ── Main ── -->
+<main class="main-content">
+    <header class="page-header">
+        <div class="page-header-info">
+            <h1 class="page-title">النظام المحاسبي</h1>
+            <p class="page-subtitle">دليل الحسابات، القيود، الرواتب، والأصول الثابتة</p>
+        </div>
+    </header>
+
+    <!-- stat cards -->
+    <div class="acc-stats">
+        <div class="acc-stat as-gold">
+            <div class="acc-stat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <div><div class="acc-stat-val">{{ stats.total_accounts }}</div><div class="acc-stat-lbl">حساب في دليل الحسابات</div></div>
+        </div>
+        <div class="acc-stat as-blue">
+            <div class="acc-stat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 7H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-3"/><path d="M9 15h3l8.5-8.5a1.5 1.5 0 0 0-3-3L9 12v3"/></svg></div>
+            <div><div class="acc-stat-val">{{ stats.total_journals }}</div><div class="acc-stat-lbl">قيد يومية</div></div>
+        </div>
+        <div class="acc-stat as-green">
+            <div class="acc-stat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg></div>
+            <div><div class="acc-stat-val">{{ stats.total_assets }}</div><div class="acc-stat-lbl">أصل ثابت</div></div>
+        </div>
+        <div class="acc-stat as-red">
+            <div class="acc-stat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M12 6v6l4 2"/></svg></div>
+            <div><div class="acc-stat-val">{{ stats.total_payrolls }}</div><div class="acc-stat-lbl">مسير رواتب</div></div>
+        </div>
+    </div>
+
+    <!-- tabs -->
+    <div class="acc-tabs">
+        <button class="acc-tab active" data-tab="accounts">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+            دليل الحسابات
+        </button>
+        <button class="acc-tab" data-tab="journals">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 7H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-3"/></svg>
+            قيود اليومية
+        </button>
+        <button class="acc-tab" data-tab="payroll">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            مسير الرواتب
+        </button>
+        <button class="acc-tab" data-tab="assets">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+            الأصول الثابتة
+        </button>
+        <button class="acc-tab" data-tab="periods">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            الفترات المحاسبية
+        </button>
+    </div>
+
+    <!-- ══ TAB: Accounts ══ -->
+    <div class="acc-section active" id="tab-accounts">
+        <div class="acc-toolbar">
+            <span style="font-size:13px;color:var(--text-muted)">{{ accounts|length }} حساب في دليل الحسابات</span>
+            <button class="btn-primary" onclick="openAddAccount()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                حساب جديد
+            </button>
+        </div>
+        <div class="acc-table-wrap">
+            <table class="acc-table">
+                <thead>
+                    <tr>
+                        <th>رقم الحساب</th>
+                        <th>اسم الحساب</th>
+                        <th>التصنيف</th>
+                        <th>الرصيد (ريال)</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for acc in accounts %}
+                <tr {% if not acc.parent %}class="acc-parent-row"{% endif %}>
+                    <td style="font-family:monospace;font-size:12px">{{ acc.code }}</td>
+                    <td class="{% if acc.parent %}acc-indent-1{% endif %}">{{ acc.name }}</td>
+                    <td>
+                        <span class="acc-cat cat-{{ acc.account_type.category }}">{{ acc.account_type.get_category_display }}</span>
+                    </td>
+                    <td>
+                        {% with bal=acc.get_balance %}
+                        <span class="{% if bal > 0 %}acc-debit{% elif bal < 0 %}acc-credit{% else %}acc-zero{% endif %}">
+                            {{ bal|floatformat:2 }}
+                        </span>
+                        {% endwith %}
+                    </td>
+                    <td style="white-space:nowrap">
+                        {% if not acc.is_system %}
+                        <button class="acc-btn" onclick="editAccount({{ acc.id }},'{{ acc.code }}','{{ acc.name }}',{{ acc.account_type_id }},{{ acc.parent_id|default:'null' }},'{{ acc.notes|escapejs }}')" title="تعديل">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                        </button>
+                        <button class="acc-btn acc-btn-danger" onclick="deleteAccount({{ acc.id }},'{{ acc.name }}')" title="حذف">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+                        </button>
+                        {% else %}
+                        <span style="font-size:11px;color:var(--text-muted)">نظام</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="pag-bar" id="pag-accounts"></div>
+    </div>
+
+    <!-- ══ TAB: Journals ══ -->
+    <div class="acc-section" id="tab-journals">
+        <div class="acc-toolbar">
+            <span style="font-size:13px;color:var(--text-muted)">{{ journals|length }} قيد حديث</span>
+            <button class="btn-primary" onclick="openAddJournal()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                قيد جديد
+            </button>
+        </div>
+        <div class="acc-table-wrap">
+            <table class="acc-table">
+                <thead>
+                    <tr>
+                        <th>رقم القيد</th>
+                        <th>التاريخ</th>
+                        <th>البيان</th>
+                        <th>النوع</th>
+                        <th>مجموع المدين</th>
+                        <th>الحالة</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for j in journals %}
+                <tr>
+                    <td style="font-family:monospace;font-size:12px">{{ j.number }}</td>
+                    <td style="font-size:12px;color:var(--text-muted)">{{ j.date }}</td>
+                    <td>{{ j.description }}</td>
+                    <td><span style="font-size:12px;color:var(--text-muted)">{{ j.get_source_type_display }}</span></td>
+                    <td class="acc-debit">{{ j.get_total_debit|floatformat:2 }}</td>
+                    <td>
+                        {% if j.is_posted %}<span class="j-posted">معتمد</span>{% else %}<span class="j-draft">مسودة</span>{% endif %}
+                    </td>
+                    <td style="white-space:nowrap">
+                        <button class="acc-btn" onclick="viewJournal({{ j.id }})" title="عرض">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </button>
+                        {% if not j.is_posted %}
+                        <button class="acc-btn acc-btn-success" onclick="postJournal({{ j.id }})" title="اعتماد">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                        </button>
+                        <button class="acc-btn acc-btn-danger" onclick="deleteJournal({{ j.id }},'{{ j.number }}')" title="حذف">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+                        </button>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="7"><div class="acc-empty"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 7H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-3"/></svg><p>لا توجد قيود بعد</p></div></td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="pag-bar" id="pag-journals"></div>
+    </div>
+
+    <!-- ══ TAB: Payroll ══ -->
+    <div class="acc-section" id="tab-payroll">
+        <div class="acc-toolbar">
+            <span style="font-size:13px;color:var(--text-muted)">مسيرات الرواتب الشهرية</span>
+            <button class="btn-primary" onclick="openAddPayroll()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                مسير رواتب جديد
+            </button>
+        </div>
+        <div class="acc-table-wrap">
+            <table class="acc-table">
+                <thead>
+                    <tr>
+                        <th>الفترة</th>
+                        <th>إجمالي الرواتب (ريال)</th>
+                        <th>صافي المدفوع (ريال)</th>
+                        <th>الحالة</th>
+                        <th>تاريخ الإنشاء</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for pr in payroll_runs %}
+                <tr>
+                    <td style="font-weight:600">{{ pr.year }}/{{ pr.month|stringformat:"02d" }}</td>
+                    <td class="acc-debit">{{ pr.total_gross|floatformat:2 }}</td>
+                    <td>{{ pr.total_net|floatformat:2 }}</td>
+                    <td>
+                        {% if pr.status == 'draft' %}<span class="pr-draft">مسودة</span>
+                        {% elif pr.status == 'posted' %}<span class="pr-posted">مرحّل</span>
+                        {% else %}<span class="pr-void">ملغى</span>{% endif %}
+                    </td>
+                    <td style="font-size:12px;color:var(--text-muted)">{{ pr.created_at|date:"j/n/Y" }}</td>
+                    <td style="white-space:nowrap">
+                        <button class="acc-btn" onclick="viewPayroll({{ pr.id }})" title="عرض">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </button>
+                        {% if pr.status == 'draft' %}
+                        <button class="acc-btn acc-btn-success" onclick="postPayroll({{ pr.id }})" title="ترحيل">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                        </button>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="6"><div class="acc-empty"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><p>لا توجد مسيرات بعد</p></div></td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="pag-bar" id="pag-payroll"></div>
+    </div>
+
+    <!-- ══ TAB: Assets ══ -->
+    <div class="acc-section" id="tab-assets">
+        <div class="acc-toolbar">
+            <span style="font-size:13px;color:var(--text-muted)">{{ fixed_assets|length }} أصل ثابت</span>
+            <button class="btn-primary" onclick="openAddAsset()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                أصل جديد
+            </button>
+        </div>
+        <div class="acc-table-wrap">
+            <table class="acc-table">
+                <thead>
+                    <tr>
+                        <th>اسم الأصل</th>
+                        <th>الفئة</th>
+                        <th>التكلفة (ريال)</th>
+                        <th>الاستهلاك الشهري (ريال)</th>
+                        <th>تاريخ الشراء</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for a in fixed_assets %}
+                <tr>
+                    <td style="font-weight:600">{{ a.name }}</td>
+                    <td><span style="font-size:12px;color:var(--text-muted)">{{ a.get_category_display }}</span></td>
+                    <td>{{ a.cost|floatformat:2 }}</td>
+                    <td class="acc-debit">{{ a.monthly_depreciation|floatformat:2 }}</td>
+                    <td style="font-size:12px;color:var(--text-muted)">{{ a.purchase_date }}</td>
+                    <td style="white-space:nowrap">
+                        <button class="acc-btn" onclick="editAsset({{ a.id }},'{{ a.name|escapejs }}','{{ a.category }}','{{ a.purchase_date }}',{{ a.cost }},{{ a.useful_life_months }},{{ a.salvage_value }},'{{ a.notes|escapejs }}')" title="تعديل">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                        </button>
+                        <button class="acc-btn acc-btn-danger" onclick="deleteAsset({{ a.id }},'{{ a.name }}')" title="حذف">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+                        </button>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="6"><div class="acc-empty"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg><p>لا توجد أصول ثابتة بعد</p></div></td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="pag-bar" id="pag-assets"></div>
+    </div>
+
+    <!-- ══ TAB: Periods ══ -->
+    <div class="acc-section" id="tab-periods">
+        <div class="acc-toolbar">
+            <span style="font-size:13px;color:var(--text-muted)">الفترات المحاسبية تحكم قفل القيود</span>
+            <button class="btn-primary" onclick="openAddPeriod()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                فترة جديدة
+            </button>
+        </div>
+        <div class="acc-table-wrap">
+            <table class="acc-table">
+                <thead>
+                    <tr><th>السنة</th><th>الشهر</th><th>الحالة</th><th></th></tr>
+                </thead>
+                <tbody>
+                {% for p in periods %}
+                <tr>
+                    <td>{{ p.year }}</td>
+                    <td>{{ p.month|stringformat:"02d" }}</td>
+                    <td>
+                        {% if p.status == 'open' %}<span class="per-open">مفتوحة</span>
+                        {% else %}<span class="per-closed">مقفلة</span>{% endif %}
+                    </td>
+                    <td>
+                        <button class="acc-btn {% if p.status == 'open' %}acc-btn-danger{% else %}acc-btn-success{% endif %}" onclick="togglePeriod({{ p.id }})" title="{% if p.status == 'open' %}إقفال{% else %}فتح{% endif %}">
+                            {% if p.status == 'open' %}
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                            {% else %}
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>
+                            {% endif %}
+                        </button>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="4" style="text-align:center;padding:32px;color:var(--text-muted)">لا توجد فترات</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="pag-bar" id="pag-periods"></div>
+    </div>
+</main>
+
+<!-- ══ Modal: Account ══ -->
+<div class="modal-overlay" id="accOverlay" onclick="closeAccModal()"></div>
+<div class="modal-panel" id="accPanel">
+    <div class="modal-header">
+        <h2 class="modal-title" id="accModalTitle">حساب جديد</h2>
+        <button class="modal-close" onclick="closeAccModal()">✕</button>
+    </div>
+    <div class="modal-body">
+        <form id="accForm">
+            {% csrf_token %}
+            <input type="hidden" id="editAccId">
+            <div class="form-grid">
+                <div class="fg">
+                    <label>رقم الحساب <span class="req">*</span></label>
+                    <input type="text" id="aCode" name="code" required placeholder="مثال: 1030">
+                </div>
+                <div class="fg">
+                    <label>اسم الحساب <span class="req">*</span></label>
+                    <input type="text" id="aName" name="name" required>
+                </div>
+                <div class="fg">
+                    <label>التصنيف <span class="req">*</span></label>
+                    <select id="aType" name="account_type" required>
+                        <option value="">اختر...</option>
+                        {% for at in account_types %}
+                        <option value="{{ at.id }}">{{ at.get_category_display }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="fg">
+                    <label>الحساب الرئيسي</label>
+                    <select id="aParent" name="parent">
+                        <option value="">بدون حساب رئيسي</option>
+                        {% for acc in accounts %}
+                        <option value="{{ acc.id }}">{{ acc.code }} - {{ acc.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="fg fg-full">
+                    <label>ملاحظات</label>
+                    <textarea id="aNotes" name="notes"></textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeAccModal()">إلغاء</button>
+        <button class="btn-save" onclick="submitAccount()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            حفظ
+        </button>
+    </div>
+</div>
+
+<!-- ══ Modal: Journal ══ -->
+<div class="modal-overlay" id="jOverlay" onclick="closeJModal()"></div>
+<div class="modal-panel modal-panel-wide" id="jPanel">
+    <div class="modal-header">
+        <h2 class="modal-title" id="jModalTitle">قيد يومية جديد</h2>
+        <button class="modal-close" onclick="closeJModal()">✕</button>
+    </div>
+    <div class="modal-body">
+        <form id="journalForm">
+            {% csrf_token %}
+            <div class="form-grid">
+                <div class="fg">
+                    <label>التاريخ <span class="req">*</span></label>
+                    <input type="date" name="date" required value="{% now 'Y-m-d' %}">
+                </div>
+                <div class="fg">
+                    <label>نوع القيد</label>
+                    <select name="source_type">
+                        <option value="manual">قيد يدوي</option>
+                        <option value="invoice">فاتورة</option>
+                        <option value="receipt">سند قبض</option>
+                        <option value="purchase">مشتريات</option>
+                        <option value="payment">دفعة</option>
+                        <option value="payroll">رواتب</option>
+                        <option value="depreciation">استهلاك</option>
+                    </select>
+                </div>
+                <div class="fg">
+                    <label>مركز التكلفة</label>
+                    <select name="cost_center">
+                        <option value="">—</option>
+                        {% for cc in cost_centers %}
+                        <option value="{{ cc.id }}">{{ cc.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="fg fg-full">
+                    <label>البيان <span class="req">*</span></label>
+                    <input type="text" name="description" required placeholder="وصف موجز للقيد">
+                </div>
+            </div>
+
+            <div style="margin-top:20px;font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:8px">سطور القيد</div>
+            <table class="j-lines">
+                <thead>
+                    <tr>
+                        <th style="width:38%">الحساب</th>
+                        <th style="width:18%">مدين (ريال)</th>
+                        <th style="width:18%">دائن (ريال)</th>
+                        <th style="width:20%">ملاحظة</th>
+                        <th style="width:6%"></th>
+                    </tr>
+                </thead>
+                <tbody id="jLinesBody"></tbody>
+            </table>
+            <button type="button" class="j-add-line" onclick="addJournalLine()">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                إضافة سطر
+            </button>
+            <div class="j-totals">
+                <span>إجمالي المدين: <span id="jTotalDebit" class="acc-debit">0.00</span> ريال</span>
+                <span>إجمالي الدائن: <span id="jTotalCredit" class="acc-credit">0.00</span> ريال</span>
+                <span id="jBalanceStatus" class="j-unbalanced">✗ غير متوازن</span>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeJModal()">إلغاء</button>
+        <button class="btn-save" onclick="submitJournal()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            حفظ مسودة
+        </button>
+    </div>
+</div>
+
+<!-- ══ Modal: Journal View ══ -->
+<div class="modal-overlay" id="jViewOverlay" onclick="closeJViewModal()"></div>
+<div class="modal-panel" id="jViewPanel">
+    <div class="modal-header">
+        <h2 class="modal-title">تفاصيل القيد</h2>
+        <button class="modal-close" onclick="closeJViewModal()">✕</button>
+    </div>
+    <div class="modal-body" id="jViewBody"></div>
+</div>
+
+<!-- ══ Modal: Asset ══ -->
+<div class="modal-overlay" id="assetOverlay" onclick="closeAssetModal()"></div>
+<div class="modal-panel" id="assetPanel">
+    <div class="modal-header">
+        <h2 class="modal-title" id="assetModalTitle">أصل ثابت جديد</h2>
+        <button class="modal-close" onclick="closeAssetModal()">✕</button>
+    </div>
+    <div class="modal-body">
+        <form id="assetForm">
+            {% csrf_token %}
+            <input type="hidden" id="editAssetId">
+            <div class="form-grid">
+                <div class="fg fg-full">
+                    <label>اسم الأصل <span class="req">*</span></label>
+                    <input type="text" id="asName" name="name" required placeholder="مثال: حفار كاتربيلر 320">
+                </div>
+                <div class="fg">
+                    <label>الفئة <span class="req">*</span></label>
+                    <select id="asCategory" name="category" required>
+                        <option value="heavy_equipment">معدات ثقيلة</option>
+                        <option value="vehicles">مركبات</option>
+                        <option value="tools">أدوات وعدد</option>
+                        <option value="it_equipment">معدات تقنية</option>
+                        <option value="furniture">أثاث</option>
+                        <option value="other">أخرى</option>
+                    </select>
+                </div>
+                <div class="fg">
+                    <label>تاريخ الشراء <span class="req">*</span></label>
+                    <input type="date" id="asPurchaseDate" name="purchase_date" required>
+                </div>
+                <div class="fg">
+                    <label>التكلفة الأصلية (ريال) <span class="req">*</span></label>
+                    <input type="number" id="asCost" name="cost" required min="0" step="0.01">
+                </div>
+                <div class="fg">
+                    <label>العمر الافتراضي (أشهر) <span class="req">*</span></label>
+                    <input type="number" id="asLife" name="useful_life_months" required min="1">
+                </div>
+                <div class="fg">
+                    <label>القيمة التخريدية (ريال)</label>
+                    <input type="number" id="asSalvage" name="salvage_value" min="0" step="0.01" value="0">
+                </div>
+                <div class="fg">
+                    <label>مركز التكلفة</label>
+                    <select name="cost_center">
+                        <option value="">—</option>
+                        {% for cc in cost_centers %}
+                        <option value="{{ cc.id }}">{{ cc.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="fg fg-full">
+                    <label>ملاحظات</label>
+                    <textarea id="asNotes" name="notes"></textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeAssetModal()">إلغاء</button>
+        <button class="btn-save" onclick="submitAsset()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            حفظ
+        </button>
+    </div>
+</div>
+
+<!-- ══ Modal: Payroll ══ -->
+<div class="modal-overlay" id="payrollOverlay" onclick="closePayrollModal()"></div>
+<div class="modal-panel modal-panel-wide" id="payrollPanel">
+    <div class="modal-header">
+        <h2 class="modal-title">مسير رواتب جديد</h2>
+        <button class="modal-close" onclick="closePayrollModal()">✕</button>
+    </div>
+    <div class="modal-body">
+        <form id="payrollForm">
+            {% csrf_token %}
+            <div class="form-grid">
+                <div class="fg">
+                    <label>السنة <span class="req">*</span></label>
+                    <input type="number" name="year" required value="{% now 'Y' %}" min="2020" max="2100">
+                </div>
+                <div class="fg">
+                    <label>الشهر <span class="req">*</span></label>
+                    <select name="month" required>
+                        <option value="1">يناير</option><option value="2">فبراير</option>
+                        <option value="3">مارس</option><option value="4">أبريل</option>
+                        <option value="5">مايو</option><option value="6">يونيو</option>
+                        <option value="7">يوليو</option><option value="8">أغسطس</option>
+                        <option value="9">سبتمبر</option><option value="10">أكتوبر</option>
+                        <option value="11">نوفمبر</option><option value="12">ديسمبر</option>
+                    </select>
+                </div>
+                <div class="fg fg-full">
+                    <label>ملاحظات</label>
+                    <input type="text" name="notes" placeholder="اختياري">
+                </div>
+            </div>
+            <div style="margin-top:20px;font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:8px">الموظفون</div>
+            <div style="overflow-x:auto">
+                <table class="pr-lines">
+                    <thead>
+                        <tr>
+                            <th style="width:20%">الموظف</th>
+                            <th>الراتب الأساسي</th>
+                            <th>البدلات</th>
+                            <th>الاستقطاع</th>
+                            <th>سبب الاستقطاع</th>
+                            <th>البونص</th>
+                            <th>سبب البونص</th>
+                        </tr>
+                    </thead>
+                    <tbody id="prLinesBody"></tbody>
+                </table>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn-cancel" onclick="closePayrollModal()">إلغاء</button>
+        <button class="btn-save" onclick="submitPayroll()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            حفظ المسير
+        </button>
+    </div>
+</div>
+
+<!-- ══ Modal: Payroll View ══ -->
+<div class="modal-overlay" id="prViewOverlay" onclick="closePrViewModal()"></div>
+<div class="modal-panel modal-panel-wide" id="prViewPanel">
+    <div class="modal-header">
+        <h2 class="modal-title">تفاصيل مسير الرواتب</h2>
+        <button class="modal-close" onclick="closePrViewModal()">✕</button>
+    </div>
+    <div class="modal-body" id="prViewBody"></div>
+</div>
+
+<!-- ══ Modal: Period ══ -->
+<div class="modal-overlay" id="periodOverlay" onclick="closePeriodModal()"></div>
+<div class="modal-panel" id="periodPanel">
+    <div class="modal-header">
+        <h2 class="modal-title">فترة محاسبية جديدة</h2>
+        <button class="modal-close" onclick="closePeriodModal()">✕</button>
+    </div>
+    <div class="modal-body">
+        <form id="periodForm">
+            {% csrf_token %}
+            <div class="form-grid">
+                <div class="fg">
+                    <label>السنة <span class="req">*</span></label>
+                    <input type="number" name="year" required value="{% now 'Y' %}" min="2020" max="2100">
+                </div>
+                <div class="fg">
+                    <label>الشهر <span class="req">*</span></label>
+                    <select name="month" required>
+                        {% for m in "123456789101112"|make_list %}{% endfor %}
+                        <option value="1">1 — يناير</option><option value="2">2 — فبراير</option>
+                        <option value="3">3 — مارس</option><option value="4">4 — أبريل</option>
+                        <option value="5">5 — مايو</option><option value="6">6 — يونيو</option>
+                        <option value="7">7 — يوليو</option><option value="8">8 — أغسطس</option>
+                        <option value="9">9 — سبتمبر</option><option value="10">10 — أكتوبر</option>
+                        <option value="11">11 — نوفمبر</option><option value="12">12 — ديسمبر</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn-cancel" onclick="closePeriodModal()">إلغاء</button>
+        <button class="btn-save" onclick="submitPeriod()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            إضافة
+        </button>
+    </div>
+</div>
+
+<!-- ══ Delete confirm ══ -->
+<div class="modal-overlay" id="delOverlay"></div>
+<div class="delete-modal" id="delModal">
+    <div class="del-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></div>
+    <h3>تأكيد الحذف</h3>
+    <p>هل أنت متأكد من حذف <strong id="delName"></strong>؟</p>
+    <div class="del-actions">
+        <button class="btn-cancel" id="delCancelBtn">إلغاء</button>
+        <button class="btn-danger" id="delConfirmBtn">حذف</button>
+    </div>
+</div>
+
+<script>
+const CSRF               = '{{ csrf_token }}';
+const URL_ACC_CREATE     = '{% url "acc_account_create" %}';
+const URL_JOURNAL_CREATE = '{% url "acc_journal_create" %}';
+const URL_ASSET_CREATE   = '{% url "acc_asset_create" %}';
+const URL_PAYROLL_CREATE = '{% url "acc_payroll_create" %}';
+const URL_PERIOD_CREATE  = '{% url "acc_period_create" %}';
+
+const ACCOUNTS_OPTIONS = `{% for acc in accounts %}<option value="{{ acc.id }}">{{ acc.code }} — {{ acc.name }}</option>{% endfor %}`;
+
+const EMPLOYEES = [{% for emp in employees %}{"id":{{ emp.id }},"name":"{{ emp.full_name }}"}{% if not forloop.last %},{% endif %}{% endfor %}];
+</script>
+<script src="{% static 'accounting/js/accounting.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,542 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>العملاء – {{ company.company_name_ar|default:"باء البناء" }}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'projects/css/dashboard.css' %}">
+<link rel="stylesheet" href="{% static 'clients/css/clients.css' %}">
+</head>
+<body>
+
+<!-- ── sidebar ── -->
+<aside class="sidebar" id="sidebar">
+    <button class="sidebar-toggle" id="sidebarToggle" title="توسيع / تقليص">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="15 18 9 12 15 6"/>
+        </svg>
+    </button>
+    <div class="sidebar-logo">
+        <div class="logo-mark">
+            {% if company and company.company_logo %}
+            <img src="{{ company.company_logo.url }}" alt="{{ company.company_name_ar|default:'النظام' }}">
+            {% else %}
+            <img src="{% static 'website/img/logo.png' %}" alt="باء البناء">
+            {% endif %}
+        </div>
+        <span class="logo-text">{{ company.company_name_ar|default:"باء البناء" }}</span>
+    </div>
+    <nav class="sidebar-nav">
+        <a href="{% url 'projects_dashboard' %}" class="nav-item" title="الرئيسية">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+                <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+            </svg>
+            <span class="nav-label">الرئيسية</span>
+        </a>
+        <a href="{% url 'client_list' %}" class="nav-item active" title="العملاء">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+            </svg>
+            <span class="nav-label">العملاء</span>
+        </a>
+
+        <a href="{% url 'invoices_home' %}" class="nav-item" title="الفواتير">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            <span class="nav-label">الفواتير</span>
+        </a>
+        <a href="{% url 'project_list' %}" class="nav-item" title="المشاريع">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+            </svg>
+            <span class="nav-label">المشاريع</span>
+        </a>
+        <a href="{% url 'task_list' %}" class="nav-item" title="المهام">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 11 12 14 22 4"/>
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+            </svg>
+            <span class="nav-label">المهام</span>
+        </a>
+        <a href="{% url 'inventory_home' %}" class="nav-item" title="المخزون">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+            <span class="nav-label">المخزون</span>
+        </a>
+        <a href="{% url 'accounting_home' %}" class="nav-item" title="المحاسبة">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            <span class="nav-label">المحاسبة</span>
+        </a>        <a href="{% url 'marketing_home' %}" class="nav-item" title="التسويق">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            <span class="nav-label">التسويق</span>
+        </a>
+        <a href="{% url 'employee_list' %}" class="nav-item" title="الفريق">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+            <span class="nav-label">الفريق</span>
+        </a>
+        <a href="{% url 'reports_home' %}" class="nav-item" title="التقارير"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span class="nav-label">التقارير</span></a>
+                <a href="{% url 'attendance_checkin' %}" class="nav-item" title="الحضور والانصراف"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span class="nav-label">الحضور والانصراف</span></a>
+                <a href="{% url 'namadhj_home' %}" class="nav-item" title="النماذج"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg><span class="nav-label">النماذج</span></a>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/>
+                <line x1="6" y1="20" x2="6" y2="14"/>
+            </svg>
+            <span class="nav-label">التقارير</span>
+        </a>
+    </nav>
+    <div class="sidebar-bottom">
+        <a href="{% url 'company_home' %}" class="nav-item" title="الإعدادات">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/>
+            </svg>
+            <span class="nav-label">الإعدادات</span>
+        </a>
+        <a href="{% url 'employee_logout' %}" class="nav-item logout-item" title="تسجيل الخروج">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                <polyline points="16 17 21 12 16 7"/>
+                <line x1="21" y1="12" x2="9" y2="12"/>
+            </svg>
+            <span class="nav-label">خروج</span>
+        </a>
+        <div class="sidebar-user">
+            <div class="user-avatar">{{ request.user.username|first|upper }}</div>
+            <div class="user-info">
+                <div class="user-name">{{ request.user.get_full_name|default:request.user.username }}</div>
+                <div class="user-role">موظف</div>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<!-- ── main ── -->
+<main class="main-content">
+
+    <!-- header -->
+    <div class="page-header">
+        <div class="page-title">
+            <h1>العملاء</h1>
+            <p>إدارة بيانات العملاء والشركات</p>
+        </div>
+        <button class="btn-add" onclick="openAddModal()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            إضافة عميل
+        </button>
+    </div>
+
+    <!-- stats -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                    <circle cx="9" cy="7" r="4"/>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+            </div>
+            <div class="stat-info">
+                <div class="stat-num">{{ total }}</div>
+                <div class="stat-label">إجمالي العملاء</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+            </div>
+            <div class="stat-info">
+                <div class="stat-num">{{ individuals }}</div>
+                <div class="stat-label">أفراد</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="7" width="20" height="14" rx="2"/>
+                    <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+                </svg>
+            </div>
+            <div class="stat-info">
+                <div class="stat-num">{{ companies }}</div>
+                <div class="stat-label">شركات</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- toolbar -->
+    <div class="toolbar">
+        <div class="search-wrap">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input type="text" class="search-input" id="searchInput" placeholder="بحث عن عميل..." value="{{ q }}">
+        </div>
+        <div class="filter-tabs">
+            <a href="?{% if q %}q={{ q }}&{% endif %}" class="filter-tab {% if not type_filter %}active{% endif %}">الكل</a>
+            <a href="?{% if q %}q={{ q }}&{% endif %}type=individual" class="filter-tab {% if type_filter == 'individual' %}active{% endif %}">أفراد</a>
+            <a href="?{% if q %}q={{ q }}&{% endif %}type=company" class="filter-tab {% if type_filter == 'company' %}active{% endif %}">شركات</a>
+        </div>
+    </div>
+
+    <!-- grid -->
+    <div class="clients-grid">
+        {% for client in clients %}
+        <div class="client-card">
+            <div class="card-top">
+                <div class="client-avatar">
+                    {% if client.is_company and client.company_logo %}
+                        <img src="{{ client.company_logo.url }}" alt="{{ client.name }}">
+                    {% else %}
+                        {{ client.name|first }}
+                    {% endif %}
+                </div>
+                <div class="client-meta">
+                    <div class="client-name">{{ client.name }}</div>
+                    <span class="type-badge {{ client.client_type }}">
+                        {% if client.is_company %}
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <rect x="2" y="7" width="20" height="14" rx="2"/>
+                            <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+                        </svg>
+                        شركة
+                        {% else %}
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                        فرد
+                        {% endif %}
+                    </span>
+                </div>
+                <button class="card-menu-btn" onclick="openMenu(this, {{ client.id }})">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="5" r="1.5" fill="currentColor"/>
+                        <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+                        <circle cx="12" cy="19" r="1.5" fill="currentColor"/>
+                    </svg>
+                </button>
+                <div class="card-menu" id="menu-{{ client.id }}">
+                    <button class="menu-item" onclick="viewClient({{ client.id }})">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                        عرض
+                    </button>
+                    <button class="menu-item" onclick="editClient({{ client.id }})">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                        </svg>
+                        تعديل
+                    </button>
+                    <button class="menu-item danger" onclick="deleteClient({{ client.id }}, '{{ client.name|escapejs }}')">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="3 6 5 6 21 6"/>
+                            <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                            <path d="M10 11v6M14 11v6"/>
+                            <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+                        </svg>
+                        حذف
+                    </button>
+                </div>
+            </div>
+            <div class="card-info">
+                {% if client.phone %}
+                <div class="info-row">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.92a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16.92z"/>
+                    </svg>
+                    <span>{{ client.phone }}</span>
+                </div>
+                {% endif %}
+                {% if client.email %}
+                <div class="info-row">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                        <polyline points="22,6 12,13 2,6"/>
+                    </svg>
+                    <span>{{ client.email }}</span>
+                </div>
+                {% endif %}
+                {% if client.is_company and client.commercial_registration %}
+                <div class="info-row">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                    </svg>
+                    <span>س.ت: {{ client.commercial_registration }}</span>
+                </div>
+                {% endif %}
+                {% if not client.phone and not client.email %}
+                <div class="info-row">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                    </svg>
+                    <span>لا توجد بيانات تواصل</span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <div class="empty-state">
+            <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+            <h3>لا يوجد عملاء</h3>
+            <p>ابدأ بإضافة أول عميل</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if page.paginator.num_pages > 1 %}
+    <div class="pagination">
+        <span class="page-info">
+            عرض {{ page.start_index }}–{{ page.end_index }} من {{ page.paginator.count }} عميل
+        </span>
+        <div class="page-btns">
+            {% if page.has_previous %}
+            <a href="?{% if q %}q={{ q }}&{% endif %}{% if type_filter %}type={{ type_filter }}&{% endif %}page={{ page.previous_page_number }}" class="page-btn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            </a>
+            {% endif %}
+            {% for num in page.paginator.page_range %}
+                {% if num == page.number %}
+                <span class="page-btn active">{{ num }}</span>
+                {% elif num >= page.number|add:"-2" and num <= page.number|add:"2" %}
+                <a href="?{% if q %}q={{ q }}&{% endif %}{% if type_filter %}type={{ type_filter }}&{% endif %}page={{ num }}" class="page-btn">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+            {% if page.has_next %}
+            <a href="?{% if q %}q={{ q }}&{% endif %}{% if type_filter %}type={{ type_filter }}&{% endif %}page={{ page.next_page_number }}" class="page-btn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+</main>
+
+<!-- ══════════════════════════════════════════════════════════════
+     SLIDE PANEL – ADD / EDIT
+═══════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="panelOverlay"></div>
+<div class="modal-panel" id="clientPanel">
+    <div class="panel-header">
+        <span class="panel-title" id="panelTitle">إضافة عميل جديد</span>
+        <button class="panel-close" id="panelCloseBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+        </button>
+    </div>
+    <form class="panel-body" id="clientForm" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="hidden" id="formClientId" name="id">
+        <input type="hidden" id="removeLogo" name="remove_logo" value="0">
+
+        <!-- type toggle -->
+        <div class="type-toggle">
+            <label class="type-opt active" id="optIndividual">
+                <input type="radio" name="client_type" id="typeIndividual" value="individual" checked>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+                فرد
+            </label>
+            <label class="type-opt" id="optCompany">
+                <input type="radio" name="client_type" id="typeCompany" value="company">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="7" width="20" height="14" rx="2"/>
+                    <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+                </svg>
+                شركة
+            </label>
+        </div>
+
+        <!-- common fields -->
+        <div class="section-divider">البيانات الأساسية</div>
+        <div class="field-group">
+            <label class="field-label">الاسم <span class="lbl-req">إلزامي</span></label>
+            <input type="text" class="field-input" id="fName" name="name" placeholder="اسم العميل أو الشركة" required>
+        </div>
+        <div class="fields-row">
+            <div class="field-group">
+                <label class="field-label">رقم الجوال <span class="lbl-req">إلزامي</span></label>
+                <input type="text" class="field-input" id="fPhone" name="phone" placeholder="05XXXXXXXX" required pattern="05[0-9]{8}" title="يجب أن يبدأ الرقم بـ 05 ويتكون من 10 أرقام">
+            </div>
+            <div class="field-group">
+                <label class="field-label" id="lblEmail">البريد الإلكتروني <span class="lbl-opt">اختياري</span></label>
+                <input type="email" class="field-input" id="fEmail" name="email" placeholder="example@email.com">
+            </div>
+        </div>
+        <div class="field-group">
+            <label class="field-label" id="lblAddress">العنوان <span class="lbl-opt">اختياري</span></label>
+            <input type="text" class="field-input" id="fAddress" name="address" placeholder="المدينة، الحي">
+        </div>
+
+        <!-- individual fields -->
+        <div id="individualFields">
+            <div class="section-divider">بيانات الفرد</div>
+            <div class="field-group">
+                <label class="field-label">رقم الهوية الوطنية <span class="lbl-opt">اختياري</span></label>
+                <input type="text" class="field-input" id="fNationalId" name="national_id" placeholder="1XXXXXXXXX">
+            </div>
+        </div>
+
+        <!-- company fields -->
+        <div id="companyFields" style="display:none">
+            <div class="section-divider">بيانات الشركة</div>
+
+            <!-- logo upload -->
+            <div class="field-group">
+                <label class="field-label">شعار الشركة <span class="lbl-opt">اختياري</span></label>
+                <div class="logo-upload-area">
+                    <input type="file" id="logoInput" name="company_logo" accept="image/*">
+                    <img class="logo-preview" id="logoPreview" src="" alt="معاينة الشعار">
+                    <div class="upload-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="3" y="3" width="18" height="18" rx="3"/>
+                            <circle cx="8.5" cy="8.5" r="1.5"/>
+                            <polyline points="21 15 16 10 5 21"/>
+                        </svg>
+                    </div>
+                    <div class="upload-text">اسحب الصورة هنا أو <strong>اضغط للرفع</strong></div>
+                </div>
+                <button type="button" class="btn-remove-logo" id="removeLogo_btn">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                    إزالة الشعار
+                </button>
+            </div>
+
+            <div class="fields-row">
+                <div class="field-group">
+                    <label class="field-label">الرقم الضريبي <span class="lbl-req">إلزامي</span></label>
+                    <input type="text" class="field-input" id="fTaxNumber" name="tax_number" placeholder="3XXXXXXXXXXXXXXXXX">
+                </div>
+                <div class="field-group">
+                    <label class="field-label">السجل التجاري <span class="lbl-opt">اختياري</span></label>
+                    <input type="text" class="field-input" id="fCommercial" name="commercial_registration" placeholder="XXXXXXXXXX">
+                </div>
+            </div>
+            <div class="fields-row">
+                <div class="field-group">
+                    <label class="field-label">الشخص المسؤول <span class="lbl-opt">اختياري</span></label>
+                    <input type="text" class="field-input" id="fContactPerson" name="contact_person" placeholder="اسم المسؤول">
+                </div>
+                <div class="field-group">
+                    <label class="field-label">المسمى الوظيفي <span class="lbl-opt">اختياري</span></label>
+                    <input type="text" class="field-input" id="fContactTitle" name="contact_person_title" placeholder="المدير التنفيذي">
+                </div>
+            </div>
+            <div class="field-group">
+                <label class="field-label">الموقع الإلكتروني <span class="lbl-opt">اختياري</span></label>
+                <input type="url" class="field-input" id="fWebsite" name="website" placeholder="https://example.com">
+            </div>
+        </div>
+
+        <!-- notes -->
+        <div class="section-divider">ملاحظات</div>
+        <div class="field-group">
+            <label class="field-label">ملاحظات إضافية <span class="lbl-opt">اختياري</span></label>
+            <textarea class="field-textarea" id="fNotes" name="notes" placeholder="أي معلومات إضافية..."></textarea>
+        </div>
+    </form>
+    <div class="panel-footer">
+        <button class="btn-cancel" id="panelCancelBtn">إلغاء</button>
+        <button type="submit" form="clientForm" class="btn-save">
+            حفظ العميل
+        </button>
+    </div>
+</div>
+
+<!-- ══ VIEW MODAL ══ -->
+<div class="modal-overlay" id="viewOverlay" onclick="closeViewModal()" style="z-index:800"></div>
+<div id="viewModal" style="
+    position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.95);
+    width:min(520px,92vw);background:#fff;border-radius:20px;
+    box-shadow:0 24px 60px rgba(26,24,18,.18);z-index:801;
+    opacity:0;pointer-events:none;transition:all .22s cubic-bezier(.4,0,.2,1);
+    overflow:hidden;
+">
+    <!-- header -->
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--earth-2)">
+        <div style="display:flex;align-items:center;gap:14px">
+            <div id="vmAvatar" style="width:46px;height:46px;border-radius:14px;background:var(--gold-pale);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:var(--gold)"></div>
+            <div>
+                <div id="vmName" style="font-size:16px;font-weight:800;color:var(--text)"></div>
+                <div id="vmType" style="font-size:12px;color:var(--text-muted);margin-top:2px"></div>
+            </div>
+        </div>
+        <button onclick="closeViewModal()" style="background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:22px;line-height:1;padding:4px">×</button>
+    </div>
+    <!-- body -->
+    <div style="padding:20px 24px;display:flex;flex-direction:column;gap:12px;max-height:60vh;overflow-y:auto">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px" id="vmFields"></div>
+        <div id="vmNotesRow" style="display:none;flex-direction:column;gap:4px">
+            <span style="font-size:11px;font-weight:700;color:var(--text-muted)">ملاحظات</span>
+            <div id="vmNotes" style="font-size:13px;color:var(--text);background:var(--earth);border-radius:10px;padding:10px 14px;line-height:1.6"></div>
+        </div>
+    </div>
+    <!-- footer -->
+    <div style="padding:14px 24px;border-top:1px solid var(--earth-2);display:flex;justify-content:flex-end;gap:10px">
+        <button onclick="closeViewModal()" style="padding:9px 20px;border-radius:10px;border:1.5px solid var(--earth-2);background:none;color:var(--text-muted);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer">إغلاق</button>
+        <button id="vmEditBtn" style="padding:9px 20px;border-radius:10px;border:none;background:var(--gold);color:#fff;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer">تعديل</button>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     DELETE CONFIRMATION
+═══════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="deleteOverlay"></div>
+<div class="delete-modal" id="deleteModal">
+    <div class="delete-box">
+        <div class="delete-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"/>
+                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                <path d="M10 11v6M14 11v6"/>
+                <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+            </svg>
+        </div>
+        <h3>حذف العميل</h3>
+        <p>هل أنت متأكد من حذف <strong id="deleteClientName"></strong>؟ لا يمكن التراجع عن هذا الإجراء.</p>
+        <div class="delete-actions">
+            <button class="btn-cancel" id="btnCancelDelete">إلغاء</button>
+            <button class="btn-confirm-delete" id="btnConfirmDelete">حذف نهائياً</button>
+        </div>
+    </div>
+</div>
+
+<script>
+const CSRF       = '{{ csrf_token }}';
+const URL_CREATE = '{% url "client_create" %}';
+const URL_DETAIL = '{% url "client_detail" 0 %}';
+const URL_EDIT   = '{% url "client_edit" 0 %}';
+const URL_DELETE = '{% url "client_delete" 0 %}';
+</script>
+<script src="{% static 'clients/js/clients.js' %}"></script>
+</body>
+</html>

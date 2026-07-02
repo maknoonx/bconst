@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-y(58+5$m60v9mt&%)wc0oxv6%ojr)cm&6!2f^zb*eh(tia$=!-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -38,9 +38,22 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'cloudinary_storage',
     'django.contrib.staticfiles',
+    'cloudinary',
     'website',
-    'system'
+    'system',
+    'projects',
+    'clients',
+    'employees',
+    'accounting',
+    'inventory',
+    'marketing',
+    'company',
+    'invoices',
+    'reports',
+    'namadhj',
+    'attendance',
 ]
 
 MIDDLEWARE = [
@@ -67,6 +80,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'company.context_processors.company_settings',
             ],
         },
     },
@@ -80,8 +94,12 @@ WSGI_APPLICATION = 'bconstproject.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'railway',
+        'USER': 'postgres',
+        'PASSWORD': 'INGcLSJJbTyvaixufygziXipyClBsZjQ',
+        'HOST': 'hayabusa.proxy.rlwy.net',
+        'PORT': '16451',
     }
 }
 
@@ -123,15 +141,31 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',  # Global static directory (optional)
-]
+STATICFILES_DIRS = []
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'  # For production
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+WHITENOISE_AUTOREFRESH = True  # reload static files from disk on each request (dev mode)
 
 
-# Media files (user-uploaded)
+
+# Media files (user-uploaded) — stored on Cloudinary
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'ddfgomhhd',
+    'API_KEY': '167277254993451',
+    'API_SECRET': 'psAXMHXqI5MzjpR0K2krjJetCRU',
+    'PREFIX': '',
+}
+STORAGES = {
+    'default': {
+        'BACKEND': 'cloudinary_storage.storage.MediaCloudinaryStorage',
+    },
+    'staticfiles': {
+        'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage',
+    },
+}
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -144,12 +178,16 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+LOGIN_URL          = '/system/'
+LOGIN_REDIRECT_URL = '/projects/'
+LOGOUT_REDIRECT_URL = '/system/'
+
 
 # للاستخدام مع Gmail
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'b.construction.med@gmail.com'
-EMAIL_HOST_PASSWORD = 'your-app-password-here'  # استخدم App Password وليس كلمة المرور العادية
-DEFAULT_FROM_EMAIL = 'b.construction.med@gmail.com'
+EMAIL_HOST_USER = 'hinp.notify@gmail.com'
+EMAIL_HOST_PASSWORD = 'jdus jvct rvua fprb'
+DEFAULT_FROM_EMAIL = 'باء البناء <hinp.notify@gmail.com>'

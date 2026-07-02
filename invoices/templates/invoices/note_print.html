@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{ note.get_note_type_display }} {{ note.note_number }}</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: 'Segoe UI', Tahoma, Arial, sans-serif; font-size:13px; color:#1a1a1a; background:#fff; direction:rtl; }
+.page { max-width:600px; margin:0 auto; padding:32px; }
+
+/* Header */
+.header { display:flex; justify-content:space-between; align-items:flex-start; padding-bottom:20px; border-bottom:3px solid var(--accent); margin-bottom:20px; }
+.company-info h1 { font-size:20px; font-weight:800; color:#c8a84b; margin-bottom:4px; }
+.company-info p { font-size:11px; color:#555; line-height:1.7; }
+.note-title { text-align:left; }
+.note-title h2 { font-size:22px; font-weight:800; color:#1a1a1a; }
+.note-title .note-num { font-size:13px; font-weight:700; margin-top:4px; }
+
+/* Amount highlight — color per type */
+.amount-box { border-radius:12px; padding:20px; text-align:center; margin-bottom:20px; }
+.amount-box .amount-label { font-size:13px; opacity:0.85; margin-bottom:6px; }
+.amount-box .amount-val { font-size:32px; font-weight:800; }
+.amount-box .amount-currency { font-size:16px; margin-top:4px; opacity:0.85; }
+
+.type-credit  .amount-box { background:#16a34a; color:#fff; }
+.type-debit   .amount-box { background:#dc2626; color:#fff; }
+.type-refund  .amount-box { background:#6366f1; color:#fff; }
+
+.type-credit  .note-title .note-num { color:#16a34a; }
+.type-debit   .note-title .note-num { color:#dc2626; }
+.type-refund  .note-title .note-num { color:#6366f1; }
+
+.type-credit  .header { border-color:#16a34a; }
+.type-debit   .header { border-color:#dc2626; }
+.type-refund  .header { border-color:#6366f1; }
+
+/* Info box */
+.rec-box { background:#f8f5ee; border-radius:12px; padding:20px; margin-bottom:20px; }
+.rec-row { display:flex; justify-content:space-between; align-items:center; padding:7px 0; border-bottom:1px solid #e8e0cc; }
+.rec-row:last-child { border-bottom:none; }
+.rec-label { font-size:12px; color:#777; font-weight:600; }
+.rec-val { font-size:13px; font-weight:700; color:#1a1a1a; }
+
+/* Type badge */
+.type-badge { display:inline-block; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:700; }
+.badge-credit { background:rgba(22,163,74,.15); color:#16a34a; }
+.badge-debit  { background:rgba(220,38,38,.15); color:#dc2626; }
+.badge-refund { background:rgba(99,102,241,.15); color:#6366f1; }
+
+/* Signatures */
+.signatures { display:grid; grid-template-columns:1fr 1fr; gap:40px; margin-top:40px; }
+.sig-box { text-align:center; }
+.sig-line { border-top:1px solid #aaa; padding-top:8px; margin-top:40px; font-size:12px; color:#555; }
+.sig-title { font-size:12px; font-weight:700; color:#1a1a1a; }
+
+/* Footer */
+.footer { border-top:2px solid #eee; margin-top:24px; padding-top:12px; text-align:center; font-size:11px; color:#aaa; }
+
+@media print {
+    body { font-size:12px; }
+    .page { padding:20px; }
+    @page { margin:1cm; size:A5; }
+}
+</style>
+</head>
+<body>
+<div class="page type-{{ note.note_type }}">
+
+    <!-- Header -->
+    <div class="header">
+        <div class="company-info">
+            {% if company and company.company_logo %}
+            <img src="{{ company.company_logo.url }}" alt="شعار الشركة" style="height:50px;margin-bottom:6px;display:block">
+            {% endif %}
+            <h1>{{ company.company_name_ar|default:"" }}</h1>
+            {% if company %}
+            <p>
+                {% if company.address_city %}{{ company.address_city }}{% if company.address_district %} - {{ company.address_district }}{% endif %}<br>{% endif %}
+                {% if company.pr_mobile %}هاتف: {{ company.pr_mobile }}<br>{% endif %}
+                {% if company.tax_registration_number %}الرقم الضريبي: {{ company.tax_registration_number }}{% endif %}
+            </p>
+            {% endif %}
+        </div>
+        <div class="note-title">
+            <h2>{{ note.get_note_type_display }}</h2>
+            <div class="note-num">{{ note.note_number }}</div>
+        </div>
+    </div>
+
+    <!-- Amount highlight -->
+    <div class="amount-box">
+        <div class="amount-label">
+            {% if note.note_type == 'credit' %}مبلغ الإشعار الدائن
+            {% elif note.note_type == 'debit' %}مبلغ الإشعار المدين
+            {% else %}المبلغ المسترجع
+            {% endif %}
+        </div>
+        <div class="amount-val">{{ note.amount|floatformat:2 }}</div>
+        <div class="amount-currency">ريال سعودي</div>
+    </div>
+
+    <!-- Details -->
+    <div class="rec-box">
+        <div class="rec-row">
+            <span class="rec-label">رقم الإشعار</span>
+            <span class="rec-val" style="font-family:monospace">{{ note.note_number }}</span>
+        </div>
+        <div class="rec-row">
+            <span class="rec-label">نوع الإشعار</span>
+            <span class="rec-val">
+                {% if note.note_type == 'credit' %}<span class="type-badge badge-credit">إشعار دائن</span>
+                {% elif note.note_type == 'debit' %}<span class="type-badge badge-debit">إشعار مدين</span>
+                {% else %}<span class="type-badge badge-refund">استرجاع</span>{% endif %}
+            </span>
+        </div>
+        <div class="rec-row">
+            <span class="rec-label">التاريخ</span>
+            <span class="rec-val">{{ note.date|date:"j/n/Y" }}</span>
+        </div>
+        <div class="rec-row">
+            <span class="rec-label">العميل</span>
+            <span class="rec-val">{{ note.invoice.client.name }}</span>
+        </div>
+        <div class="rec-row">
+            <span class="rec-label">رقم الفاتورة</span>
+            <span class="rec-val" style="color:#c8a84b;font-family:monospace">{{ note.invoice.invoice_number }}</span>
+        </div>
+        <div class="rec-row">
+            <span class="rec-label">إجمالي الفاتورة</span>
+            <span class="rec-val">{{ note.invoice.total_amount|floatformat:2 }} ريال</span>
+        </div>
+        {% if note.note_type == 'credit' %}
+        <div class="rec-row">
+            <span class="rec-label">الإجمالي بعد الإشعار</span>
+            <span class="rec-val" style="color:#16a34a">{{ note.invoice.adjusted_total|floatformat:2 }} ريال</span>
+        </div>
+        {% elif note.note_type == 'refund' %}
+        <div class="rec-row">
+            <span class="rec-label">إجمالي المدفوع</span>
+            <span class="rec-val">{{ note.invoice.paid_amount|floatformat:2 }} ريال</span>
+        </div>
+        {% endif %}
+        {% if note.reason %}
+        <div class="rec-row">
+            <span class="rec-label">السبب / البيان</span>
+            <span class="rec-val" style="font-weight:400;color:#555;text-align:left;max-width:65%">{{ note.reason }}</span>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Signatures -->
+    <div class="signatures">
+        <div class="sig-box">
+            <div style="height:60px"></div>
+            <div class="sig-line">
+                <div class="sig-title">المُصدِر</div>
+                <div style="margin-top:4px;color:#aaa">{{ company.company_name_ar|default:"" }}</div>
+            </div>
+        </div>
+        <div class="sig-box">
+            <div style="height:60px"></div>
+            <div class="sig-line">
+                <div class="sig-title">العميل</div>
+                <div style="margin-top:4px;color:#aaa">{{ note.invoice.client.name }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>{{ note.get_note_type_display }} رقم {{ note.note_number }} · {{ company.company_name_ar|default:"" }} · {{ note.created_at|date:"j/n/Y H:i" }}</p>
+    </div>
+
+</div>
+<script>window.onload = function(){ window.print(); };</script>
+</body>
+</html>

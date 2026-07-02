@@ -1,0 +1,755 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>الفواتير – {{ company.company_name_ar|default:"باء البناء" }}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'projects/css/dashboard.css' %}">
+<link rel="stylesheet" href="{% static 'invoices/css/invoices.css' %}">
+</head>
+<body>
+
+<!-- ── Sidebar ── -->
+<aside class="sidebar" id="sidebar">
+    <button class="sidebar-toggle" id="sidebarToggle" title="توسيع / تقليص">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div class="sidebar-logo">
+        <div class="logo-mark">
+            {% if company and company.company_logo %}
+            <img src="{{ company.company_logo.url }}" alt="{{ company.company_name_ar|default:'النظام' }}">
+            {% else %}
+            <img src="{% static 'website/img/logo.png' %}" alt="باء البناء">
+            {% endif %}
+        </div>
+        <span class="logo-text">{{ company.company_name_ar|default:"باء البناء" }}</span>
+    </div>
+    <nav class="sidebar-nav">
+        <a href="{% url 'projects_dashboard' %}" class="nav-item" title="الرئيسية">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            <span class="nav-label">الرئيسية</span>
+        </a>
+        <a href="{% url 'client_list' %}" class="nav-item" title="العملاء">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span class="nav-label">العملاء</span>
+        </a>
+
+        <a href="{% url 'invoices_home' %}" class="nav-item active" title="الفواتير">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            <span class="nav-label">الفواتير</span>
+        </a>
+        <a href="{% url 'project_list' %}" class="nav-item" title="المشاريع">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            <span class="nav-label">المشاريع</span>
+        </a>
+        <a href="{% url 'task_list' %}" class="nav-item" title="المهام">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            <span class="nav-label">المهام</span>
+        </a>
+        <a href="{% url 'inventory_home' %}" class="nav-item" title="المخزون">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+            <span class="nav-label">المخزون</span>
+        </a>
+        <a href="{% url 'accounting_home' %}" class="nav-item" title="المحاسبة">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            <span class="nav-label">المحاسبة</span>
+        </a>        <a href="{% url 'marketing_home' %}" class="nav-item" title="التسويق">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            <span class="nav-label">التسويق</span>
+        </a>
+        <a href="{% url 'employee_list' %}" class="nav-item" title="الفريق">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span class="nav-label">الفريق</span>
+        </a>
+        <a href="{% url 'reports_home' %}" class="nav-item" title="التقارير"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span class="nav-label">التقارير</span></a>
+                <a href="{% url 'attendance_checkin' %}" class="nav-item" title="الحضور والانصراف"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span class="nav-label">الحضور والانصراف</span></a>
+                <a href="{% url 'namadhj_home' %}" class="nav-item" title="النماذج"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg><span class="nav-label">النماذج</span></a>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            <span class="nav-label">التقارير</span>
+        </a>
+    </nav>
+    <div class="sidebar-bottom">
+        <a href="{% url 'company_home' %}" class="nav-item" title="الإعدادات">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+            <span class="nav-label">الإعدادات</span>
+        </a>
+        <a href="{% url 'employee_logout' %}" class="nav-item logout-item" title="تسجيل الخروج">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            <span class="nav-label">خروج</span>
+        </a>
+        <div class="sidebar-user">
+            <div class="user-avatar">{{ request.user.get_full_name|default:request.user.username|slice:":1"|upper }}</div>
+            <div class="user-info">
+                <div class="user-name">{{ request.user.get_full_name|default:request.user.username }}</div>
+                <div class="user-role">مدير النظام</div>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<!-- ── Main ── -->
+<main class="main-content">
+    <header class="page-header">
+        <div class="page-header-info">
+            <h1 class="page-title">الفواتير وعروض الأسعار</h1>
+            <p class="page-subtitle">إدارة الفواتير، سندات القبض، وعروض الأسعار</p>
+        </div>
+        <div style="display:flex;gap:10px">
+            <a href="{% url 'quote_create' %}" id="btnNewQuote" style="display:none;text-decoration:none;align-items:center;gap:8px;padding:10px 20px;border-radius:12px;background:rgba(245,158,11,.15);border:1.5px solid var(--gold);color:var(--gold);font-weight:700;font-size:13px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                عرض سعر جديد
+            </a>
+            <a href="{% url 'inv_create' %}" id="btnNewInvoice" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:12px;background:var(--gold);color:#fff;font-weight:700;font-size:13px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                فاتورة جديدة
+            </a>
+        </div>
+    </header>
+
+    <!-- stat cards -->
+    <div class="inv-stats">
+        <div class="inv-stat is-gold">
+            <div class="inv-stat-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <div><div class="inv-stat-val">{{ total_invoices }}</div><div class="inv-stat-lbl">إجمالي الفواتير</div></div>
+        </div>
+        <div class="inv-stat is-blue">
+            <div class="inv-stat-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <div><div class="inv-stat-val">{{ total_draft }}</div><div class="inv-stat-lbl">مسودات</div></div>
+        </div>
+        <div class="inv-stat is-green">
+            <div class="inv-stat-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div><div class="inv-stat-val">{{ total_paid }}</div><div class="inv-stat-lbl">مدفوعة بالكامل</div></div>
+        </div>
+        <div class="inv-stat is-orange">
+            <div class="inv-stat-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+            <div><div class="inv-stat-val">{{ total_amount_all|floatformat:0 }}</div><div class="inv-stat-lbl">إجمالي المبالغ (ريال)</div></div>
+        </div>
+        <div class="inv-stat is-purple">
+            <div class="inv-stat-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            </div>
+            <div><div class="inv-stat-val">{{ total_quotes }}</div><div class="inv-stat-lbl">عروض الأسعار</div></div>
+        </div>
+    </div>
+
+    <!-- Main section tabs -->
+    <div class="inv-tabs" style="margin-bottom:0;border-bottom:2px solid var(--border)">
+        <button class="inv-tab active" data-section="invoices" onclick="switchSection('invoices')">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            الفواتير <span style="background:var(--gold);color:#fff;border-radius:20px;padding:1px 7px;font-size:10px;margin-right:4px">{{ total_invoices }}</span>
+        </button>
+        <button class="inv-tab" data-section="quotes" onclick="switchSection('quotes')">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            عروض الأسعار <span style="background:rgba(245,158,11,.15);color:var(--gold);border-radius:20px;padding:1px 7px;font-size:10px;margin-right:4px">{{ total_quotes }}</span>
+        </button>
+        <button class="inv-tab" data-section="services" onclick="switchSection('services')">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+            كتالوج الخدمات <span style="background:rgba(99,102,241,.15);color:#818cf8;border-radius:20px;padding:1px 7px;font-size:10px;margin-right:4px">{{ total_services }}</span>
+        </button>
+    </div>
+
+    <!-- ═══ Section: Invoices ═══ -->
+    <div id="sec-invoices" style="padding-top:16px">
+        <!-- filter tabs + search -->
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px">
+            <div class="inv-tabs" style="margin-bottom:0">
+                <button class="inv-tab active" data-filter="all">كل الفواتير</button>
+                <button class="inv-tab" data-filter="draft">المسودات</button>
+                <button class="inv-tab" data-filter="final">نهائية</button>
+                <button class="inv-tab" data-filter="partial_paid">مدفوعة جزئياً</button>
+                <button class="inv-tab" data-filter="fully_paid">مدفوعة بالكامل</button>
+                <button class="inv-tab" data-filter="cancelled">ملغاة</button>
+            </div>
+            <input type="text" id="invSearchBar" placeholder="🔍  بحث برقم الفاتورة أو العميل أو المشروع..."
+                style="background:var(--card-bg);border:1px solid var(--border);color:var(--text);padding:8px 14px;border-radius:10px;font-family:inherit;font-size:13px;width:300px;outline:none"
+                oninput="renderInvoices()">
+        </div>
+
+        <div class="inv-table-wrap">
+            <table class="inv-table" id="invoicesTable">
+                <thead>
+                    <tr>
+                        <th>رقم الفاتورة</th>
+                        <th>العميل</th>
+                        <th>المشروع</th>
+                        <th>تاريخ الإصدار</th>
+                        <th>الإجمالي</th>
+                        <th>المدفوع</th>
+                        <th>الحالة</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for inv in invoices %}
+                <tr data-status="{{ inv.status }}">
+                    <td style="font-family:monospace;font-weight:700">
+                        <a href="{% url 'inv_detail' inv.pk %}" style="color:var(--gold);text-decoration:none">{{ inv.invoice_number }}</a>
+                    </td>
+                    <td style="font-weight:600">{{ inv.client.name }}</td>
+                    <td style="font-size:12px;color:var(--text-muted)">{{ inv.project.name|default:"—" }}</td>
+                    <td style="font-size:12px;color:var(--text-muted)">{{ inv.issue_date|date:"j/n/Y" }}</td>
+                    <td style="font-weight:700;color:var(--gold)">{{ inv.total_amount|floatformat:2 }} ريال</td>
+                    <td style="font-size:12px">{{ inv.paid_amount|floatformat:2 }} ريال</td>
+                    <td>
+                        {% if inv.status == 'draft' %}<span class="inv-badge badge-draft">مسودة</span>
+                        {% elif inv.status == 'final' %}<span class="inv-badge badge-final">نهائية</span>
+                        {% elif inv.status == 'partial_paid' %}<span class="inv-badge badge-partial">مدفوعة جزئياً</span>
+                        {% elif inv.status == 'fully_paid' %}<span class="inv-badge badge-paid">مدفوعة بالكامل</span>
+                        {% elif inv.status == 'cancelled' %}<span class="inv-badge badge-cancelled">ملغاة</span>
+                        {% endif %}
+                    </td>
+                    <td style="white-space:nowrap">
+                        <a href="{% url 'inv_detail' inv.pk %}" class="inv-btn" title="عرض">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </a>
+                        <a href="{% url 'inv_edit' inv.pk %}" class="inv-btn" title="تعديل">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                        </a>
+                        <a href="{% url 'inv_print' inv.pk %}" class="inv-btn" title="طباعة" target="_blank">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                        </a>
+                        {% if inv.status == 'draft' %}
+                        <button class="inv-btn inv-btn-danger" title="حذف" onclick="deleteInvoice({{ inv.pk }},'{{ inv.invoice_number }}')">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+                        </button>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="8"><div class="inv-empty"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg><p>لا توجد فواتير بعد. أنشئ فاتورة جديدة.</p></div></td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div id="invPagination" style="display:flex;align-items:center;justify-content:space-between;padding:12px 4px;margin-top:8px"></div>
+    </div>
+
+    <!-- ═══ Section: Quotes ═══ -->
+    <div id="sec-quotes" style="display:none;padding-top:16px">
+        <!-- quote filter tabs + search -->
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px">
+            <div class="inv-tabs" style="margin-bottom:0">
+                <button class="inv-tab active" data-qfilter="all">كل العروض</button>
+                <button class="inv-tab" data-qfilter="draft">المسودات</button>
+                <button class="inv-tab" data-qfilter="sent">مُرسل</button>
+                <button class="inv-tab" data-qfilter="accepted">مقبول</button>
+                <button class="inv-tab" data-qfilter="rejected">مرفوض</button>
+                <button class="inv-tab" data-qfilter="expired">منتهي</button>
+            </div>
+            <input type="text" id="quoteSearchBar" placeholder="🔍  بحث برقم العرض أو العميل أو المشروع..."
+                style="background:var(--card-bg);border:1px solid var(--border);color:var(--text);padding:8px 14px;border-radius:10px;font-family:inherit;font-size:13px;width:300px;outline:none"
+                oninput="renderQuotes()">
+        </div>
+
+        <div class="inv-table-wrap">
+            <table class="inv-table" id="quotesTable">
+                <thead>
+                    <tr>
+                        <th>رقم العرض</th>
+                        <th>العميل</th>
+                        <th>المشروع</th>
+                        <th>تاريخ الإصدار</th>
+                        <th>صالح حتى</th>
+                        <th>الإجمالي</th>
+                        <th>الحالة</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for q in quotes %}
+                <tr data-qstatus="{{ q.status }}">
+                    <td style="font-family:monospace;font-weight:700">
+                        <a href="{% url 'quote_detail' q.pk %}" style="color:var(--gold);text-decoration:none">{{ q.quote_number }}</a>
+                    </td>
+                    <td style="font-weight:600">{{ q.client.name }}</td>
+                    <td style="font-size:12px;color:var(--text-muted)">{{ q.project.name|default:"—" }}</td>
+                    <td style="font-size:12px;color:var(--text-muted)">{{ q.issue_date|date:"j/n/Y" }}</td>
+                    <td style="font-size:12px;color:var(--text-muted)">{{ q.valid_until|date:"j/n/Y"|default:"—" }}</td>
+                    <td style="font-weight:700;color:var(--gold)">{{ q.total_amount|floatformat:2 }} ريال</td>
+                    <td>
+                        {% if q.status == 'draft' %}<span class="inv-badge badge-draft">مسودة</span>
+                        {% elif q.status == 'sent' %}<span class="inv-badge badge-final">مُرسل</span>
+                        {% elif q.status == 'accepted' %}<span class="inv-badge badge-paid">مقبول</span>
+                        {% elif q.status == 'rejected' %}<span class="inv-badge badge-cancelled">مرفوض</span>
+                        {% elif q.status == 'expired' %}<span class="inv-badge badge-partial">منتهي</span>
+                        {% endif %}
+                        {% if q.converted_to_invoice %}
+                        <span class="inv-badge" style="background:rgba(99,102,241,.15);color:#818cf8;margin-right:4px">→ فاتورة</span>
+                        {% endif %}
+                    </td>
+                    <td style="white-space:nowrap">
+                        <a href="{% url 'quote_detail' q.pk %}" class="inv-btn" title="عرض">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </a>
+                        <a href="{% url 'quote_edit' q.pk %}" class="inv-btn" title="تعديل">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                        </a>
+                        <a href="{% url 'quote_print' q.pk %}" class="inv-btn" title="طباعة" target="_blank">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                        </a>
+                        {% if q.status == 'draft' %}
+                        <button class="inv-btn inv-btn-danger" title="حذف" onclick="deleteQuote({{ q.pk }},'{{ q.quote_number }}')">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+                        </button>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="8"><div class="inv-empty"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><p>لا توجد عروض أسعار بعد. أنشئ عرضاً جديداً.</p></div></td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div id="quotePagination" style="display:flex;align-items:center;justify-content:space-between;padding:12px 4px;margin-top:8px"></div>
+    </div>
+
+    <!-- ═══ Section: Services ═══ -->
+    <div id="sec-services" style="display:none;padding-top:16px">
+
+        <!-- التصنيفات -->
+        <div style="background:#fff;border:1px solid var(--earth-2,#ECE6D9);border-radius:14px;padding:16px 20px;margin-bottom:16px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+                <span style="font-size:13px;font-weight:700;color:var(--text)">التصنيفات</span>
+                <div style="display:flex;gap:8px;align-items:center">
+                    <input type="text" id="newCatInput" placeholder="اسم التصنيف الجديد..."
+                        style="border:1px solid var(--earth-2,#ECE6D9);border-radius:8px;padding:6px 12px;font-family:inherit;font-size:12px;background:var(--earth,#F5F0E8);color:var(--text);outline:none;width:180px">
+                    <button onclick="addCategory()" style="padding:6px 14px;border-radius:8px;background:rgba(99,102,241,.12);border:1px solid #818cf8;color:#818cf8;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer">+ إضافة</button>
+                </div>
+            </div>
+            <div id="catChips" style="display:flex;flex-wrap:wrap;gap:8px">
+                {% for cat in categories %}
+                <span class="cat-chip" data-name="{{ cat.name }}">
+                    {{ cat.name }}
+                    <button onclick="deleteCategory('{{ cat.name|escapejs }}')" style="background:none;border:none;cursor:pointer;color:inherit;opacity:.6;font-size:14px;line-height:1;padding:0 0 0 4px">×</button>
+                </span>
+                {% empty %}
+                <span id="noCatsMsg" style="font-size:12px;color:var(--text-muted)">لا توجد تصنيفات بعد. أضف أول تصنيف.</span>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+            <div>
+                <input type="text" id="serviceSearchBar" placeholder="بحث في الخدمات..."
+                    style="background:var(--card-bg);border:1px solid var(--border);color:var(--text);padding:8px 14px;border-radius:10px;font-family:inherit;font-size:13px;width:260px"
+                    oninput="filterServices(this.value)">
+            </div>
+            <button onclick="openServicePanel()" style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:12px;background:rgba(99,102,241,.15);border:1.5px solid #818cf8;color:#818cf8;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                خدمة جديدة
+            </button>
+        </div>
+
+        <div class="inv-table-wrap">
+            <table class="inv-table" id="servicesTable">
+                <thead>
+                    <tr>
+                        <th>اسم الخدمة</th>
+                        <th>التصنيف</th>
+                        <th>الوحدة</th>
+                        <th>السعر الافتراضي</th>
+                        <th>الوصف</th>
+                        <th>الحالة</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="servicesTbody">
+                {% for svc in services %}
+                <tr data-svc="1" data-svcname="{{ svc.name|lower }}" data-svccategory="{{ svc.category|lower }}">
+                    <td style="font-weight:700">{{ svc.name }}</td>
+                    <td style="font-size:12px;color:var(--text-muted)">{{ svc.category|default:"—" }}</td>
+                    <td style="font-size:12px">{{ svc.unit|default:"—" }}</td>
+                    <td style="font-weight:700;color:var(--gold)">{{ svc.default_price|floatformat:2 }} ريال</td>
+                    <td style="font-size:12px;color:var(--text-muted)">{{ svc.description|truncatechars:50 }}</td>
+                    <td>
+                        {% if svc.is_active %}
+                        <span class="inv-badge" style="background:rgba(34,197,94,.1);color:#4ade80">نشطة</span>
+                        {% else %}
+                        <span class="inv-badge" style="background:rgba(100,116,139,.1);color:#94a3b8">موقوفة</span>
+                        {% endif %}
+                    </td>
+                    <td style="white-space:nowrap">
+                        <button class="inv-btn" title="تعديل"
+                            onclick="editService({{ svc.pk }},'{{ svc.name|escapejs }}','{{ svc.category|escapejs }}','{{ svc.unit|escapejs }}',{{ svc.default_price }},'{{ svc.description|escapejs }}',{{ svc.is_active|yesno:'true,false' }})">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                        </button>
+                        <button class="inv-btn inv-btn-danger" title="حذف" onclick="deleteService({{ svc.pk }},'{{ svc.name|escapejs }}')">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+                        </button>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="7"><div class="inv-empty">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+                    <p>لا توجد خدمات بعد. أضف خدمتك الأولى.</p>
+                </div></td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div id="svcPagination" style="display:flex;align-items:center;justify-content:space-between;padding:12px 4px;margin-top:8px"></div>
+    </div>
+</main>
+
+<!-- ── Service Panel ── -->
+<div class="inv-del-overlay" id="svcOverlay" onclick="closeServicePanel()" style="z-index:400"></div>
+<div id="svcPanel" style="position:fixed;top:0;left:0;bottom:0;width:min(480px,100vw);background:#fff;border-left:1px solid var(--earth-2,#ECE6D9);box-shadow:4px 0 32px rgba(26,24,18,.15);z-index:401;transform:translateX(-100%);transition:transform .3s cubic-bezier(.4,0,.2,1);overflow-y:auto;padding:24px;display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+        <h2 id="svcPanelTitle" style="font-size:16px;font-weight:700;color:var(--gold)">خدمة جديدة</h2>
+        <button onclick="closeServicePanel()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:22px;line-height:1">×</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;flex-direction:column;gap:6px">
+            <label style="font-size:12px;color:var(--text-muted);font-weight:600">اسم الخدمة <span style="color:#ef4444">*</span></label>
+            <input type="text" id="svcName" placeholder="مثال: تركيب أرضيات، دهان واجهات..." style="background:#F5F0E8;border:1.5px solid #D6CEBC;color:#1A1812;padding:9px 12px;border-radius:10px;font-family:inherit;font-size:13px;outline:none">
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+            <label style="font-size:12px;color:var(--text-muted);font-weight:600">التصنيف</label>
+            <input type="text" id="svcCategory" list="catDatalist" placeholder="اختر أو اكتب تصنيفاً..." style="background:#F5F0E8;border:1.5px solid #D6CEBC;color:#1A1812;padding:9px 12px;border-radius:10px;font-family:inherit;font-size:13px;outline:none;width:100%">
+            <datalist id="catDatalist">
+                {% for cat in categories %}<option value="{{ cat.name }}">{% endfor %}
+            </datalist>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+            <label style="font-size:12px;color:var(--text-muted);font-weight:600">الوحدة</label>
+            <input type="text" id="svcUnit" placeholder="م²، ساعة، قطعة..." style="background:#F5F0E8;border:1.5px solid #D6CEBC;color:#1A1812;padding:9px 12px;border-radius:10px;font-family:inherit;font-size:13px;outline:none;width:100%">
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+            <label style="font-size:12px;color:var(--text-muted);font-weight:600">السعر الافتراضي (ريال)</label>
+            <input type="number" id="svcPrice" min="0" step="0.01" value="0" style="background:#F5F0E8;border:1.5px solid #D6CEBC;color:#1A1812;padding:9px 12px;border-radius:10px;font-family:inherit;font-size:13px;outline:none">
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+            <label style="font-size:12px;color:var(--text-muted);font-weight:600">الوصف التفصيلي</label>
+            <textarea id="svcDesc" rows="3" placeholder="وصف تفصيلي للخدمة..." style="background:#F5F0E8;border:1.5px solid #D6CEBC;color:#1A1812;padding:9px 12px;border-radius:10px;font-family:inherit;font-size:13px;outline:none;resize:vertical"></textarea>
+        </div>
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--text)">
+            <input type="checkbox" id="svcActive" checked style="width:16px;height:16px;accent-color:var(--gold)">
+            نشطة (تظهر عند البحث في الفاتورة)
+        </label>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;padding-top:8px;border-top:1px solid var(--border);margin-top:auto">
+        <button onclick="closeServicePanel()" style="padding:10px 20px;border-radius:10px;border:1.5px solid var(--border);background:none;color:var(--text-muted);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer">إلغاء</button>
+        <button onclick="submitService()" style="padding:10px 24px;border-radius:10px;border:none;background:var(--gold);color:#000;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer">حفظ الخدمة</button>
+    </div>
+</div>
+
+<!-- Delete Confirm Modal -->
+<div class="inv-del-overlay" id="invDelOverlay"></div>
+<div class="inv-del-modal" id="invDelModal">
+    <div class="del-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></div>
+    <h3>تأكيد الحذف</h3>
+    <p>هل أنت متأكد من حذف الفاتورة <strong id="delInvNum"></strong>؟</p>
+    <div class="del-actions">
+        <button class="btn-cancel" onclick="closeDel()">إلغاء</button>
+        <button class="btn-danger" id="delConfirmBtn">حذف</button>
+    </div>
+</div>
+
+<script>
+function getCsrf(){var c=document.cookie.split(';');for(var i=0;i<c.length;i++){var p=c[i].trim();if(p.startsWith('csrftoken=')){return decodeURIComponent(p.slice(10));}}return '{{ csrf_token }}';}
+const CSRF = getCsrf();
+
+// Sidebar toggle
+(function(){
+    const sb = document.getElementById('sidebar');
+    const btn = document.getElementById('sidebarToggle');
+    if(!sb || !btn) return;
+    function setExpanded(e){ sb.classList.toggle('expanded',e); document.body.classList.toggle('sidebar-open',e); localStorage.setItem('sidebar_expanded',e?'1':'0'); }
+    setExpanded(localStorage.getItem('sidebar_expanded')==='1');
+    btn.addEventListener('click', function(){ setExpanded(!sb.classList.contains('expanded')); });
+})();
+
+// Section switching
+function switchSection(sec){
+    document.querySelectorAll('.inv-tab[data-section]').forEach(function(t){ t.classList.remove('active'); });
+    document.querySelector('.inv-tab[data-section="'+sec+'"]').classList.add('active');
+    document.getElementById('sec-invoices').style.display  = sec==='invoices' ? '' : 'none';
+    document.getElementById('sec-quotes').style.display    = sec==='quotes'   ? '' : 'none';
+    document.getElementById('sec-services').style.display  = sec==='services' ? '' : 'none';
+    document.getElementById('btnNewInvoice').style.display = sec==='invoices' ? 'inline-flex' : 'none';
+    document.getElementById('btnNewQuote').style.display   = sec==='quotes'   ? 'inline-flex' : 'none';
+}
+
+// Services filter
+// ── Category management ──
+function addCategory(){
+    var name = document.getElementById('newCatInput').value.trim();
+    if(!name) return;
+    fetch('/invoices/categories/create/', {
+        method:'POST', headers:{'X-CSRFToken':CSRF,'Content-Type':'application/json'},
+        body: JSON.stringify({name: name})
+    }).then(function(r){ if(!r.ok) return r.text().then(function(t){throw new Error(r.status+' '+t.slice(0,120));}) ; return r.json(); }).then(function(d){
+        if(!d.ok){ alert(d.error||'خطأ'); return; }
+        document.getElementById('newCatInput').value = '';
+        var nm = document.getElementById('noCatsMsg');
+        if(nm) nm.remove();
+        var chip = document.createElement('span');
+        chip.className = 'cat-chip';
+        chip.dataset.name = d.name;
+        chip.innerHTML = d.name + '<button onclick="deleteCategory(\'' + d.name.replace(/'/g,"\\'") + '\')" style="background:none;border:none;cursor:pointer;color:inherit;opacity:.6;font-size:14px;line-height:1;padding:0 0 0 4px">×</button>';
+        document.getElementById('catChips').appendChild(chip);
+        var opt = document.createElement('option');
+        opt.value = d.name;
+        document.getElementById('catDatalist').appendChild(opt);
+    }).catch(function(err){ alert('خطأ في الإضافة: ' + err); });
+}
+document.getElementById('newCatInput').addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); addCategory(); } });
+
+function deleteCategory(name){
+    if(!confirm('حذف تصنيف "' + name + '"؟')) return;
+    fetch('/invoices/categories/' + encodeURIComponent(name) + '/delete/', {
+        method:'POST', headers:{'X-CSRFToken':CSRF,'Content-Type':'application/json'},
+        body: '{}'
+    }).then(r=>r.json()).then(d=>{
+        if(!d.ok) return;
+        // remove chip
+        document.querySelectorAll('.cat-chip').forEach(function(c){
+            if(c.dataset.name === name) c.remove();
+        });
+        // remove from datalist
+        document.querySelectorAll('#catDatalist option').forEach(function(o){
+            if(o.value === name) o.remove();
+        });
+        if(!document.querySelectorAll('.cat-chip').length){
+            var nm = document.createElement('span');
+            nm.id = 'noCatsMsg';
+            nm.style = 'font-size:12px;color:var(--text-muted)';
+            nm.textContent = 'لا توجد تصنيفات بعد. أضف أول تصنيف.';
+            document.getElementById('catChips').appendChild(nm);
+        }
+    });
+}
+
+// filterServices defined later by pagination engine
+
+// Service panel
+var _svcEditPk = null;
+function openServicePanel(){
+    _svcEditPk = null;
+    document.getElementById('svcPanelTitle').textContent = 'خدمة جديدة';
+    document.getElementById('svcName').value     = '';
+    document.getElementById('svcCategory').value = '';
+    document.getElementById('svcUnit').value     = '';
+    document.getElementById('svcPrice').value    = '0';
+    document.getElementById('svcDesc').value     = '';
+    document.getElementById('svcActive').checked = true;
+    document.getElementById('svcOverlay').classList.add('active');
+    document.getElementById('svcPanel').style.transform = 'translateX(0)';
+}
+function editService(pk, name, category, unit, price, desc, active){
+    _svcEditPk = pk;
+    document.getElementById('svcPanelTitle').textContent = 'تعديل الخدمة';
+    document.getElementById('svcName').value     = name;
+    document.getElementById('svcCategory').value = category;
+    document.getElementById('svcUnit').value     = unit;
+    document.getElementById('svcPrice').value    = price;
+    document.getElementById('svcDesc').value     = desc;
+    document.getElementById('svcActive').checked = active;
+    document.getElementById('svcOverlay').classList.add('active');
+    document.getElementById('svcPanel').style.transform = 'translateX(0)';
+}
+function closeServicePanel(){
+    document.getElementById('svcOverlay').classList.remove('active');
+    document.getElementById('svcPanel').style.transform = 'translateX(-100%)';
+}
+function submitService(){
+    var name = document.getElementById('svcName').value.trim();
+    if(!name){ alert('يرجى إدخال اسم الخدمة'); return; }
+    var url = _svcEditPk ? '/invoices/services/'+_svcEditPk+'/edit/' : '/invoices/services/create/';
+    fetch(url,{
+        method:'POST',
+        headers:{'X-CSRFToken':CSRF,'Content-Type':'application/json'},
+        body:JSON.stringify({
+            name:          name,
+            category:      document.getElementById('svcCategory').value.trim(),
+            unit:          document.getElementById('svcUnit').value.trim(),
+            default_price: parseFloat(document.getElementById('svcPrice').value)||0,
+            description:   document.getElementById('svcDesc').value.trim(),
+            is_active:     document.getElementById('svcActive').checked,
+        })
+    }).then(function(r){return r.json();}).then(function(d){
+        if(d.ok){ closeServicePanel(); location.reload(); }
+        else alert('خطأ: '+(d.error||''));
+    });
+}
+function deleteService(pk, name){
+    if(!confirm('حذف الخدمة "'+name+'"؟')) return;
+    fetch('/invoices/services/'+pk+'/delete/',{
+        method:'POST', headers:{'X-CSRFToken':CSRF,'Content-Type':'application/json'}, body:'{}'
+    }).then(function(r){return r.json();}).then(function(d){
+        if(d.ok) location.reload();
+        else alert('خطأ في الحذف');
+    });
+}
+
+// Invoice filter tabs
+// ══════════════════════════════════════════════
+//  Pagination + Search engine
+// ══════════════════════════════════════════════
+var PER_PAGE = 10;
+var invPage = 1, quotePage = 1, svcPage = 1;
+var invFilter = 'all', quoteFilter = 'all';
+
+function pagCtrl(cur, total, onPrev, onNext, onGo) {
+    if (total <= 1) return '';
+    var start = (cur - 1) * PER_PAGE + 1;
+    var end   = Math.min(cur * PER_PAGE, total * PER_PAGE);
+    var html  = '<span style="font-size:12px;color:var(--text-muted)">صفحة ' + cur + ' من ' + total + '</span>';
+    html += '<div style="display:flex;gap:6px">';
+    html += '<button onclick="' + onPrev + '" ' + (cur === 1 ? 'disabled' : '') + ' style="padding:5px 14px;border-radius:8px;border:1px solid var(--border);background:var(--card-bg);color:var(--text);cursor:pointer;font-family:inherit;font-size:13px" ' + (cur===1?'style="opacity:.4"':'') + '>→</button>';
+    for (var p = 1; p <= total; p++) {
+        html += '<button onclick="' + onGo + '(' + p + ')" style="padding:5px 10px;border-radius:8px;border:1px solid ' + (p===cur?'var(--gold)':'var(--border)') + ';background:' + (p===cur?'var(--gold)':'var(--card-bg)') + ';color:' + (p===cur?'#fff':'var(--text)') + ';cursor:pointer;font-family:inherit;font-size:13px">' + p + '</button>';
+    }
+    html += '<button onclick="' + onNext + '" ' + (cur === total ? 'disabled' : '') + ' style="padding:5px 14px;border-radius:8px;border:1px solid var(--border);background:var(--card-bg);color:var(--text);cursor:pointer;font-family:inherit;font-size:13px">←</button>';
+    html += '</div>';
+    return html;
+}
+
+function rowText(row) {
+    return row.textContent.toLowerCase();
+}
+
+function renderInvoices() {
+    invPage = 1;
+    applyInvoices();
+}
+function applyInvoices() {
+    var q = (document.getElementById('invSearchBar').value || '').toLowerCase().trim();
+    var allRows = Array.from(document.querySelectorAll('#invoicesTable tbody tr[data-status]'));
+    var filtered = allRows.filter(function(row) {
+        var statusOk = (invFilter === 'all' || row.dataset.status === invFilter);
+        var searchOk = !q || rowText(row).indexOf(q) !== -1;
+        return statusOk && searchOk;
+    });
+    var totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
+    if (invPage > totalPages) invPage = totalPages;
+    var start = (invPage - 1) * PER_PAGE;
+    allRows.forEach(function(r) { r.style.display = 'none'; });
+    filtered.slice(start, start + PER_PAGE).forEach(function(r) { r.style.display = ''; });
+    // empty row
+    var emptyRow = document.querySelector('#invoicesTable tbody tr:not([data-status])');
+    if (emptyRow) emptyRow.style.display = filtered.length === 0 ? '' : 'none';
+    document.getElementById('invPagination').innerHTML = filtered.length > 0 ? pagCtrl(invPage, totalPages, 'invPrev()', 'invNext()', 'invGo') : '';
+}
+function invPrev() { if (invPage > 1) { invPage--; applyInvoices(); } }
+function invNext() { invPage++; applyInvoices(); }
+function invGo(p)  { invPage = p; applyInvoices(); }
+
+document.querySelectorAll('.inv-tab[data-filter]').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+        this.closest('.inv-tabs').querySelectorAll('.inv-tab[data-filter]').forEach(function(t){ t.classList.remove('active'); });
+        this.classList.add('active');
+        invFilter = this.dataset.filter;
+        invPage = 1;
+        applyInvoices();
+    });
+});
+
+// ── Quotes ──
+function renderQuotes() {
+    quotePage = 1;
+    applyQuotes();
+}
+function applyQuotes() {
+    var q = (document.getElementById('quoteSearchBar').value || '').toLowerCase().trim();
+    var allRows = Array.from(document.querySelectorAll('#quotesTable tbody tr[data-qstatus]'));
+    var filtered = allRows.filter(function(row) {
+        var statusOk = (quoteFilter === 'all' || row.dataset.qstatus === quoteFilter);
+        var searchOk = !q || rowText(row).indexOf(q) !== -1;
+        return statusOk && searchOk;
+    });
+    var totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
+    if (quotePage > totalPages) quotePage = totalPages;
+    var start = (quotePage - 1) * PER_PAGE;
+    allRows.forEach(function(r) { r.style.display = 'none'; });
+    filtered.slice(start, start + PER_PAGE).forEach(function(r) { r.style.display = ''; });
+    var emptyRow = document.querySelector('#quotesTable tbody tr:not([data-qstatus])');
+    if (emptyRow) emptyRow.style.display = filtered.length === 0 ? '' : 'none';
+    document.getElementById('quotePagination').innerHTML = filtered.length > 0 ? pagCtrl(quotePage, totalPages, 'quotePrev()', 'quoteNext()', 'quoteGo') : '';
+}
+function quotePrev() { if (quotePage > 1) { quotePage--; applyQuotes(); } }
+function quoteNext() { quotePage++; applyQuotes(); }
+function quoteGo(p)  { quotePage = p; applyQuotes(); }
+
+document.querySelectorAll('.inv-tab[data-qfilter]').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+        this.closest('.inv-tabs').querySelectorAll('.inv-tab[data-qfilter]').forEach(function(t){ t.classList.remove('active'); });
+        this.classList.add('active');
+        quoteFilter = this.dataset.qfilter;
+        quotePage = 1;
+        applyQuotes();
+    });
+});
+
+// ── Services ──
+function applyServices() {
+    var q = (document.getElementById('serviceSearchBar').value || '').toLowerCase().trim();
+    var allRows = Array.from(document.querySelectorAll('#servicesTable tbody tr[data-svc]'));
+    var filtered = allRows.filter(function(row) {
+        return !q || rowText(row).indexOf(q) !== -1;
+    });
+    var totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
+    if (svcPage > totalPages) svcPage = totalPages;
+    var start = (svcPage - 1) * PER_PAGE;
+    allRows.forEach(function(r) { r.style.display = 'none'; });
+    filtered.slice(start, start + PER_PAGE).forEach(function(r) { r.style.display = ''; });
+    var emptyRow = document.querySelector('#servicesTable tbody tr:not([data-svc])');
+    if (emptyRow) emptyRow.style.display = filtered.length === 0 ? '' : 'none';
+    document.getElementById('svcPagination').innerHTML = filtered.length > 0 ? pagCtrl(svcPage, totalPages, 'svcPrev()', 'svcNext()', 'svcGo') : '';
+}
+function svcPrev() { if (svcPage > 1) { svcPage--; applyServices(); } }
+function svcNext() { svcPage++; applyServices(); }
+function svcGo(p)  { svcPage = p; applyServices(); }
+
+// Override existing filterServices
+function filterServices(q) { svcPage = 1; applyServices(); }
+
+// Init on load
+applyInvoices();
+applyQuotes();
+applyServices();
+
+// Delete invoice
+var _delPk = null;
+var _delType = 'invoice';
+function deleteInvoice(pk, num){
+    _delPk = pk; _delType = 'invoice';
+    document.getElementById('delInvNum').textContent = num;
+    document.getElementById('invDelOverlay').classList.add('active');
+    document.getElementById('invDelModal').classList.add('active');
+}
+function deleteQuote(pk, num){
+    _delPk = pk; _delType = 'quote';
+    document.getElementById('delInvNum').textContent = num;
+    document.getElementById('invDelOverlay').classList.add('active');
+    document.getElementById('invDelModal').classList.add('active');
+}
+function closeDel(){
+    document.getElementById('invDelOverlay').classList.remove('active');
+    document.getElementById('invDelModal').classList.remove('active');
+}
+document.getElementById('delConfirmBtn').addEventListener('click', function(){
+    if(!_delPk) return;
+    var url = _delType === 'quote' ? '/invoices/quotes/' + _delPk + '/delete/' : '/invoices/' + _delPk + '/delete/';
+    fetch(url, {
+        method:'POST', headers:{'X-CSRFToken':CSRF,'Content-Type':'application/json'}, body:'{}'
+    }).then(function(r){ return r.json(); }).then(function(d){
+        if(d.ok){ closeDel(); location.reload(); }
+        else alert('خطأ: ' + d.error);
+    });
+});
+document.getElementById('invDelOverlay').addEventListener('click', closeDel);
+</script>
+</body>
+</html>

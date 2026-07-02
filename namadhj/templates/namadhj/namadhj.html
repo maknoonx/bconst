@@ -1,0 +1,864 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>النماذج والخطابات – {{ company.company_name_ar|default:"باء البناء" }}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'projects/css/dashboard.css' %}">
+<link rel="stylesheet" href="{% static 'invoices/css/invoices.css' %}">
+<style>
+/* ── Search bar ── */
+.nm-search{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:20px}
+.nm-search input,.nm-search select{padding:9px 14px;border:1.5px solid var(--earth-2);border-radius:10px;font-family:inherit;font-size:13px;color:var(--text);background:var(--surface);outline:none;transition:border-color .2s}
+.nm-search input:focus,.nm-search select:focus{border-color:var(--gold)}
+.nm-search input{min-width:220px;flex:1}
+
+/* ── Cards grid ── */
+.nm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.nm-card{background:var(--surface);border:1.5px solid var(--earth-2);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:10px;transition:box-shadow .2s,border-color .2s}
+.nm-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.07);border-color:var(--gold)}
+.nm-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.nm-card-title{font-size:14px;font-weight:700;color:var(--text);line-height:1.4;flex:1}
+.nm-card-meta{font-size:12px;color:var(--text-muted);display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.nm-card-preview{font-size:12px;color:var(--text-muted);line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.nm-card-actions{display:flex;gap:6px;margin-top:auto;padding-top:8px;border-top:1px solid var(--earth-2)}
+.nm-act{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:600;border:none;cursor:pointer;text-decoration:none;transition:background .15s,color .15s;background:none;color:var(--text-muted)}
+.nm-act:hover{background:var(--earth-2);color:var(--text)}
+.nm-act.print{color:#0d9488}.nm-act.print:hover{background:rgba(20,184,166,.1)}
+.nm-act.edit{color:var(--gold)}.nm-act.edit:hover{background:rgba(200,146,10,.1)}
+.nm-act.del{color:#dc2626}.nm-act.del:hover{background:rgba(239,68,68,.1)}
+
+.nm-badge{padding:3px 10px;border-radius:8px;font-size:11px;font-weight:600;background:rgba(200,146,10,.1);color:var(--gold)}
+.nm-empty{text-align:center;padding:60px 20px;color:var(--text-muted)}
+.nm-empty svg{margin-bottom:12px;opacity:.4}
+.nm-empty p{font-size:14px}
+
+/* ── Slide panel ── */
+.slide-panel{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1000;pointer-events:none}
+.panel-overlay{position:absolute;inset:0;background:rgba(0,0,0,.35);opacity:0;transition:opacity .25s;pointer-events:none}
+.panel-box{position:absolute;top:0;left:0;width:520px;max-width:100vw;height:100%;background:#fffdf7;display:flex;flex-direction:column;transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);box-shadow:4px 0 32px rgba(0,0,0,.18)}
+.slide-panel.open{pointer-events:all}
+.slide-panel.open .panel-overlay{opacity:1;pointer-events:all}
+.slide-panel.open .panel-box{transform:translateX(0)}
+.panel-head{padding:20px 24px;border-bottom:1.5px solid var(--earth-2);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.panel-head h3{font-size:16px;font-weight:700;color:var(--text);margin:0}
+.panel-close{width:32px;height:32px;border-radius:8px;border:none;background:var(--earth-2);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-muted)}
+.panel-close:hover{background:var(--earth-3);color:var(--text)}
+.panel-body{padding:24px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:16px}
+.pf-group{display:flex;flex-direction:column;gap:6px}
+.pf-group label{font-size:12px;font-weight:600;color:var(--text-muted)}
+.pf-group input,.pf-group select,.pf-group textarea{padding:10px 14px;border:1.5px solid var(--earth-2);border-radius:10px;font-family:inherit;font-size:13px;color:var(--text);background:var(--bg);outline:none;transition:border-color .2s,box-shadow .2s;width:100%;box-sizing:border-box}
+.pf-group input:focus,.pf-group select:focus,.pf-group textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-pale)}
+.pf-group textarea{resize:vertical;min-height:160px;line-height:1.7}
+.pf-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.panel-foot{padding:16px 24px;border-top:1.5px solid var(--earth-2);display:flex;gap:10px;flex-shrink:0}
+.panel-foot .btn-primary{flex:1;justify-content:center;border:none;cursor:pointer;font-family:inherit}
+.err-msg{color:#dc2626;font-size:13px;display:none}
+
+/* ── Delete modal ── */
+.del-modal{position:fixed;inset:0;z-index:1100;display:none;align-items:center;justify-content:center}
+.del-modal.open{display:flex}
+.del-modal-overlay{position:absolute;inset:0;background:rgba(0,0,0,.4)}
+.del-modal-box{position:relative;background:#fffdf7;border-radius:16px;padding:28px;max-width:380px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.del-modal-box h3{font-size:17px;font-weight:700;color:var(--text);margin:0 0 8px}
+.del-modal-box p{font-size:13px;color:var(--text-muted);margin:0 0 20px}
+.del-modal-actions{display:flex;gap:10px;justify-content:center}
+
+/* ── Cat panel ── */
+.cat-row{display:flex;gap:8px;align-items:center}
+.cat-row input{flex:1}
+.cat-add-btn{padding:9px 14px;border-radius:10px;border:1.5px solid var(--gold);background:none;color:var(--gold);font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
+.cat-add-btn:hover{background:rgba(200,146,10,.08)}
+
+/* ── Employee letter templates ── */
+.elt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+.elt-card{background:var(--surface);border:1.5px solid var(--earth-2);border-radius:14px;padding:22px 20px;display:flex;flex-direction:column;gap:12px;transition:box-shadow .2s,border-color .2s;cursor:default}
+.elt-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.08);border-color:var(--gold)}
+.elt-icon{width:44px;height:44px;border-radius:12px;background:rgba(200,146,10,.12);display:flex;align-items:center;justify-content:center;color:var(--gold)}
+.elt-title{font-size:15px;font-weight:700;color:var(--text)}
+.elt-desc{font-size:12px;color:var(--text-muted);line-height:1.6;flex:1}
+.elt-btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:10px;border:none;background:var(--gold);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:opacity .15s;align-self:flex-start}
+.elt-btn:hover{opacity:.88}
+</style>
+</head>
+<body>
+<aside class="sidebar" id="sidebar">
+    <button class="sidebar-toggle" id="sidebarToggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <div class="sidebar-logo"><div class="logo-mark">{% if company and company.company_logo %}<img src="{{ company.company_logo.url }}" alt="">{% else %}<img src="{% static 'website/img/logo.png' %}" alt="باء البناء">{% endif %}</div><span class="logo-text">{{ company.company_name_ar|default:"باء البناء" }}</span></div>
+    <nav class="sidebar-nav">
+        <a href="{% url 'projects_dashboard' %}" class="nav-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span class="nav-label">الرئيسية</span></a>
+        <a href="{% url 'client_list' %}" class="nav-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="nav-label">العملاء</span></a>
+        <a href="{% url 'invoices_home' %}" class="nav-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg><span class="nav-label">الفواتير</span></a>
+        <a href="{% url 'project_list' %}" class="nav-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg><span class="nav-label">المشاريع</span></a>
+        <a href="{% url 'task_list' %}" class="nav-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span class="nav-label">المهام</span></a>
+        <a href="{% url 'inventory_home' %}" class="nav-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg><span class="nav-label">المخزون</span></a>
+        <a href="{% url 'accounting_home' %}" class="nav-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg><span class="nav-label">المحاسبة</span></a>
+        <a href="{% url 'marketing_home' %}" class="nav-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span class="nav-label">التسويق</span></a>
+        <a href="{% url 'employee_list' %}" class="nav-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><span class="nav-label">الفريق</span></a>
+        <a href="{% url 'reports_home' %}" class="nav-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span class="nav-label">التقارير</span></a>
+        <a href="{% url 'attendance_checkin' %}" class="nav-item" title="الحضور والانصراف"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span class="nav-label">الحضور والانصراف</span></a>
+        <a href="{% url 'namadhj_home' %}" class="nav-item active"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg><span class="nav-label">النماذج</span></a>
+    </nav>
+    <div class="sidebar-bottom">
+        <a href="{% url 'company_home' %}" class="nav-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg><span class="nav-label">الإعدادات</span></a>
+        <a href="{% url 'employee_logout' %}" class="nav-item logout-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span class="nav-label">خروج</span></a>
+        <div class="sidebar-user"><div class="user-avatar">{{ request.user.get_full_name|default:request.user.username|slice:":1"|upper }}</div><div class="user-info"><div class="user-name">{{ request.user.get_full_name|default:request.user.username }}</div><div class="user-role">مدير النظام</div></div></div>
+    </div>
+</aside>
+
+<main class="main-content">
+    <header class="page-header">
+        <div class="page-header-info">
+            <h1 class="page-title">النماذج والخطابات</h1>
+            <p class="page-subtitle">إدارة النماذج الرسمية والخطابات</p>
+        </div>
+        <div style="display:flex;gap:10px">
+            <button id="btnCats" class="btn-cancel" style="border:1.5px solid var(--earth-2);cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:12px;font-size:13px;font-weight:600">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 10h16M4 14h10"/></svg>
+                التصنيفات
+            </button>
+            <button id="btnAddLetter" class="btn-primary" style="display:none;border:none;cursor:pointer;font-family:inherit;align-items:center;gap:8px">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                خطاب جديد
+            </button>
+            <button id="btnAddForm" class="btn-primary" style="border:none;cursor:pointer;font-family:inherit;align-items:center;gap:8px">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                نموذج جديد
+            </button>
+        </div>
+    </header>
+
+    <!-- ── Tabs ── -->
+    <div class="inv-tabs" style="margin-bottom:20px">
+        <button class="inv-tab {% if tab != 'letters' and tab != 'emp' %}active{% endif %}" onclick="switchTab('forms')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            النماذج <span class="nm-badge" style="margin-right:6px">{{ forms.count }}</span>
+        </button>
+        <button class="inv-tab {% if tab == 'letters' %}active{% endif %}" onclick="switchTab('letters')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,4 12,13 2,4"/></svg>
+            الخطابات <span class="nm-badge" style="margin-right:6px">{{ letters.count }}</span>
+        </button>
+        <button class="inv-tab {% if tab == 'emp' %}active{% endif %}" onclick="switchTab('emp')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            خطابات الموظفين
+        </button>
+    </div>
+
+    <!-- ── FORMS TAB ── -->
+    <div id="tab-forms" {% if tab == 'letters' %}style="display:none"{% endif %}>
+        <div class="nm-search">
+            <input type="text" id="formSearch" placeholder="بحث في النماذج..." value="{{ q }}" oninput="filterCards('form')">
+            <select id="formCatFilter" onchange="filterCards('form')">
+                <option value="">جميع التصنيفات</option>
+                {% for c in form_cats %}<option value="{{ c.id }}" {% if cat == c.id|stringformat:"s" %}selected{% endif %}>{{ c.name }}</option>{% endfor %}
+            </select>
+        </div>
+        <div class="nm-grid" id="formsGrid">
+            {% for f in forms %}
+            <div class="nm-card" data-cat="{{ f.category_id|default:'' }}">
+                <div class="nm-card-top">
+                    <div class="nm-card-title">{{ f.title }}</div>
+                    {% if f.category %}<span class="nm-badge">{{ f.category.name }}</span>{% endif %}
+                </div>
+                <div class="nm-card-meta">
+                    <span>{{ f.date|date:"j/n/Y" }}</span>
+                    {% if f.footer_name %}<span>{{ f.footer_name }}</span>{% endif %}
+                </div>
+                <div class="nm-card-preview">{{ f.content }}</div>
+                <div class="nm-card-actions">
+                    <a href="{% url 'form_print' f.pk %}" target="_blank" class="nm-act print">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                        طباعة
+                    </a>
+                    <button class="nm-act edit" onclick="openEditForm({{ f.pk }})">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                        تعديل
+                    </button>
+                    <button class="nm-act del" onclick="confirmDelete('form', {{ f.pk }}, '{{ f.title|escapejs }}')">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                        حذف
+                    </button>
+                </div>
+            </div>
+            {% empty %}
+            <div class="nm-empty" style="grid-column:1/-1">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                <p>لا توجد نماذج بعد — أضف نموذجاً جديداً</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- ── EMPLOYEE LETTERS TAB ── -->
+    <div id="tab-emp" {% if tab != 'emp' %}style="display:none"{% endif %}>
+        <div class="elt-grid">
+
+            <!-- تعريف بالراتب -->
+            <div class="elt-card">
+                <div class="elt-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div>
+                <div class="elt-title">تعريف بالراتب</div>
+                <div class="elt-desc">خطاب رسمي يُثبت راتب الموظف الأساسي والبدلات والإجمالي، يُستخدم لفتح حسابات بنكية أو تمويل.</div>
+                <button class="elt-btn" onclick="openEmpPanel('salary','تعريف بالراتب')">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                    استخراج
+                </button>
+            </div>
+
+            <!-- إثبات عمل -->
+            <div class="elt-card">
+                <div class="elt-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+                <div class="elt-title">إثبات عمل</div>
+                <div class="elt-desc">يُثبت أن الموظف يعمل بالشركة بمسماه الوظيفي وتاريخ توظيفه، لتقديمه للجهات الحكومية.</div>
+                <button class="elt-btn" onclick="openEmpPanel('employment','إثبات عمل')">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                    استخراج
+                </button>
+            </div>
+
+            <!-- خطاب خبرة -->
+            <div class="elt-card">
+                <div class="elt-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></div>
+                <div class="elt-title">خطاب خبرة</div>
+                <div class="elt-desc">شهادة بخبرة الموظف وفترة عمله في الشركة، تُستخدم عند الانتقال لوظيفة جديدة.</div>
+                <button class="elt-btn" onclick="openEmpPanel('experience','خطاب خبرة')">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                    استخراج
+                </button>
+            </div>
+
+            <!-- إذن إجازة -->
+            <div class="elt-card">
+                <div class="elt-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+                <div class="elt-title">إذن إجازة</div>
+                <div class="elt-desc">وثيقة رسمية تُحدد مدة إجازة الموظف وتاريخها ونوعها.</div>
+                <button class="elt-btn" onclick="openEmpPanel('vacation','إذن إجازة')">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                    استخراج
+                </button>
+            </div>
+
+            <!-- إنهاء خدمة -->
+            <div class="elt-card">
+                <div class="elt-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></div>
+                <div class="elt-title">إنهاء خدمة</div>
+                <div class="elt-desc">وثيقة تُثبت انتهاء خدمة الموظف وخلوّه من أي التزامات مالية تجاه الشركة.</div>
+                <button class="elt-btn" onclick="openEmpPanel('end_service','إنهاء خدمة')">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                    استخراج
+                </button>
+            </div>
+
+            <!-- خطاب تزكية -->
+            <div class="elt-card">
+                <div class="elt-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+                <div class="elt-title">خطاب تزكية</div>
+                <div class="elt-desc">توصية رسمية تُقدّم الموظف للجهات الأخرى وتُشيد بكفاءته وأخلاقياته المهنية.</div>
+                <button class="elt-btn" onclick="openEmpPanel('tazkia','خطاب تزكية')">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                    استخراج
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ── LETTERS TAB ── -->
+    <div id="tab-letters" {% if tab != 'letters' %}style="display:none"{% endif %}>
+        <div class="nm-search">
+            <input type="text" id="letterSearch" placeholder="بحث في الخطابات..." value="{{ q }}" oninput="filterCards('letter')">
+            <select id="letterCatFilter" onchange="filterCards('letter')">
+                <option value="">جميع التصنيفات</option>
+                {% for c in letter_cats %}<option value="{{ c.id }}" {% if cat == c.id|stringformat:"s" %}selected{% endif %}>{{ c.name }}</option>{% endfor %}
+            </select>
+        </div>
+        <div class="nm-grid" id="lettersGrid">
+            {% for l in letters %}
+            <div class="nm-card" data-cat="{{ l.category_id|default:'' }}">
+                <div class="nm-card-top">
+                    <div>
+                        <div style="font-size:11px;color:var(--text-muted);margin-bottom:3px">{{ l.letter_number }}</div>
+                        <div class="nm-card-title">{{ l.title }}</div>
+                    </div>
+                    {% if l.category %}<span class="nm-badge">{{ l.category.name }}</span>{% endif %}
+                </div>
+                <div class="nm-card-meta">
+                    <span>{{ l.date|date:"j/n/Y" }}</span>
+                    {% if l.recipient %}<span>إلى: {{ l.recipient }}</span>{% endif %}
+                </div>
+                {% if l.subject %}<div style="font-size:12px;font-weight:600;color:var(--text)">الموضوع: {{ l.subject }}</div>{% endif %}
+                <div class="nm-card-preview">{{ l.content }}</div>
+                <div class="nm-card-actions">
+                    <a href="{% url 'letter_print' l.pk %}" target="_blank" class="nm-act print">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                        طباعة
+                    </a>
+                    <button class="nm-act edit" onclick="openEditLetter({{ l.pk }})">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                        تعديل
+                    </button>
+                    <button class="nm-act del" onclick="confirmDelete('letter', {{ l.pk }}, '{{ l.title|escapejs }}')">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                        حذف
+                    </button>
+                </div>
+            </div>
+            {% empty %}
+            <div class="nm-empty" style="grid-column:1/-1">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,4 12,13 2,4"/></svg>
+                <p>لا توجد خطابات بعد — أضف خطاباً جديداً</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</main>
+
+<!-- ══ FORM SLIDE PANEL ══════════════════════════════════════════════════════ -->
+<div class="slide-panel" id="formPanel">
+    <div class="panel-overlay" onclick="closePanel('formPanel')"></div>
+    <div class="panel-box">
+        <div class="panel-head">
+            <h3 id="formPanelTitle">نموذج جديد</h3>
+            <button class="panel-close" onclick="closePanel('formPanel')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        </div>
+        <div class="panel-body">
+            <div class="pf-group">
+                <label>التصنيف</label>
+                <div class="cat-row">
+                    <select id="fFormCat">
+                        <option value="">-- بدون تصنيف --</option>
+                        {% for c in form_cats %}<option value="{{ c.id }}">{{ c.name }}</option>{% endfor %}
+                    </select>
+                    <button class="cat-add-btn" onclick="addCat('form')">+ تصنيف</button>
+                </div>
+            </div>
+            <div class="pf-group">
+                <label>العنوان الرئيسي <span style="color:#dc2626">*</span></label>
+                <input type="text" id="fFormTitle" placeholder="عنوان النموذج">
+            </div>
+            <div class="pf-row">
+                <div class="pf-group">
+                    <label>التاريخ</label>
+                    <input type="date" id="fFormDate">
+                </div>
+                <div class="pf-group">
+                    <label>اسم الشخص / ملاحظة نهائية</label>
+                    <input type="text" id="fFormFooter" placeholder="اختياري">
+                </div>
+            </div>
+            <div class="pf-group">
+                <label>نص النموذج <span style="color:#dc2626">*</span></label>
+                <textarea id="fFormContent" rows="10" placeholder="اكتب نص النموذج هنا..."></textarea>
+            </div>
+            <p class="err-msg" id="formErr"></p>
+        </div>
+        <div class="panel-foot">
+            <button class="btn-primary" id="formSaveBtn" onclick="saveForm()">حفظ النموذج</button>
+            <button class="btn-cancel" onclick="closePanel('formPanel')">إلغاء</button>
+        </div>
+    </div>
+</div>
+
+<!-- ══ LETTER SLIDE PANEL ════════════════════════════════════════════════════ -->
+<div class="slide-panel" id="letterPanel">
+    <div class="panel-overlay" onclick="closePanel('letterPanel')"></div>
+    <div class="panel-box">
+        <div class="panel-head">
+            <h3 id="letterPanelTitle">خطاب جديد</h3>
+            <button class="panel-close" onclick="closePanel('letterPanel')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        </div>
+        <div class="panel-body">
+            <div class="pf-group">
+                <label>التصنيف</label>
+                <div class="cat-row">
+                    <select id="fLetterCat">
+                        <option value="">-- بدون تصنيف --</option>
+                        {% for c in letter_cats %}<option value="{{ c.id }}">{{ c.name }}</option>{% endfor %}
+                    </select>
+                    <button class="cat-add-btn" onclick="addCat('letter')">+ تصنيف</button>
+                </div>
+            </div>
+            <div class="pf-row">
+                <div class="pf-group">
+                    <label>رقم الخطاب <span style="color:#dc2626">*</span></label>
+                    <input type="text" id="fLetterNum" placeholder="مثال: L-2026-001">
+                </div>
+                <div class="pf-group">
+                    <label>التاريخ</label>
+                    <input type="date" id="fLetterDate">
+                </div>
+            </div>
+            <div class="pf-group">
+                <label>عنوان الخطاب <span style="color:#dc2626">*</span></label>
+                <input type="text" id="fLetterTitle" placeholder="عنوان الخطاب">
+            </div>
+            <div class="pf-row">
+                <div class="pf-group">
+                    <label>المرسل إليه</label>
+                    <input type="text" id="fLetterRecipient" placeholder="اختياري">
+                </div>
+                <div class="pf-group">
+                    <label>الموضوع</label>
+                    <input type="text" id="fLetterSubject" placeholder="اختياري">
+                </div>
+            </div>
+            <div class="pf-group">
+                <label>نص الخطاب <span style="color:#dc2626">*</span></label>
+                <textarea id="fLetterContent" rows="10" placeholder="اكتب نص الخطاب هنا..."></textarea>
+            </div>
+            <div class="pf-group">
+                <label>اسم الموقّع / ملاحظة نهائية</label>
+                <input type="text" id="fLetterFooter" placeholder="اختياري">
+            </div>
+            <p class="err-msg" id="letterErr"></p>
+        </div>
+        <div class="panel-foot">
+            <button class="btn-primary" id="letterSaveBtn" onclick="saveLetter()">حفظ الخطاب</button>
+            <button class="btn-cancel" onclick="closePanel('letterPanel')">إلغاء</button>
+        </div>
+    </div>
+</div>
+
+<!-- ══ EMPLOYEE LETTER SLIDE PANEL ══════════════════════════════════════════ -->
+<div class="slide-panel" id="empPanel">
+    <div class="panel-overlay" onclick="closePanel('empPanel')"></div>
+    <div class="panel-box">
+        <div class="panel-head">
+            <h3 id="empPanelTitle">استخراج خطاب</h3>
+            <button class="panel-close" onclick="closePanel('empPanel')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        </div>
+        <div class="panel-body">
+            <!-- Employee select -->
+            <div class="pf-group">
+                <label>اختر الموظف <span style="color:#dc2626">*</span></label>
+                <select id="empSelect">
+                    <option value="">-- اختر موظفاً --</option>
+                    {% for e in employees %}
+                    <option value="{{ e.pk }}" data-job="{{ e.job_title }}">{{ e }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- salary fields -->
+            <div id="fields-salary" style="display:none;flex-direction:column;gap:14px">
+                <div class="pf-row">
+                    <div class="pf-group"><label>الراتب الأساسي (ريال)</label><input type="number" id="salary_basic" placeholder="0"></div>
+                    <div class="pf-group"><label>بدل السكن (ريال)</label><input type="number" id="salary_housing" placeholder="0"></div>
+                </div>
+                <div class="pf-row">
+                    <div class="pf-group"><label>بدل المواصلات (ريال)</label><input type="number" id="salary_transport" placeholder="0"></div>
+                    <div class="pf-group"><label>بدلات أخرى (ريال)</label><input type="number" id="salary_other" placeholder="0"></div>
+                </div>
+                <div class="pf-group"><label>إجمالي الراتب (ريال)</label><input type="number" id="salary_total" placeholder="يُحسب تلقائياً"></div>
+            </div>
+
+            <!-- experience fields -->
+            <div id="fields-experience" style="display:none;flex-direction:column;gap:14px">
+                <div class="pf-group"><label>تاريخ انتهاء العمل</label><input type="date" id="exp_end_date"></div>
+            </div>
+
+            <!-- vacation fields -->
+            <div id="fields-vacation" style="display:none;flex-direction:column;gap:14px">
+                <div class="pf-row">
+                    <div class="pf-group"><label>من تاريخ</label><input type="date" id="vac_from"></div>
+                    <div class="pf-group"><label>إلى تاريخ</label><input type="date" id="vac_to"></div>
+                </div>
+                <div class="pf-row">
+                    <div class="pf-group"><label>عدد الأيام</label><input type="number" id="vac_days" placeholder="مثال: 15"></div>
+                    <div class="pf-group"><label>نوع الإجازة</label>
+                        <select id="vac_type">
+                            <option value="سنوية">سنوية</option>
+                            <option value="مرضية">مرضية</option>
+                            <option value="طارئة">طارئة</option>
+                            <option value="بدون راتب">بدون راتب</option>
+                            <option value="أمومة">أمومة</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- end_service fields -->
+            <div id="fields-end_service" style="display:none;flex-direction:column;gap:14px">
+                <div class="pf-group"><label>تاريخ انتهاء الخدمة</label><input type="date" id="es_end_date"></div>
+                <div class="pf-group"><label>سبب الإنهاء</label>
+                    <select id="es_reason">
+                        <option value="استقالة">استقالة</option>
+                        <option value="انتهاء عقد">انتهاء عقد</option>
+                        <option value="إنهاء من الشركة">إنهاء من الشركة</option>
+                        <option value="تقاعد">تقاعد</option>
+                        <option value="وفاة">وفاة</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- notes (always visible) -->
+            <div class="pf-group">
+                <label>ملاحظات إضافية</label>
+                <input type="text" id="emp_notes" placeholder="اختياري">
+            </div>
+        </div>
+        <div class="panel-foot">
+            <button class="elt-btn" id="empPrintBtn" onclick="printEmpLetter()" style="flex:1;justify-content:center;padding:11px">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                طباعة الخطاب
+            </button>
+            <button class="btn-cancel" onclick="closePanel('empPanel')">إلغاء</button>
+        </div>
+    </div>
+</div>
+
+<!-- ══ CATEGORIES MODAL ══════════════════════════════════════════════════════ -->
+<div class="del-modal" id="catsModal" style="z-index:1200">
+    <div class="del-modal-overlay" onclick="closeCatsModal()"></div>
+    <div class="del-modal-box" style="max-width:520px;width:94%;text-align:right;padding:0;overflow:hidden">
+        <!-- head -->
+        <div style="padding:18px 22px;border-bottom:1.5px solid var(--earth-2);display:flex;align-items:center;justify-content:space-between">
+            <h3 style="font-size:16px;font-weight:700;color:var(--text);margin:0">إدارة التصنيفات</h3>
+            <button onclick="closeCatsModal()" style="width:30px;height:30px;border-radius:8px;border:none;background:var(--earth-2);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-muted)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        </div>
+        <!-- tabs -->
+        <div style="display:flex;border-bottom:1.5px solid var(--earth-2)">
+            <button id="ctabForm" onclick="loadCats('form')" style="flex:1;padding:12px;border:none;background:var(--gold);color:#fff;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer">تصنيفات النماذج</button>
+            <button id="ctabLetter" onclick="loadCats('letter')" style="flex:1;padding:12px;border:none;background:var(--surface);color:var(--text-muted);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;border-right:1.5px solid var(--earth-2)">تصنيفات الخطابات</button>
+        </div>
+        <!-- add new -->
+        <div style="padding:14px 22px;border-bottom:1.5px solid var(--earth-2);display:flex;gap:8px">
+            <input id="newCatName" type="text" placeholder="اسم التصنيف الجديد..." style="flex:1;padding:9px 12px;border:1.5px solid var(--earth-2);border-radius:10px;font-family:inherit;font-size:13px;color:var(--text);background:var(--bg);outline:none">
+            <button onclick="addCatFromModal()" style="padding:9px 16px;border-radius:10px;border:none;background:var(--gold);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">إضافة</button>
+        </div>
+        <!-- list -->
+        <div id="catsList" style="max-height:340px;overflow-y:auto;padding:10px 22px 18px"></div>
+    </div>
+</div>
+
+<!-- ══ DELETE MODAL ══════════════════════════════════════════════════════════ -->
+<div class="del-modal" id="delModal">
+    <div class="del-modal-overlay" onclick="closeDelModal()"></div>
+    <div class="del-modal-box">
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="1.5" style="margin-bottom:12px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <h3>تأكيد الحذف</h3>
+        <p id="delModalMsg">هل أنت متأكد من حذف هذا العنصر؟</p>
+        <div class="del-modal-actions">
+            <button class="btn-primary" id="delConfirmBtn" style="background:#dc2626;border:none;cursor:pointer;font-family:inherit">حذف</button>
+            <button class="btn-cancel" onclick="closeDelModal()">إلغاء</button>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'projects/js/dashboard.js' %}"></script>
+<script>
+const CSRF = '{{ csrf_token }}';
+let currentFormPk  = null;
+let currentLetterPk = null;
+let activeTab = '{{ tab }}' === 'letters' ? 'letters' : ('{{ tab }}' === 'emp' ? 'emp' : 'forms');
+
+// ── Tab switching ──
+function switchTab(tab) {
+    activeTab = tab;
+    document.getElementById('tab-forms').style.display   = tab === 'forms'   ? '' : 'none';
+    document.getElementById('tab-letters').style.display = tab === 'letters' ? '' : 'none';
+    document.getElementById('tab-emp').style.display     = tab === 'emp'     ? '' : 'none';
+    document.querySelectorAll('.inv-tab').forEach((t, i) => {
+        t.classList.toggle('active', (i === 0 && tab === 'forms') || (i === 1 && tab === 'letters') || (i === 2 && tab === 'emp'));
+    });
+    document.getElementById('btnAddForm').style.display   = tab === 'forms'   ? 'inline-flex' : 'none';
+    document.getElementById('btnAddLetter').style.display = tab === 'letters' ? 'inline-flex' : 'none';
+}
+
+// ── Panel helpers ──
+function openPanel(id) { document.getElementById(id).classList.add('open'); }
+function closePanel(id) { document.getElementById(id).classList.remove('open'); }
+
+// ── Form panel ──
+document.getElementById('btnAddForm').onclick = () => {
+    currentFormPk = null;
+    document.getElementById('formPanelTitle').textContent = 'نموذج جديد';
+    ['fFormTitle','fFormContent','fFormFooter'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('fFormCat').value  = '';
+    document.getElementById('fFormDate').value = new Date().toISOString().slice(0,10);
+    document.getElementById('formErr').style.display = 'none';
+    openPanel('formPanel');
+};
+
+async function openEditForm(pk) {
+    const res  = await fetch(`/namadhj/api/forms/${pk}/`);
+    const data = await res.json();
+    currentFormPk = pk;
+    document.getElementById('formPanelTitle').textContent  = 'تعديل النموذج';
+    document.getElementById('fFormTitle').value            = data.title;
+    document.getElementById('fFormContent').value          = data.content;
+    document.getElementById('fFormFooter').value           = data.footer_name;
+    document.getElementById('fFormDate').value             = data.date;
+    document.getElementById('fFormCat').value              = data.category_id;
+    document.getElementById('formErr').style.display       = 'none';
+    openPanel('formPanel');
+}
+
+async function saveForm() {
+    const title   = document.getElementById('fFormTitle').value.trim();
+    const content = document.getElementById('fFormContent').value.trim();
+    if (!title || !content) {
+        const e = document.getElementById('formErr');
+        e.textContent = 'العنوان والنص مطلوبان';
+        e.style.display = 'block';
+        return;
+    }
+    const payload = {
+        title, content,
+        footer_name:  document.getElementById('fFormFooter').value.trim(),
+        date:         document.getElementById('fFormDate').value,
+        category_id:  document.getElementById('fFormCat').value || null,
+    };
+    const url = currentFormPk
+        ? `/namadhj/api/forms/${currentFormPk}/edit/`
+        : '/namadhj/api/forms/create/';
+    const res  = await fetch(url, { method:'POST', headers:{'X-CSRFToken':CSRF,'Content-Type':'application/json'}, body:JSON.stringify(payload) });
+    const data = await res.json();
+    if (data.ok) location.reload();
+    else {
+        const e = document.getElementById('formErr');
+        e.textContent = data.error || 'حدث خطأ';
+        e.style.display = 'block';
+    }
+}
+
+// ── Letter panel ──
+document.getElementById('btnAddLetter').onclick = () => {
+    currentLetterPk = null;
+    document.getElementById('letterPanelTitle').textContent = 'خطاب جديد';
+    ['fLetterNum','fLetterTitle','fLetterRecipient','fLetterSubject','fLetterContent','fLetterFooter']
+        .forEach(id => document.getElementById(id).value = '');
+    document.getElementById('fLetterCat').value  = '';
+    document.getElementById('fLetterDate').value = new Date().toISOString().slice(0,10);
+    document.getElementById('letterErr').style.display = 'none';
+    openPanel('letterPanel');
+};
+
+async function openEditLetter(pk) {
+    const res  = await fetch(`/namadhj/api/letters/${pk}/`);
+    const data = await res.json();
+    currentLetterPk = pk;
+    document.getElementById('letterPanelTitle').textContent      = 'تعديل الخطاب';
+    document.getElementById('fLetterNum').value                  = data.letter_number;
+    document.getElementById('fLetterTitle').value                = data.title;
+    document.getElementById('fLetterRecipient').value            = data.recipient;
+    document.getElementById('fLetterSubject').value              = data.subject;
+    document.getElementById('fLetterContent').value              = data.content;
+    document.getElementById('fLetterFooter').value               = data.footer_name;
+    document.getElementById('fLetterDate').value                 = data.date;
+    document.getElementById('fLetterCat').value                  = data.category_id;
+    document.getElementById('letterErr').style.display           = 'none';
+    openPanel('letterPanel');
+}
+
+async function saveLetter() {
+    const letter_number = document.getElementById('fLetterNum').value.trim();
+    const title         = document.getElementById('fLetterTitle').value.trim();
+    const content       = document.getElementById('fLetterContent').value.trim();
+    if (!letter_number || !title || !content) {
+        const e = document.getElementById('letterErr');
+        e.textContent = 'رقم الخطاب والعنوان والنص مطلوبة';
+        e.style.display = 'block';
+        return;
+    }
+    const payload = {
+        letter_number, title, content,
+        recipient:    document.getElementById('fLetterRecipient').value.trim(),
+        subject:      document.getElementById('fLetterSubject').value.trim(),
+        footer_name:  document.getElementById('fLetterFooter').value.trim(),
+        date:         document.getElementById('fLetterDate').value,
+        category_id:  document.getElementById('fLetterCat').value || null,
+    };
+    const url = currentLetterPk
+        ? `/namadhj/api/letters/${currentLetterPk}/edit/`
+        : '/namadhj/api/letters/create/';
+    const res  = await fetch(url, { method:'POST', headers:{'X-CSRFToken':CSRF,'Content-Type':'application/json'}, body:JSON.stringify(payload) });
+    const data = await res.json();
+    if (data.ok) location.reload();
+    else {
+        const e = document.getElementById('letterErr');
+        e.textContent = data.error || 'حدث خطأ';
+        e.style.display = 'block';
+    }
+}
+
+// ── Delete ──
+let delType = '', delPk = null;
+function confirmDelete(type, pk, name) {
+    delType = type; delPk = pk;
+    document.getElementById('delModalMsg').textContent = `هل أنت متأكد من حذف "${name}"؟`;
+    document.getElementById('delModal').classList.add('open');
+    document.getElementById('delConfirmBtn').onclick = async () => {
+        const res  = await fetch(`/namadhj/api/${delType}s/${delPk}/delete/`,
+            { method:'POST', headers:{'X-CSRFToken':CSRF} });
+        const data = await res.json();
+        if (data.ok) location.reload();
+        else alert(data.error || 'حدث خطأ');
+    };
+}
+function closeDelModal() { document.getElementById('delModal').classList.remove('open'); }
+
+// ── Add category inline ──
+async function addCat(type) {
+    const name = prompt('اسم التصنيف الجديد:');
+    if (!name) return;
+    const url = `/namadhj/api/${type}-cats/create/`;
+    const res  = await fetch(url, { method:'POST', headers:{'X-CSRFToken':CSRF,'Content-Type':'application/json'}, body:JSON.stringify({name}) });
+    const data = await res.json();
+    if (data.ok) {
+        const sel = document.getElementById(type === 'form' ? 'fFormCat' : 'fLetterCat');
+        const opt = document.createElement('option');
+        opt.value = data.pk; opt.textContent = data.name; opt.selected = true;
+        sel.appendChild(opt);
+    }
+}
+
+// ── Client-side search/filter ──
+function filterCards(type) {
+    const q   = document.getElementById(type === 'form' ? 'formSearch' : 'letterSearch').value.toLowerCase();
+    const cat = document.getElementById(type === 'form' ? 'formCatFilter' : 'letterCatFilter').value;
+    const grid = document.getElementById(type === 'form' ? 'formsGrid' : 'lettersGrid');
+    grid.querySelectorAll('.nm-card').forEach(card => {
+        const title   = card.querySelector('.nm-card-title').textContent.toLowerCase();
+        const cardCat = card.dataset.cat;
+        const matchQ  = !q   || title.includes(q);
+        const matchC  = !cat || cardCat === cat;
+        card.style.display = matchQ && matchC ? '' : 'none';
+    });
+}
+
+// ── Categories Modal ──
+let currentCatType = 'form';
+
+document.getElementById('btnCats').onclick = () => {
+    document.getElementById('catsModal').classList.add('open');
+    loadCats('form');
+};
+
+function closeCatsModal() {
+    document.getElementById('catsModal').classList.remove('open');
+}
+
+async function loadCats(type) {
+    currentCatType = type;
+    document.getElementById('ctabForm').style.background   = type === 'form'   ? 'var(--gold)' : 'var(--surface)';
+    document.getElementById('ctabForm').style.color        = type === 'form'   ? '#fff' : 'var(--text-muted)';
+    document.getElementById('ctabLetter').style.background = type === 'letter' ? 'var(--gold)' : 'var(--surface)';
+    document.getElementById('ctabLetter').style.color      = type === 'letter' ? '#fff' : 'var(--text-muted)';
+    document.getElementById('newCatName').value = '';
+    const res  = await fetch(`/namadhj/api/${type}-cats/`);
+    const data = await res.json();
+    renderCats(data.cats);
+}
+
+function renderCats(cats) {
+    const list = document.getElementById('catsList');
+    if (!cats.length) {
+        list.innerHTML = '<p style="color:var(--text-muted);font-size:13px;padding:20px 0;text-align:center">لا توجد تصنيفات بعد</p>';
+        return;
+    }
+    list.innerHTML = cats.map(c => `
+        <div id="cat-row-${c.id}" style="display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid var(--earth-2)">
+            <input id="cat-inp-${c.id}" value="${c.name}" style="flex:1;padding:8px 12px;border:1.5px solid var(--earth-2);border-radius:9px;font-family:inherit;font-size:13px;color:var(--text);background:var(--bg);outline:none">
+            <button onclick="saveCat(${c.id})" style="padding:8px 13px;border-radius:9px;border:none;background:var(--gold);color:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit">حفظ</button>
+            <button onclick="deleteCat(${c.id},'${c.name.replace(/'/g,"\\'")}' )" style="padding:8px 10px;border-radius:9px;border:none;background:rgba(239,68,68,.1);color:#dc2626;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+            </button>
+        </div>`).join('');
+}
+
+async function saveCat(pk) {
+    const name = document.getElementById(`cat-inp-${pk}`).value.trim();
+    if (!name) return;
+    const res = await fetch(`/namadhj/api/${currentCatType}-cats/${pk}/edit/`, {
+        method: 'POST', headers: {'X-CSRFToken': CSRF, 'Content-Type': 'application/json'},
+        body: JSON.stringify({name})
+    });
+    const data = await res.json();
+    if (data.ok) loadCats(currentCatType);
+    else alert(data.error || 'حدث خطأ');
+}
+
+async function deleteCat(pk, name) {
+    if (!confirm(`حذف تصنيف "${name}"؟ سيتم إلغاء ارتباطه من جميع العناصر.`)) return;
+    const res = await fetch(`/namadhj/api/${currentCatType}-cats/${pk}/delete/`, {
+        method: 'POST', headers: {'X-CSRFToken': CSRF}
+    });
+    const data = await res.json();
+    if (data.ok) loadCats(currentCatType);
+    else alert(data.error || 'حدث خطأ');
+}
+
+async function addCatFromModal() {
+    const name = document.getElementById('newCatName').value.trim();
+    if (!name) return;
+    const res = await fetch(`/namadhj/api/${currentCatType}-cats/create/`, {
+        method: 'POST', headers: {'X-CSRFToken': CSRF, 'Content-Type': 'application/json'},
+        body: JSON.stringify({name})
+    });
+    const data = await res.json();
+    if (data.ok) loadCats(currentCatType);
+    else alert(data.error || 'حدث خطأ');
+}
+
+// ── Employee Letters ──
+let currentEmpLetterType = '';
+
+function openEmpPanel(type, title) {
+    currentEmpLetterType = type;
+    document.getElementById('empPanelTitle').textContent = 'استخراج: ' + title;
+    document.getElementById('empSelect').value = '';
+    document.getElementById('emp_notes').value = '';
+    // hide all extra fields
+    ['fields-salary','fields-experience','fields-vacation','fields-end_service'].forEach(id => {
+        document.getElementById(id).style.display = 'none';
+    });
+    // show relevant fields
+    const map = {salary:'fields-salary', experience:'fields-experience', vacation:'fields-vacation', end_service:'fields-end_service'};
+    if (map[type]) document.getElementById(map[type]).style.display = 'flex';
+    openPanel('empPanel');
+}
+
+// auto-calc salary total
+['salary_basic','salary_housing','salary_transport','salary_other'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', () => {
+        const total = ['salary_basic','salary_housing','salary_transport','salary_other']
+            .reduce((s, f) => s + (parseFloat(document.getElementById(f).value) || 0), 0);
+        document.getElementById('salary_total').value = total || '';
+    });
+});
+
+function printEmpLetter() {
+    const empPk = document.getElementById('empSelect').value;
+    if (!empPk) { alert('الرجاء اختيار موظف'); return; }
+    const params = new URLSearchParams();
+    params.set('notes', document.getElementById('emp_notes').value);
+    if (currentEmpLetterType === 'salary') {
+        ['salary_basic','salary_housing','salary_transport','salary_other','salary_total'].forEach(f => {
+            const v = document.getElementById(f).value;
+            if (v) params.set(f, v);
+        });
+    } else if (currentEmpLetterType === 'experience') {
+        const v = document.getElementById('exp_end_date').value;
+        if (v) params.set('end_date', v);
+    } else if (currentEmpLetterType === 'vacation') {
+        params.set('vacation_from', document.getElementById('vac_from').value);
+        params.set('vacation_to',   document.getElementById('vac_to').value);
+        params.set('vacation_days', document.getElementById('vac_days').value);
+        params.set('vacation_type', document.getElementById('vac_type').value);
+    } else if (currentEmpLetterType === 'end_service') {
+        params.set('end_date',   document.getElementById('es_end_date').value);
+        params.set('end_reason', document.getElementById('es_reason').value);
+    }
+    const url = `/namadhj/emp-letters/${currentEmpLetterType}/${empPk}/print/?${params.toString()}`;
+    window.open(url, '_blank');
+    closePanel('empPanel');
+}
+
+// init
+switchTab(activeTab === 'emp' ? 'emp' : activeTab);
+</script>
+</body>
+</html>

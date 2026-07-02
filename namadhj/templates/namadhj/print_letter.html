@@ -1,0 +1,151 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>{{ obj.letter_number }} – {{ obj.title }}</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Arial', sans-serif; font-size: 13pt; color: #1a1a1a; background: #fff; direction: rtl; }
+
+@page { size: A4; margin: 18mm 18mm 18mm 18mm; }
+@media print {
+    body { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    .no-print { display: none !important; }
+}
+
+.page { max-width: 800px; margin: 0 auto; padding: 20px; }
+
+/* Header */
+.doc-header { display: flex; align-items: stretch; justify-content: space-between; border: 2px solid #C8920A; border-radius: 10px; overflow: hidden; margin-bottom: 18px; }
+.header-logo-box { background: #C8920A; padding: 14px 18px; display: flex; align-items: center; justify-content: center; min-width: 90px; }
+.doc-logo { width: 65px; height: 65px; object-fit: contain; }
+.logo-placeholder { width: 65px; height: 65px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 26pt; font-weight: 900; }
+.header-main { flex: 1; padding: 12px 16px; text-align: center; border-right: 2px solid #C8920A; border-left: 2px solid #C8920A; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
+.company-name-ar { font-size: 17pt; font-weight: 900; color: #C8920A; }
+.company-name-en { font-size: 10pt; color: #555; }
+.header-info { padding: 10px 16px; display: flex; flex-direction: column; justify-content: center; gap: 5px; min-width: 200px; font-size: 9.5pt; color: #444; }
+.header-info-row { display: flex; gap: 6px; align-items: baseline; }
+.header-info-row .lbl { color: #C8920A; font-weight: 700; white-space: nowrap; }
+
+/* Band */
+.doc-band { background: #C8920A; color: #fff; text-align: center; padding: 9px 20px; margin-bottom: 18px; font-size: 13pt; font-weight: 700; letter-spacing: 1px; }
+
+/* Letter metadata box */
+.letter-meta { border: 1.5px solid #C8920A; border-radius: 10px; padding: 16px 20px; margin-bottom: 28px; }
+.letter-meta-row { display: flex; gap: 8px; margin-bottom: 8px; font-size: 11pt; }
+.letter-meta-row:last-child { margin-bottom: 0; }
+.letter-meta-row .lbl { font-weight: 700; color: #C8920A; min-width: 130px; flex-shrink: 0; }
+.letter-meta-row .val { color: #1a1a1a; }
+.letter-num-badge { display: inline-block; background: #C8920A; color: #fff; padding: 4px 14px; border-radius: 20px; font-size: 10pt; font-weight: 700; margin-bottom: 14px; }
+
+/* Content */
+.doc-subject { font-size: 13pt; font-weight: 700; color: #1a1a1a; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px dashed #ccc; }
+.doc-subject .lbl { color: #C8920A; margin-left: 6px; }
+.doc-content { line-height: 2.1; font-size: 12pt; white-space: pre-wrap; min-height: 260px; padding-bottom: 40px; }
+
+/* Footer */
+.doc-footer { border-top: 2px solid #e8dcc8; padding-top: 18px; display: flex; justify-content: space-between; align-items: flex-end; margin-top: 40px; }
+.sig-box { text-align: center; min-width: 180px; }
+.sig-line { border-top: 1.5px solid #333; padding-top: 6px; margin-top: 55px; font-weight: 700; font-size: 11pt; }
+.date-box { font-size: 11pt; color: #555; }
+
+/* Print button */
+.print-btn { position: fixed; bottom: 24px; left: 24px; background: #C8920A; color: #fff; border: none; padding: 12px 28px; border-radius: 12px; font-size: 14pt; font-weight: 700; cursor: pointer; box-shadow: 0 4px 16px rgba(200,146,10,.35); z-index: 999; font-family: Arial, sans-serif; }
+.print-btn:hover { background: #b07d08; }
+</style>
+</head>
+<body>
+<div class="page">
+
+    <!-- Header -->
+    <div class="doc-header">
+        <!-- Logo -->
+        <div class="header-logo-box">
+            {% if company and company.company_logo %}
+                <img class="doc-logo" src="{{ company.company_logo.url }}" alt="">
+            {% else %}
+                <div class="logo-placeholder">ب</div>
+            {% endif %}
+        </div>
+
+        <!-- Company name center -->
+        <div class="header-main">
+            <div class="company-name-ar">{{ company.company_name_ar|default:"باء البناء" }}</div>
+            {% if company.company_name_en %}<div class="company-name-en">{{ company.company_name_en }}</div>{% endif %}
+        </div>
+
+        <!-- Info: CR, Unified No, Address -->
+        <div class="header-info">
+            {% if company.cr_number %}
+            <div class="header-info-row"><span class="lbl">السجل التجاري:</span><span>{{ company.cr_number }}</span></div>
+            {% endif %}
+            {% if company.unified_number %}
+            <div class="header-info-row"><span class="lbl">الرقم الوطني الموحد:</span><span>{{ company.unified_number }}</span></div>
+            {% endif %}
+            {% if company.tax_registration_number %}
+            <div class="header-info-row"><span class="lbl">الرقم الضريبي:</span><span>{{ company.tax_registration_number }}</span></div>
+            {% endif %}
+            {% if company.address_city %}
+            <div class="header-info-row"><span class="lbl">العنوان:</span><span>{{ company.address_district }}{% if company.address_district and company.address_city %} – {% endif %}{{ company.address_city }}</span></div>
+            {% elif company.facility_address %}
+            <div class="header-info-row"><span class="lbl">العنوان:</span><span>{{ company.facility_address }}</span></div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Band -->
+    <div class="doc-band">خطاب رسمي</div>
+
+    <!-- Letter info box -->
+    <div class="letter-meta">
+        <div class="letter-num-badge">{{ obj.letter_number }}</div>
+        <div class="letter-meta-row">
+            <span class="lbl">التاريخ:</span>
+            <span class="val">{{ obj.date|date:"j / n / Y" }}</span>
+        </div>
+        {% if obj.recipient %}
+        <div class="letter-meta-row">
+            <span class="lbl">إلى السيد/ة:</span>
+            <span class="val">{{ obj.recipient }}</span>
+        </div>
+        {% endif %}
+        {% if obj.category %}
+        <div class="letter-meta-row">
+            <span class="lbl">التصنيف:</span>
+            <span class="val">{{ obj.category.name }}</span>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Subject -->
+    {% if obj.subject %}
+    <div class="doc-subject">
+        <span class="lbl">الموضوع:</span>{{ obj.subject }}
+    </div>
+    {% else %}
+    <div class="doc-subject">
+        <span class="lbl">الموضوع:</span>{{ obj.title }}
+    </div>
+    {% endif %}
+
+    <!-- Content -->
+    <div class="doc-content">{{ obj.content }}</div>
+
+    <!-- Footer -->
+    <div class="doc-footer">
+        <div class="date-box">التاريخ: {{ obj.date|date:"j / n / Y" }}</div>
+        {% if obj.footer_name %}
+        <div class="sig-box">
+            <div class="sig-line">{{ obj.footer_name }}</div>
+        </div>
+        {% endif %}
+    </div>
+
+</div>
+
+<button class="print-btn no-print" onclick="window.print()">
+    🖨 طباعة
+</button>
+</body>
+</html>

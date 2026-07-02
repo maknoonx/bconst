@@ -1,0 +1,262 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ task.title }} — {{ company.company_name_ar|default:"باء البناء" }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'projects/css/dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'projects/css/tasks.css' %}">
+    <style>
+        .task-detail-card {
+            background: var(--surface, #1e1a14);
+            border: 1px solid var(--gold, #c9a84c);
+            border-radius: 12px;
+            padding: 32px;
+            max-width: 700px;
+        }
+        .task-detail-card h1 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--gold, #c9a84c);
+            margin-bottom: 24px;
+        }
+        .task-meta-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .task-meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .task-meta-label {
+            font-size: 11px;
+            color: var(--text-muted, #8a7a5a);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .task-meta-value {
+            font-size: 14px;
+            color: var(--text, #e8d5a3);
+            font-weight: 500;
+        }
+        .task-description {
+            border-top: 1px solid rgba(201,168,76,0.2);
+            padding-top: 20px;
+            margin-top: 4px;
+        }
+        .task-description h3 {
+            font-size: 13px;
+            color: var(--text-muted, #8a7a5a);
+            margin-bottom: 10px;
+        }
+        .task-description p {
+            font-size: 14px;
+            color: var(--text, #e8d5a3);
+            line-height: 1.7;
+            white-space: pre-wrap;
+        }
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .badge-todo    { background: rgba(90,90,120,.3); color:#aaa; }
+        .badge-prog    { background: rgba(93,173,226,.15); color:#5dade2; }
+        .badge-done    { background: rgba(39,174,96,.15); color:#27ae60; }
+        .badge-low     { background: rgba(39,174,96,.15); color:#27ae60; }
+        .badge-medium  { background: rgba(230,176,70,.15); color:#f5c842; }
+        .badge-high    { background: rgba(231,76,60,.15); color:#e74c3c; }
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-muted, #8a7a5a);
+            font-size: 13px;
+            text-decoration: none;
+            margin-bottom: 20px;
+            transition: color .2s;
+        }
+        .back-btn:hover { color: var(--gold, #c9a84c); }
+    </style>
+</head>
+<body>
+
+<!-- ═══ SIDEBAR ═══ -->
+<aside class="sidebar" id="sidebar">
+    <button class="sidebar-toggle" id="sidebarToggle" title="توسيع / تقليص">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div class="sidebar-logo">
+        <div class="logo-mark">
+            {% if company and company.company_logo %}
+            <img src="{{ company.company_logo.url }}" alt="{{ company.company_name_ar|default:'النظام' }}">
+            {% else %}
+            <img src="{% static 'website/img/logo.png' %}" alt="باء البناء">
+            {% endif %}
+        </div>
+        <span class="logo-text">{{ company.company_name_ar|default:"باء البناء" }}</span>
+    </div>
+    <nav class="sidebar-nav">
+        <a href="{% url 'projects_dashboard' %}" class="nav-item" title="الرئيسية">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            <span class="nav-label">الرئيسية</span>
+        </a>
+        <a href="{% url 'client_list' %}" class="nav-item" title="العملاء">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span class="nav-label">العملاء</span>
+        </a>
+        <a href="{% url 'invoices_home' %}" class="nav-item" title="الفواتير">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            <span class="nav-label">الفواتير</span>
+        </a>
+        <a href="{% url 'project_list' %}" class="nav-item" title="المشاريع">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            <span class="nav-label">المشاريع</span>
+        </a>
+        <a href="{% url 'task_list' %}" class="nav-item active" title="المهام">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            <span class="nav-label">المهام</span>
+        </a>
+        <a href="{% url 'inventory_home' %}" class="nav-item" title="المخزون">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+            <span class="nav-label">المخزون</span>
+        </a>
+        <a href="{% url 'accounting_home' %}" class="nav-item" title="المحاسبة">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            <span class="nav-label">المحاسبة</span>
+        </a>
+        <a href="{% url 'marketing_home' %}" class="nav-item" title="التسويق">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            <span class="nav-label">التسويق</span>
+        </a>
+        <a href="{% url 'employee_list' %}" class="nav-item" title="الفريق">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span class="nav-label">الفريق</span>
+        </a>
+        <a href="{% url 'reports_home' %}" class="nav-item" title="التقارير">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            <span class="nav-label">التقارير</span>
+        </a>
+        <a href="{% url 'attendance_checkin' %}" class="nav-item" title="الحضور والانصراف"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span class="nav-label">الحضور والانصراف</span></a>
+        <a href="{% url 'namadhj_home' %}" class="nav-item" title="النماذج">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            <span class="nav-label">النماذج</span>
+        </a>
+    </nav>
+    <div class="sidebar-bottom">
+        <a href="{% url 'company_home' %}" class="nav-item" title="الإعدادات">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+            <span class="nav-label">الإعدادات</span>
+        </a>
+        <a href="{% url 'employee_logout' %}" class="nav-item logout-item" title="تسجيل الخروج">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            <span class="nav-label">خروج</span>
+        </a>
+        <div class="sidebar-user">
+            <div class="user-avatar">{{ request.user.username|first|upper }}</div>
+            <div class="user-info">
+                <div class="user-name">{{ request.user.get_full_name|default:request.user.username }}</div>
+                <div class="user-role">موظف</div>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<!-- ═══ MAIN ═══ -->
+<main class="main-content">
+    <header class="topbar">
+        <div class="topbar-greeting">
+            <h1>تفاصيل المهمة</h1>
+            <p>عرض بيانات المهمة كاملة</p>
+        </div>
+    </header>
+
+    <div style="padding:0 24px 40px;">
+        <a href="{% url 'task_list' %}" class="back-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            العودة إلى قائمة المهام
+        </a>
+
+        <div class="task-detail-card">
+            <h1>{{ task.title }}</h1>
+
+            <div class="task-meta-grid">
+                <div class="task-meta-item">
+                    <span class="task-meta-label">الحالة</span>
+                    <span class="task-meta-value">
+                        {% if task.status == 'todo' %}
+                            <span class="badge badge-todo">{{ status_ar }}</span>
+                        {% elif task.status == 'in_progress' %}
+                            <span class="badge badge-prog">{{ status_ar }}</span>
+                        {% else %}
+                            <span class="badge badge-done">{{ status_ar }}</span>
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="task-meta-item">
+                    <span class="task-meta-label">الأولوية</span>
+                    <span class="task-meta-value">
+                        {% if task.priority == 'low' %}
+                            <span class="badge badge-low">{{ priority_ar }}</span>
+                        {% elif task.priority == 'medium' %}
+                            <span class="badge badge-medium">{{ priority_ar }}</span>
+                        {% else %}
+                            <span class="badge badge-high">{{ priority_ar }}</span>
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="task-meta-item">
+                    <span class="task-meta-label">تاريخ الاستحقاق</span>
+                    <span class="task-meta-value">{{ task.due_date|default:"—" }}</span>
+                </div>
+                <div class="task-meta-item">
+                    <span class="task-meta-label">الوقت</span>
+                    <span class="task-meta-value">{{ task.due_time|default:"—" }}</span>
+                </div>
+                <div class="task-meta-item">
+                    <span class="task-meta-label">المسؤول</span>
+                    <span class="task-meta-value">
+                        {% if task.assigned_to %}
+                            {{ task.assigned_to.get_full_name|default:task.assigned_to.username }}
+                        {% else %}—{% endif %}
+                    </span>
+                </div>
+                <div class="task-meta-item">
+                    <span class="task-meta-label">المشروع</span>
+                    <span class="task-meta-value">
+                        {% if task.project %}
+                            <a href="{% url 'project_detail' task.project.pk %}" style="color:var(--gold,#c9a84c);">{{ task.project.name }}</a>
+                        {% else %}—{% endif %}
+                    </span>
+                </div>
+            </div>
+
+            {% if task.description %}
+            <div class="task-description">
+                <h3>الوصف</h3>
+                <p>{{ task.description }}</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</main>
+
+<script>
+    const sidebar = document.getElementById('sidebar');
+    const toggle  = document.getElementById('sidebarToggle');
+    if (localStorage.getItem('sidebarCollapsed') === 'true') sidebar.classList.add('collapsed');
+    toggle.addEventListener('click', () => {
+        sidebar.classList.toggle('collapsed');
+        localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+    });
+</script>
+</body>
+</html>

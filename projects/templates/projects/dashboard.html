@@ -1,0 +1,712 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم — {{ company.company_name_ar|default:"باء البناء" }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'projects/css/dashboard.css' %}">
+    <style>
+        /* ── Dashboard-specific overrides ── */
+        .dash-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:22px; }
+        .stat-card2 { background:var(--surface,#fff); border-radius:12px; padding:18px 20px; display:flex; align-items:center; gap:14px; box-shadow:0 1px 4px rgba(0,0,0,.06); }
+        .stat-card2 .sc-icon { width:44px; height:44px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+        .sc-gold .sc-icon  { background:#fdf6e3; color:#c9a84c; }
+        .sc-blue .sc-icon  { background:#e8f0fe; color:#3b6fcf; }
+        .sc-teal .sc-icon  { background:#e0f7f4; color:#1a9e8f; }
+        .sc-red  .sc-icon  { background:#fdecea; color:#c0392b; }
+        .sc-val  { font-size:26px; font-weight:700; color:var(--text,#1a1a1a); line-height:1; }
+        .sc-lbl  { font-size:12px; color:var(--text-muted,#666); margin-top:3px; }
+
+        /* ── 2-col grid ── */
+        .dash-grid { display:grid; grid-template-columns:60% 40%; gap:18px; }
+        @media(max-width:900px){ .dash-grid { grid-template-columns:1fr; } }
+
+        /* ── Cards ── */
+        .dcard { background:var(--surface,#fff); border-radius:14px; padding:20px; box-shadow:0 1px 5px rgba(0,0,0,.07); margin-bottom:18px; }
+        .dcard-title { font-size:15px; font-weight:600; color:var(--text,#1a1a1a); margin-bottom:14px; display:flex; align-items:center; justify-content:space-between; }
+        .dcard-cal { background:#3d2e0a; padding:0; overflow:hidden; }
+        .dcard-cal .dcard-title { background:#3d2e0a; color:#f5e199; padding:16px 20px 0; margin-bottom:0; }
+
+        /* ── Calendar ── */
+        /* ── Calendar dark-gold theme ── */
+        .cal-wrap { background:#3d2e0a; border-radius:14px; padding:14px; }
+        .cal-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+        .cal-month-name { font-weight:700; font-size:14px; color:#f5e199; }
+        .cal-nav { background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.15); border-radius:7px; width:28px; height:28px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:#f5e199; font-size:16px; }
+        .cal-nav:hover { background:rgba(255,255,255,.2); }
+        .cal-day-names { display:grid; grid-template-columns:repeat(7,1fr); text-align:center; font-size:11px; color:rgba(255,220,100,.6); margin-bottom:6px; font-weight:600; }
+        .cal-cells { display:grid; grid-template-columns:repeat(7,1fr); gap:3px; }
+        .cal-cell { min-height:36px; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding-top:5px; border-radius:8px; cursor:pointer; font-size:13px; position:relative; color:#f0e0a0; transition:background .15s; }
+        .cal-cell:hover { background:rgba(255,255,255,.12); }
+        .cal-cell.empty { cursor:default; pointer-events:none; }
+        .cal-cell.selected { background:rgba(255,220,80,.2); }
+        .cal-cell.today .day-num { background:#c9a84c; color:#fff; border-radius:50%; width:26px; height:26px; display:flex; align-items:center; justify-content:center; font-weight:700; box-shadow:0 0 0 3px rgba(201,168,76,.35); }
+        .day-num { width:26px; height:26px; display:flex; align-items:center; justify-content:center; }
+        .cal-dots { display:flex; gap:2px; margin-top:2px; }
+        .dot-task { width:5px; height:5px; border-radius:50%; background:#f5d060; }
+        .dot-inv  { width:5px; height:5px; border-radius:50%; background:#e74c3c; }
+        .dot-proj { width:5px; height:5px; border-radius:50%; background:#5dade2; }
+
+        /* day events list */
+        #day-tasks-list { margin-top:14px; }
+        .day-events-header { font-size:12px; font-weight:700; color:var(--text-muted,#888); margin-bottom:8px; padding-bottom:6px; border-bottom:1px solid var(--earth-2,#e8dcc8); }
+        .day-task-item { padding:9px 12px; border-radius:10px; background:var(--bg,#faf8f3); margin-bottom:7px; font-size:13px; display:flex; align-items:center; gap:8px; border:1px solid var(--earth-2,#e8dcc8); }
+        .day-task-item .dtag { font-size:10px; padding:2px 8px; border-radius:10px; font-weight:700; flex-shrink:0; }
+        .dtag-task { background:#fdf3d0; color:#9a7209; }
+        .dtag-invoice { background:#fdecea; color:#c0392b; }
+        .dtag-project { background:#e8f4fd; color:#1a5276; }
+        .day-task-item .di-label { flex:1; color:var(--text,#1a1a1a); font-weight:500; }
+        .day-task-item .di-link { font-size:11px; font-weight:700; color:#c9a84c; text-decoration:none; padding:4px 10px; border-radius:7px; border:1px solid #e8d9a0; background:#fdf9ec; white-space:nowrap; }
+        .day-task-item .di-link:hover { background:#f5e9a0; }
+        .day-empty { text-align:center; padding:16px; color:var(--text-muted,#888); font-size:13px; background:var(--bg,#faf8f3); border-radius:10px; border:1px dashed var(--earth-2,#ddd); }
+        .dtag-project { background:#e8f0fe; color:#3b6fcf; }
+
+        /* ── Projects list ── */
+        .proj-row { display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid #f0ece4; }
+        .proj-row:last-child { border-bottom:none; }
+        .proj-avatar2 { width:34px; height:34px; border-radius:8px; background:#c9a84c22; color:#c9a84c; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; flex-shrink:0; }
+        .proj-name2 { font-size:13px; font-weight:600; color:var(--text,#1a1a1a); }
+        .proj-client2 { font-size:11px; color:var(--text-muted,#888); }
+        .proj-bar-wrap { flex:1; }
+        .proj-bar { height:5px; background:#ece8df; border-radius:3px; overflow:hidden; }
+        .proj-bar-fill { height:100%; background:#c9a84c; border-radius:3px; }
+        .proj-pct { font-size:11px; color:var(--text-muted,#888); margin-top:2px; }
+        .proj-end { font-size:11px; color:var(--text-muted,#888); white-space:nowrap; }
+        .proj-view-btn { font-size:11px; padding:4px 10px; border-radius:7px; background:#f5f0e8; color:#c9a84c; font-weight:600; text-decoration:none; white-space:nowrap; border:none; cursor:pointer; }
+        .proj-view-btn:hover { background:#c9a84c; color:#fff; }
+
+        /* status badges */
+        .badge-active   { background:#e0f7ea; color:#1a8a4a; }
+        .badge-planning { background:#e8f0fe; color:#3b6fcf; }
+        .badge-completed{ background:#f0ece4; color:#666; }
+        .badge-paused   { background:#fdf6e3; color:#c9a84c; }
+        .status-badge { font-size:10px; padding:2px 8px; border-radius:10px; font-weight:600; white-space:nowrap; }
+
+        /* ── Quick actions ── */
+        .qa-btn { display:flex; align-items:center; gap:10px; width:100%; padding:13px 16px; border-radius:10px; border:1px solid #e8e0d0; background:var(--bg,#faf8f3); font-size:14px; font-weight:500; color:var(--text,#1a1a1a); cursor:pointer; margin-bottom:10px; text-align:right; transition:.15s; }
+        .qa-btn:hover { border-color:#c9a84c; color:#c9a84c; background:#fdf6e3; }
+        .qa-btn svg { flex-shrink:0; }
+        .qa-gmail { display:flex; align-items:center; gap:10px; width:100%; padding:10px 16px; border-radius:10px; border:1px solid #e8e0d0; background:#faf8f3; font-size:13px; color:#666; cursor:pointer; text-decoration:none; margin-top:4px; }
+        .qa-gmail:hover { border-color:#c9a84c; color:#c9a84c; }
+
+        /* ── Slide panel ── */
+        .slide-panel { position:fixed; inset:0; z-index:1000; display:none; }
+        .slide-panel.open { display:block; }
+        .panel-overlay { position:absolute; inset:0; background:rgba(0,0,0,.35); }
+        .panel-box { position:absolute; top:0; left:0; bottom:0; width:420px; background:#fffdf7; padding:28px 24px; overflow-y:auto; box-shadow:4px 0 20px rgba(0,0,0,.15); display:flex; flex-direction:column; }
+        .panel-box h3 { font-size:17px; font-weight:700; margin-bottom:18px; color:var(--text,#1a1a1a); }
+        .panel-close { position:absolute; top:16px; left:16px; background:none; border:none; cursor:pointer; color:#888; font-size:20px; }
+        .form-group { margin-bottom:14px; }
+        .form-group label { display:block; font-size:12px; color:var(--text-muted,#666); margin-bottom:5px; font-weight:500; }
+        .form-group input,.form-group select,.form-group textarea { width:100%; padding:9px 11px; border:1px solid #ddd6c9; border-radius:8px; font-family:inherit; font-size:13px; background:#fff; color:var(--text,#1a1a1a); box-sizing:border-box; }
+        .form-group input:focus,.form-group select:focus { outline:none; border-color:#c9a84c; }
+        .panel-actions { display:flex; gap:10px; margin-top:auto; padding-top:16px; }
+        .btn-primary2 { flex:1; padding:10px; background:#c9a84c; color:#fff; border:none; border-radius:9px; font-family:inherit; font-size:14px; font-weight:600; cursor:pointer; }
+        .btn-primary2:hover { background:#b8963e; }
+        .btn-cancel2 { flex:1; padding:10px; background:#f0ece4; color:#666; border:none; border-radius:9px; font-family:inherit; font-size:14px; cursor:pointer; }
+        .btn-cancel2:hover { background:#e0dbd0; }
+
+        /* ── Notifications ── */
+        .notif-item { display:flex; align-items:flex-start; gap:10px; padding:10px 12px; border-radius:9px; margin-bottom:8px; font-size:13px; }
+        .notif-danger  { background:#fdecea; color:#a93226; border-right:3px solid #c0392b; }
+        .notif-warning { background:#fef9e7; color:#7d6608; border-right:3px solid #f1c40f; }
+        .notif-info    { background:#e8f4fd; color:#1a5276; border-right:3px solid #2980b9; }
+        .notif-ok      { background:#e9f7ef; color:#1a7a44; text-align:center; justify-content:center; padding:18px; border-radius:9px; }
+    </style>
+</head>
+<body>
+
+<!-- ═══ SIDEBAR ═══ -->
+<aside class="sidebar" id="sidebar">
+
+    <!-- زر التوسيع / التقليص -->
+    <button class="sidebar-toggle" id="sidebarToggle" title="توسيع / تقليص">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="15 18 9 12 15 6"/>
+        </svg>
+    </button>
+
+    <div class="sidebar-logo">
+        <div class="logo-mark">
+            {% if company and company.company_logo %}
+            <img src="{{ company.company_logo.url }}" alt="{{ company.company_name_ar|default:'النظام' }}">
+            {% else %}
+            <img src="{% static 'website/img/logo.png' %}" alt="باء البناء">
+            {% endif %}
+        </div>
+        <span class="logo-text">{{ company.company_name_ar|default:"باء البناء" }}</span>
+    </div>
+
+    <nav class="sidebar-nav">
+        <a href="{% url 'projects_dashboard' %}" class="nav-item active" title="الرئيسية">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+                <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+            </svg>
+            <span class="nav-label">الرئيسية</span>
+        </a>
+        <a href="{% url 'client_list' %}" class="nav-item" title="العملاء">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+            </svg>
+            <span class="nav-label">العملاء</span>
+        </a>
+
+        <a href="{% url 'invoices_home' %}" class="nav-item" title="الفواتير">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            <span class="nav-label">الفواتير</span>
+        </a>
+        <a href="{% url 'project_list' %}" class="nav-item" title="المشاريع">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+            </svg>
+            <span class="nav-label">المشاريع</span>
+        </a>
+        <a href="{% url 'task_list' %}" class="nav-item" title="المهام">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 11 12 14 22 4"/>
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+            </svg>
+            <span class="nav-label">المهام</span>
+        </a>
+        <a href="{% url 'inventory_home' %}" class="nav-item" title="المخزون">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+            <span class="nav-label">المخزون</span>
+        </a>
+        <a href="{% url 'accounting_home' %}" class="nav-item" title="المحاسبة">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            <span class="nav-label">المحاسبة</span>
+        </a>
+        <a href="{% url 'marketing_home' %}" class="nav-item" title="التسويق">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            <span class="nav-label">التسويق</span>
+        </a>
+        <a href="{% url 'employee_list' %}" class="nav-item" title="الفريق">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+            <span class="nav-label">الفريق</span>
+        </a>
+        <a href="{% url 'reports_home' %}" class="nav-item" title="التقارير"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span class="nav-label">التقارير</span></a>
+        <a href="{% url 'attendance_checkin' %}" class="nav-item" title="الحضور والانصراف"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span class="nav-label">الحضور والانصراف</span></a>
+        <a href="{% url 'namadhj_home' %}" class="nav-item" title="النماذج"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg><span class="nav-label">النماذج</span></a>
+    </nav>
+
+    <div class="sidebar-bottom">
+        <a href="{% url 'company_home' %}" class="nav-item" title="الإعدادات">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/>
+            </svg>
+            <span class="nav-label">الإعدادات</span>
+        </a>
+        <a href="{% url 'employee_logout' %}" class="nav-item logout-item" title="تسجيل الخروج">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                <polyline points="16 17 21 12 16 7"/>
+                <line x1="21" y1="12" x2="9" y2="12"/>
+            </svg>
+            <span class="nav-label">خروج</span>
+        </a>
+        <div class="sidebar-user">
+            <div class="user-avatar">{{ request.user.username|first|upper }}</div>
+            <div class="user-info">
+                <div class="user-name">{{ request.user.get_full_name|default:request.user.username }}</div>
+                <div class="user-role">موظف</div>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<!-- ═══ MAIN ═══ -->
+<main class="main-content">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+        <div class="topbar-greeting">
+            <h1>مرحباً، {{ request.user.get_full_name|default:request.user.username }}!</h1>
+            <p>إليك نظرة على مشاريعك اليوم — {{ today|date:"j F Y" }}</p>
+        </div>
+        <div class="topbar-actions">
+            <div class="search-box">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+                <input type="text" placeholder="بحث...">
+            </div>
+            <a href="{% url 'project_list' %}" class="btn-primary">+ مشروع جديد</a>
+        </div>
+    </header>
+
+    <!-- ── STAT CARDS ── -->
+    <div class="dash-stats">
+        <div class="stat-card2 sc-gold">
+            <div class="sc-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                </svg>
+            </div>
+            <div>
+                <div class="sc-val">{{ active }}</div>
+                <div class="sc-lbl">مشاريع نشطة</div>
+            </div>
+        </div>
+        <div class="stat-card2 sc-blue">
+            <div class="sc-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/>
+                    <line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/>
+                    <line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
+                </svg>
+            </div>
+            <div>
+                <div class="sc-val">{{ planning }}</div>
+                <div class="sc-lbl">مشاريع مخططة</div>
+            </div>
+        </div>
+        <div class="stat-card2 sc-teal">
+            <div class="sc-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="9 11 12 14 22 4"/>
+                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                </svg>
+            </div>
+            <div>
+                <div class="sc-val">{{ tasks_today }}</div>
+                <div class="sc-lbl">مهام اليوم</div>
+            </div>
+        </div>
+        <div class="stat-card2 sc-red">
+            <div class="sc-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                    <line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/>
+                </svg>
+            </div>
+            <div>
+                <div class="sc-val">{{ overdue_invoices_count }}</div>
+                <div class="sc-lbl">فواتير مستحقة</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── MAIN 2-COL GRID ── -->
+    <div class="dash-grid">
+
+        <!-- ══ LEFT COLUMN ══ -->
+        <div>
+
+            <!-- A. Calendar + Tasks -->
+            <div class="dcard dcard-cal">
+                <div class="dcard-title">
+                    <span>التقويم الشهري</span>
+                </div>
+                <div class="cal-wrap" style="border-radius:0;padding:14px 14px 16px">
+                    <div class="cal-header">
+                        <button class="cal-nav" id="cal-prev" title="الشهر السابق">&#8250;</button>
+                        <span id="cal-month-label" style="color:#f5e199;font-weight:700;font-size:14px;"></span>
+                        <button class="cal-nav" id="cal-next" title="الشهر التالي">&#8249;</button>
+                    </div>
+                    <div class="cal-day-names">
+                        <span>ح</span><span>ن</span><span>ث</span><span>ر</span><span>خ</span><span>ج</span><span>س</span>
+                    </div>
+                    <div class="cal-cells" id="cal-cells"></div>
+                    <div style="display:flex;gap:14px;margin-top:10px;font-size:11px;color:rgba(255,220,100,.6);">
+                        <span><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#f5d060;margin-left:4px;"></span>مهمة</span>
+                        <span><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#e74c3c;margin-left:4px;"></span>فاتورة</span>
+                        <span><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#5dade2;margin-left:4px;"></span>مشروع</span>
+                    </div>
+                </div>
+                <div id="day-tasks-list"></div>
+            </div>
+
+            <!-- B. Active/Planning Projects -->
+            <div class="dcard">
+                <div class="dcard-title">
+                    <span>المشاريع النشطة والمخططة</span>
+                    <a href="{% url 'project_list' %}" style="font-size:12px;color:#c9a84c;text-decoration:none;">عرض الكل ←</a>
+                </div>
+                {% if active_projects %}
+                {% for p in active_projects %}
+                <div class="proj-row">
+                    <div class="proj-avatar2">{{ p.name|first|upper }}</div>
+                    <div style="flex:1;min-width:0;">
+                        <div class="proj-name2">{{ p.name }}</div>
+                        <div class="proj-client2">{{ p.client|default:"—" }}</div>
+                    </div>
+                    <div class="proj-bar-wrap" style="min-width:90px;">
+                        <div class="proj-bar"><div class="proj-bar-fill" style="width:{{ p.progress }}%;"></div></div>
+                        <div class="proj-pct">{{ p.progress }}%</div>
+                    </div>
+                    <span class="status-badge badge-{{ p.status }}">{{ p.get_status_display }}</span>
+                    {% if p.end_date %}
+                    <div class="proj-end">{{ p.end_date|date:"j/n/Y" }}</div>
+                    {% endif %}
+                    <a href="{% url 'project_detail' p.pk %}" class="proj-view-btn">عرض</a>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div style="text-align:center;padding:24px;color:var(--text-muted,#999);font-size:13px;">لا توجد مشاريع نشطة حالياً</div>
+                {% endif %}
+            </div>
+
+        </div>
+
+        <!-- ══ RIGHT COLUMN ══ -->
+        <div>
+
+            <!-- C. Quick Actions -->
+            <div class="dcard">
+                <div class="dcard-title">إجراءات سريعة</div>
+
+                <button class="qa-btn" onclick="openPanel('panel-task')">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                    إضافة مهمة
+                </button>
+                <button class="qa-btn" onclick="openPanel('panel-project')">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                    إضافة مشروع
+                </button>
+                <button class="qa-btn" onclick="openPanel('panel-client')">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    إضافة عميل
+                </button>
+
+            </div>
+
+            <!-- D. Notifications -->
+            <div class="dcard">
+                <div class="dcard-title">الإشعارات</div>
+                {% if notifications %}
+                {% for n in notifications %}
+                <div class="notif-item notif-{{ n.type }}">
+                    <span>{{ n.text }}</span>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div class="notif-ok">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left:8px;"><polyline points="20 6 9 17 4 12"/></svg>
+                    كل شيء على ما يرام
+                </div>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+</main>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SLIDE PANEL: إضافة مهمة -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="slide-panel" id="panel-task">
+    <div class="panel-overlay" onclick="closePanel('panel-task')"></div>
+    <div class="panel-box">
+        <button class="panel-close" onclick="closePanel('panel-task')">✕</button>
+        <h3>إضافة مهمة جديدة</h3>
+        <form method="post" action="{% url 'task_list_create' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>عنوان المهمة *</label>
+                <input type="text" name="title" required placeholder="أدخل عنوان المهمة">
+            </div>
+            <div class="form-group">
+                <label>المسند إليه</label>
+                <select name="assigned_to">
+                    <option value="">— اختر موظفاً —</option>
+                    {% for u in all_users %}
+                    <option value="{{ u.pk }}">{{ u.get_full_name|default:u.username }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>المشروع</label>
+                <select name="project">
+                    <option value="">— اختياري —</option>
+                    {% for p in all_projects %}
+                    <option value="{{ p.pk }}">{{ p.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>تاريخ الاستحقاق</label>
+                <input type="date" name="due_date">
+            </div>
+            <div class="form-group">
+                <label>الأولوية</label>
+                <select name="priority">
+                    <option value="medium">متوسطة</option>
+                    <option value="high">عالية</option>
+                    <option value="low">منخفضة</option>
+                </select>
+            </div>
+            <div class="panel-actions">
+                <button type="submit" class="btn-primary2">حفظ المهمة</button>
+                <button type="button" class="btn-cancel2" onclick="closePanel('panel-task')">إلغاء</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SLIDE PANEL: إضافة مشروع -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="slide-panel" id="panel-project">
+    <div class="panel-overlay" onclick="closePanel('panel-project')"></div>
+    <div class="panel-box">
+        <button class="panel-close" onclick="closePanel('panel-project')">✕</button>
+        <h3>إضافة مشروع جديد</h3>
+        <form method="post" action="{% url 'project_create' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>اسم المشروع *</label>
+                <input type="text" name="name" required placeholder="أدخل اسم المشروع">
+            </div>
+            <div class="form-group">
+                <label>العميل</label>
+                <input type="text" name="client" placeholder="اسم العميل">
+            </div>
+            <div class="form-group">
+                <label>الحالة</label>
+                <select name="status">
+                    <option value="planning">تخطيط</option>
+                    <option value="active">نشط</option>
+                    <option value="paused">متوقف</option>
+                    <option value="completed">مكتمل</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>تاريخ البداية</label>
+                <input type="date" name="start_date">
+            </div>
+            <div class="form-group">
+                <label>تاريخ النهاية</label>
+                <input type="date" name="end_date">
+            </div>
+            <div class="form-group">
+                <label>الميزانية (ريال)</label>
+                <input type="number" name="budget" step="0.01" placeholder="0.00">
+            </div>
+            <div class="panel-actions">
+                <button type="submit" class="btn-primary2">حفظ المشروع</button>
+                <button type="button" class="btn-cancel2" onclick="closePanel('panel-project')">إلغاء</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SLIDE PANEL: إضافة عميل -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="slide-panel" id="panel-client">
+    <div class="panel-overlay" onclick="closePanel('panel-client')"></div>
+    <div class="panel-box">
+        <button class="panel-close" onclick="closePanel('panel-client')">✕</button>
+        <h3>إضافة عميل جديد</h3>
+        <form method="post" action="{% url 'client_create' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>اسم العميل *</label>
+                <input type="text" name="name" required placeholder="أدخل اسم العميل">
+            </div>
+            <div class="form-group">
+                <label>رقم الهاتف</label>
+                <input type="text" name="phone" placeholder="05xxxxxxxx">
+            </div>
+            <div class="form-group">
+                <label>البريد الإلكتروني</label>
+                <input type="email" name="email" placeholder="example@email.com">
+            </div>
+            <div class="form-group">
+                <label>نوع العميل</label>
+                <select name="client_type">
+                    <option value="individual">فرد</option>
+                    <option value="company">شركة</option>
+                </select>
+            </div>
+            <div class="panel-actions">
+                <button type="submit" class="btn-primary2">حفظ العميل</button>
+                <button type="button" class="btn-cancel2" onclick="closePanel('panel-client')">إلغاء</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="{% static 'projects/js/dashboard.js' %}"></script>
+<script>
+// ── Calendar data from server ──────────────────────────────────
+const CAL_EVENTS = {{ cal_events_json|safe }};
+const TODAY_STR  = "{{ today|date:'Y-m-d' }}";
+
+const AR_MONTHS = [
+    'يناير','فبراير','مارس','أبريل','مايو','يونيو',
+    'يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'
+];
+
+let calYear, calMonth;
+(function(){
+    const t = new Date(TODAY_STR);
+    calYear  = t.getFullYear();
+    calMonth = t.getMonth(); // 0-indexed
+})();
+
+function buildEventMap() {
+    const m = {};
+    CAL_EVENTS.forEach(ev => {
+        if (!m[ev.date]) m[ev.date] = [];
+        m[ev.date].push(ev);
+    });
+    return m;
+}
+
+function renderCalendar() {
+    const eventMap = buildEventMap();
+    const label = document.getElementById('cal-month-label');
+    label.textContent = AR_MONTHS[calMonth] + ' ' + calYear;
+
+    const cells = document.getElementById('cal-cells');
+    cells.innerHTML = '';
+
+    const firstDay = new Date(calYear, calMonth, 1).getDay(); // 0=Sun
+    const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+
+    // Empty cells before first day
+    for (let i = 0; i < firstDay; i++) {
+        const empty = document.createElement('div');
+        empty.className = 'cal-cell empty';
+        cells.appendChild(empty);
+    }
+
+    let selectedDate = null;
+
+    for (let d = 1; d <= daysInMonth; d++) {
+        const mm = String(calMonth + 1).padStart(2, '0');
+        const dd = String(d).padStart(2, '0');
+        const dateStr = `${calYear}-${mm}-${dd}`;
+        const isToday = dateStr === TODAY_STR;
+        const events  = eventMap[dateStr] || [];
+
+        const cell = document.createElement('div');
+        cell.className = 'cal-cell' + (isToday ? ' today' : '');
+        cell.dataset.date = dateStr;
+
+        const numEl = document.createElement('div');
+        numEl.className = 'day-num';
+        numEl.textContent = d;
+        cell.appendChild(numEl);
+
+        if (events.length) {
+            const dotsEl = document.createElement('div');
+            dotsEl.className = 'cal-dots';
+            const shown = new Set();
+            events.forEach(ev => {
+                if (!shown.has(ev.type)) {
+                    shown.add(ev.type);
+                    const dot = document.createElement('span');
+                    dot.className = 'dot-' + (ev.type === 'task' ? 'task' : ev.type === 'invoice' ? 'inv' : 'proj');
+                    dotsEl.appendChild(dot);
+                }
+            });
+            cell.appendChild(dotsEl);
+        }
+
+        cell.addEventListener('click', () => {
+            document.querySelectorAll('.cal-cell.selected').forEach(c => c.classList.remove('selected'));
+            cell.classList.add('selected');
+            showDayEvents(dateStr, events);
+        });
+
+        cells.appendChild(cell);
+    }
+}
+
+function showDayEvents(dateStr, events) {
+    const list = document.getElementById('day-tasks-list');
+    list.innerHTML = '';
+
+    // Format date in Arabic
+    const [y, m, d] = dateStr.split('-');
+    const heading = document.createElement('div');
+    heading.className = 'day-events-header';
+    heading.textContent = `أحداث ${parseInt(d)} ${AR_MONTHS[parseInt(m)-1]} ${y}`;
+    list.appendChild(heading);
+
+    if (!events.length) {
+        const empty = document.createElement('div');
+        empty.className = 'day-empty';
+        empty.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom:6px;opacity:.4"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg><br>لا يوجد شيء مهم في هذا اليوم';
+        list.appendChild(empty);
+        return;
+    }
+
+    const typeLabel = { task: 'مهمة', invoice: 'فاتورة', project: 'مشروع' };
+    const typeClass = { task: 'dtag-task', invoice: 'dtag-invoice', project: 'dtag-project' };
+
+    events.forEach(ev => {
+        const item = document.createElement('div');
+        item.className = 'day-task-item';
+
+        const tag = document.createElement('span');
+        tag.className = 'dtag ' + (typeClass[ev.type] || '');
+        tag.textContent = typeLabel[ev.type] || ev.type;
+        item.appendChild(tag);
+
+        const lbl = document.createElement('span');
+        lbl.className = 'di-label';
+        lbl.textContent = ev.label;
+        item.appendChild(lbl);
+
+        if (ev.url) {
+            const link = document.createElement('a');
+            link.className = 'di-link';
+            link.href = ev.url;
+            link.textContent = 'عرض';
+            item.appendChild(link);
+        }
+
+        list.appendChild(item);
+    });
+}
+
+document.getElementById('cal-prev').addEventListener('click', () => {
+    calMonth--;
+    if (calMonth < 0) { calMonth = 11; calYear--; }
+    document.getElementById('day-tasks-list').innerHTML = '';
+    renderCalendar();
+});
+document.getElementById('cal-next').addEventListener('click', () => {
+    calMonth++;
+    if (calMonth > 11) { calMonth = 0; calYear++; }
+    document.getElementById('day-tasks-list').innerHTML = '';
+    renderCalendar();
+});
+
+renderCalendar();
+
+// ── Slide panels ──────────────────────────────────────────────
+function openPanel(id) {
+    document.getElementById(id).classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+function closePanel(id) {
+    document.getElementById(id).classList.remove('open');
+    document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+        document.querySelectorAll('.slide-panel.open').forEach(p => {
+            p.classList.remove('open');
+        });
+        document.body.style.overflow = '';
+    }
+});
+</script>
+</body>
+</html>

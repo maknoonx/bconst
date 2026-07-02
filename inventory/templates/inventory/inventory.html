@@ -1,0 +1,603 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>إدارة المخزون – {{ company.company_name_ar|default:"باء البناء" }}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'projects/css/dashboard.css' %}">
+<link rel="stylesheet" href="{% static 'inventory/css/inventory.css' %}">
+</head>
+<body>
+
+<!-- ── Sidebar ── -->
+<aside class="sidebar" id="sidebar">
+    <button class="sidebar-toggle" id="sidebarToggle" title="توسيع / تقليص">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div class="sidebar-logo">
+        <div class="logo-mark">
+            {% if company and company.company_logo %}
+            <img src="{{ company.company_logo.url }}" alt="{{ company.company_name_ar|default:'النظام' }}">
+            {% else %}
+            <img src="{% static 'website/img/logo.png' %}" alt="باء البناء">
+            {% endif %}
+        </div>
+        <span class="logo-text">{{ company.company_name_ar|default:"باء البناء" }}</span>
+    </div>
+    <nav class="sidebar-nav">
+        <a href="{% url 'projects_dashboard' %}" class="nav-item" title="الرئيسية">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            <span class="nav-label">الرئيسية</span>
+        </a>
+        <a href="{% url 'client_list' %}" class="nav-item" title="العملاء">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span class="nav-label">العملاء</span>
+        </a>
+        <a href="{% url 'invoices_home' %}" class="nav-item" title="الفواتير">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            <span class="nav-label">الفواتير</span>
+        </a>
+        <a href="{% url 'project_list' %}" class="nav-item" title="المشاريع">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            <span class="nav-label">المشاريع</span>
+        </a>
+        <a href="{% url 'task_list' %}" class="nav-item" title="المهام">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            <span class="nav-label">المهام</span>
+        </a>
+        <a href="{% url 'inventory_home' %}" class="nav-item active" title="المخزون">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+            <span class="nav-label">المخزون</span>
+        </a>
+        <a href="{% url 'accounting_home' %}" class="nav-item" title="المحاسبة">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            <span class="nav-label">المحاسبة</span>
+        </a>
+        <a href="{% url 'marketing_home' %}" class="nav-item" title="التسويق">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            <span class="nav-label">التسويق</span>
+        </a>
+        <a href="{% url 'employee_list' %}" class="nav-item" title="الفريق">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span class="nav-label">الفريق</span>
+        </a>
+        <a href="{% url 'reports_home' %}" class="nav-item" title="التقارير"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span class="nav-label">التقارير</span></a>
+        <a href="{% url 'attendance_checkin' %}" class="nav-item" title="الحضور والانصراف"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span class="nav-label">الحضور والانصراف</span></a>
+        <a href="{% url 'namadhj_home' %}" class="nav-item" title="النماذج"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg><span class="nav-label">النماذج</span></a>
+    </nav>
+    <div class="sidebar-bottom">
+        <a href="{% url 'company_home' %}" class="nav-item" title="الإعدادات">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+            <span class="nav-label">الإعدادات</span>
+        </a>
+        <a href="{% url 'employee_logout' %}" class="nav-item logout-item" title="تسجيل الخروج">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            <span class="nav-label">خروج</span>
+        </a>
+        <div class="sidebar-user">
+            <div class="user-avatar">{{ request.user.get_full_name|default:request.user.username|slice:":1"|upper }}</div>
+            <div class="user-info">
+                <div class="user-name">{{ request.user.get_full_name|default:request.user.username }}</div>
+                <div class="user-role">مدير النظام</div>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<!-- ── Main ── -->
+<main class="main-content">
+    <header class="page-header">
+        <div class="page-header-info">
+            <h1 class="page-title">إدارة المخزون</h1>
+            <p class="page-subtitle">المستودعات، الأصناف، الموردون، أوامر الشراء، وحركات المخزون</p>
+        </div>
+    </header>
+
+    <!-- stat cards -->
+    <div class="inv-stats">
+        <div class="inv-stat is-gold">
+            <div class="inv-stat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div>
+            <div><div class="inv-stat-val">{{ stats.total_items }}</div><div class="inv-stat-lbl">صنف في المخزون</div></div>
+        </div>
+        <div class="inv-stat is-blue">
+            <div class="inv-stat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+            <div><div class="inv-stat-val">{{ stats.total_warehouses }}</div><div class="inv-stat-lbl">مستودع</div></div>
+        </div>
+        <div class="inv-stat is-orange">
+            <div class="inv-stat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+            <div><div class="inv-stat-val">{{ stats.pending_orders }}</div><div class="inv-stat-lbl">أمر شراء معلق</div></div>
+        </div>
+        <div class="inv-stat is-red">
+            <div class="inv-stat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+            <div><div class="inv-stat-val">{{ stats.active_alerts }}</div><div class="inv-stat-lbl">تنبيه نشط</div></div>
+        </div>
+    </div>
+
+    <!-- tabs -->
+    <div class="inv-tabs">
+        <button class="inv-tab active" data-tab="items">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+            الأصناف
+        </button>
+        <button class="inv-tab" data-tab="warehouses">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/></svg>
+            المستودعات
+        </button>
+        <button class="inv-tab" data-tab="suppliers">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            الموردون
+        </button>
+        <button class="inv-tab" data-tab="orders">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            أوامر الشراء
+        </button>
+        <button class="inv-tab" data-tab="movements">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/></svg>
+            حركات المخزون
+        </button>
+        <button class="inv-tab" data-tab="alerts">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+            التنبيهات {% if stats.active_alerts %}<span style="background:#ef4444;color:#fff;border-radius:100px;padding:1px 7px;font-size:10px;">{{ stats.active_alerts }}</span>{% endif %}
+        </button>
+    </div>
+
+    <!-- ══ TAB: Items ══ -->
+    <div class="inv-section active" id="tab-items">
+        <div class="inv-toolbar">
+            <div class="inv-toolbar-left">
+                <input class="inv-search" data-target="items" placeholder="بحث عن صنف...">
+                <span style="font-size:13px;color:var(--text-muted)">{{ stats.total_items }} صنف</span>
+            </div>
+            <button class="btn-primary" onclick="openAddItem()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                صنف جديد
+            </button>
+        </div>
+        <div class="inv-table-wrap">
+            <table class="inv-table">
+                <thead>
+                    <tr><th>الصنف</th><th>التصنيف</th><th>المستودع</th><th>الوحدة</th><th>الكمية</th><th>حد الطلب</th><th>تكلفة الوحدة (ريال)</th><th></th></tr>
+                </thead>
+                <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>
+                        <div style="font-weight:600">{{ item.name }}</div>
+                        {% if item.sku %}<div style="font-size:11px;color:var(--text-muted);font-family:monospace">{{ item.sku }}</div>{% endif %}
+                    </td>
+                    <td>
+                        {% if item.category %}
+                        <span class="item-type type-{{ item.category.type }}">{{ item.category.name }}</span>
+                        {% else %}—{% endif %}
+                    </td>
+                    <td style="font-size:12px;color:var(--text-muted)">{{ item.warehouse.name }}</td>
+                    <td style="font-size:12px">{{ item.unit }}</td>
+                    <td>
+                        {% if item.qty_on_hand == 0 %}<span class="qty-zero">{{ item.qty_on_hand }}</span>
+                        {% elif item.is_low_stock %}<span class="qty-low">{{ item.qty_on_hand }} ⚠</span>
+                        {% else %}<span class="qty-ok">{{ item.qty_on_hand }}</span>{% endif %}
+                    </td>
+                    <td style="font-size:12px;color:var(--text-muted)">{{ item.reorder_level }}</td>
+                    <td style="font-size:12px">{{ item.unit_cost }}</td>
+                    <td style="white-space:nowrap">
+                        <button class="inv-btn" title="تسجيل حركة" onclick="openAddMovement(); document.getElementById('mItem').value='{{ item.id }}';">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/></svg>
+                        </button>
+                        <button class="inv-btn" title="تعديل" onclick="editItem({{ item.id }},{{ item.warehouse_id }},'{{ item.category_id|default:'' }}','{{ item.name|escapejs }}','{{ item.sku|default:''|escapejs }}','{{ item.unit|escapejs }}',{{ item.qty_on_hand }},{{ item.reorder_level }},{{ item.unit_cost }},'{{ item.expiry_date|default:'' }}','{{ item.notes|escapejs }}')">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                        </button>
+                        <button class="inv-btn inv-btn-danger" title="حذف" onclick="setPending('{% url 'inv_item_delete' 0 %}'.replace('0','{{ item.id }}'),'{{ item.name|escapejs }}')">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+                        </button>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="8"><div class="inv-empty"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8"/></svg><p>لا توجد أصناف بعد. أضف صنفاً جديداً.</p></div></td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="pag-bar" id="pag-items"></div>
+    </div>
+
+    <!-- ══ TAB: Warehouses ══ -->
+    <div class="inv-section" id="tab-warehouses">
+        <div class="inv-toolbar">
+            <span style="font-size:13px;color:var(--text-muted)">{{ warehouses|length }} مستودع</span>
+            <button class="btn-primary" onclick="openAddWarehouse()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                مستودع جديد
+            </button>
+        </div>
+        <div class="inv-table-wrap">
+            <table class="inv-table">
+                <thead><tr><th>اسم المستودع</th><th>الموقع</th><th>عدد الأصناف</th><th>ملاحظات</th><th></th></tr></thead>
+                <tbody>
+                {% for wh in warehouses %}
+                <tr>
+                    <td style="font-weight:600">{{ wh.name }}</td>
+                    <td style="font-size:12px;color:var(--text-muted)">{{ wh.location|default:"—" }}</td>
+                    <td>{{ wh.items.count }}</td>
+                    <td style="font-size:12px;color:var(--text-muted)">{{ wh.notes|default:"—"|truncatechars:40 }}</td>
+                    <td style="white-space:nowrap">
+                        <button class="inv-btn" title="تعديل" onclick="editWarehouse({{ wh.id }},'{{ wh.name|escapejs }}','{{ wh.location|escapejs }}','{{ wh.notes|escapejs }}')">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                        </button>
+                        <button class="inv-btn inv-btn-danger" title="حذف" onclick="setPending('{% url 'inv_wh_delete' 0 %}'.replace('0','{{ wh.id }}'),'{{ wh.name|escapejs }}')">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+                        </button>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5"><div class="inv-empty"><p>لا توجد مستودعات بعد.</p></div></td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="pag-bar" id="pag-warehouses"></div>
+    </div>
+
+    <!-- ══ TAB: Suppliers ══ -->
+    <div class="inv-section" id="tab-suppliers">
+        <div class="inv-toolbar">
+            <span style="font-size:13px;color:var(--text-muted)">{{ suppliers|length }} مورد</span>
+            <button class="btn-primary" onclick="openAddSupplier()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                مورد جديد
+            </button>
+        </div>
+        <div class="inv-table-wrap">
+            <table class="inv-table">
+                <thead><tr><th>اسم المورد</th><th>مسؤول التواصل</th><th>الجوال</th><th>البريد</th><th>أوامر الشراء</th><th></th></tr></thead>
+                <tbody>
+                {% for sup in suppliers %}
+                <tr>
+                    <td style="font-weight:600">{{ sup.name }}</td>
+                    <td style="font-size:12px">{{ sup.contact_name|default:"—" }}</td>
+                    <td style="font-size:12px;direction:ltr;text-align:right">{{ sup.phone|default:"—" }}</td>
+                    <td style="font-size:12px">{{ sup.email|default:"—" }}</td>
+                    <td>{{ sup.orders.count }}</td>
+                    <td style="white-space:nowrap">
+                        <button class="inv-btn" title="تعديل" onclick="editSupplier({{ sup.id }},'{{ sup.name|escapejs }}','{{ sup.contact_name|escapejs }}','{{ sup.phone|escapejs }}','{{ sup.email|escapejs }}','{{ sup.notes|escapejs }}')">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                        </button>
+                        <button class="inv-btn inv-btn-danger" title="حذف" onclick="setPending('{% url 'inv_sup_delete' 0 %}'.replace('0','{{ sup.id }}'),'{{ sup.name|escapejs }}')">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+                        </button>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="6"><div class="inv-empty"><p>لا يوجد موردون بعد.</p></div></td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="pag-bar" id="pag-suppliers"></div>
+    </div>
+
+    <!-- ══ TAB: Purchase Orders ══ -->
+    <div class="inv-section" id="tab-orders">
+        <div class="inv-toolbar">
+            <span style="font-size:13px;color:var(--text-muted)">{{ orders|length }} أمر شراء</span>
+            <button class="btn-primary" onclick="openAddPO()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                أمر شراء جديد
+            </button>
+        </div>
+        <div class="inv-table-wrap">
+            <table class="inv-table">
+                <thead><tr><th>رقم الأمر</th><th>المورد</th><th>التاريخ</th><th>تاريخ الاستلام</th><th>الإجمالي (ريال)</th><th>الحالة</th><th></th></tr></thead>
+                <tbody>
+                {% for o in orders %}
+                <tr>
+                    <td style="font-family:monospace;font-weight:700">{% with ref="PO-"|add:o.pk|stringformat:"d" %}{{ ref }}{% endwith %}</td>
+                    <td>{{ o.supplier.name }}</td>
+                    <td style="font-size:12px;color:var(--text-muted)">{{ o.order_date }}</td>
+                    <td style="font-size:12px;color:var(--text-muted)">{{ o.expected_date|default:"—" }}</td>
+                    <td style="font-weight:700;color:var(--gold)">{{ o.total_amount|floatformat:2 }}</td>
+                    <td>
+                        {% if o.status == 'pending' %}<span class="po-pending">قيد الانتظار</span>
+                        {% elif o.status == 'received' %}<span class="po-received">مستلم</span>
+                        {% else %}<span class="po-cancelled">ملغي</span>{% endif %}
+                    </td>
+                    <td style="white-space:nowrap">
+                        <button class="inv-btn" title="عرض" onclick="viewPO({{ o.id }})">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </button>
+                        {% if o.status == 'pending' %}
+                        <button class="inv-btn inv-btn-green" title="استلام الكل" onclick="receivePO({{ o.id }},'PO-{{ o.pk }}')">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                        </button>
+                        <button class="inv-btn inv-btn-danger" title="إلغاء" onclick="cancelPO({{ o.id }},'PO-{{ o.pk }}')">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                        </button>
+                        {% endif %}
+                        {% if o.status != 'received' %}
+                        <button class="inv-btn inv-btn-danger" title="حذف" onclick="setPending('{% url 'inv_po_delete' 0 %}'.replace('0','{{ o.id }}'),'PO-{{ o.pk }}')">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+                        </button>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="7"><div class="inv-empty"><p>لا توجد أوامر شراء بعد.</p></div></td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="pag-bar" id="pag-orders"></div>
+    </div>
+
+    <!-- ══ TAB: Movements ══ -->
+    <div class="inv-section" id="tab-movements">
+        <div class="inv-toolbar">
+            <div class="inv-toolbar-left">
+                <input class="inv-search" data-target="movements" placeholder="بحث في الحركات...">
+            </div>
+            <button class="btn-primary" onclick="openAddMovement()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                حركة جديدة
+            </button>
+        </div>
+        <div class="inv-table-wrap">
+            <table class="inv-table">
+                <thead><tr><th>الصنف</th><th>النوع</th><th>الكمية</th><th>المشروع</th><th>السبب</th><th>بواسطة</th><th>التاريخ</th></tr></thead>
+                <tbody>
+                {% for mv in movements %}
+                <tr>
+                    <td style="font-weight:600">{{ mv.item.name }}</td>
+                    <td>
+                        {% if mv.move_type == 'in' %}<span class="mv-in">↓ استلام</span>
+                        {% elif mv.move_type == 'out' %}<span class="mv-out">↑ صرف</span>
+                        {% else %}<span class="mv-adjust">⇄ تعديل</span>{% endif %}
+                    </td>
+                    <td style="font-weight:700">{{ mv.qty|floatformat:2 }}</td>
+                    <td style="font-size:12px;color:var(--text-muted)">{{ mv.project|default:"—" }}</td>
+                    <td style="font-size:12px;color:var(--text-muted)">{{ mv.reason|default:"—" }}</td>
+                    <td style="font-size:12px">{{ mv.performed_by.get_full_name|default:mv.performed_by.username|default:"—" }}</td>
+                    <td style="font-size:12px;color:var(--text-muted)">{{ mv.moved_at|date:"j/n/Y H:i" }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="7"><div class="inv-empty"><p>لا توجد حركات مخزون بعد.</p></div></td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="pag-bar" id="pag-movements"></div>
+    </div>
+
+    <!-- ══ TAB: Alerts ══ -->
+    <div class="inv-section" id="tab-alerts">
+        <div class="inv-toolbar">
+            <span style="font-size:13px;color:var(--text-muted)">{{ stats.active_alerts }} تنبيه نشط</span>
+        </div>
+        <div class="inv-table-wrap">
+            <table class="inv-table">
+                <thead><tr><th>الصنف</th><th>المستودع</th><th>نوع التنبيه</th><th>تاريخ التنبيه</th><th></th></tr></thead>
+                <tbody>
+                {% for al in alerts %}
+                <tr>
+                    <td style="font-weight:600">{{ al.item.name }}</td>
+                    <td style="font-size:12px;color:var(--text-muted)">{{ al.item.warehouse.name }}</td>
+                    <td><span class="al-{{ al.alert_type }}">{{ al.get_alert_type_display }}</span></td>
+                    <td style="font-size:12px;color:var(--text-muted)">{{ al.triggered_at|date:"j/n/Y H:i" }}</td>
+                    <td>
+                        <button class="inv-btn inv-btn-green" title="تم الحل" onclick="resolveAlert({{ al.id }})">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                        </button>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5"><div class="inv-empty"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="1.5"><polyline points="20 6 9 17 4 12"/></svg><p>لا توجد تنبيهات نشطة. المخزون بحالة جيدة ✓</p></div></td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="pag-bar" id="pag-alerts"></div>
+    </div>
+</main>
+
+<!-- ══ Modal: Warehouse ══ -->
+<div class="inv-overlay" id="whOverlay"></div>
+<div class="inv-panel" id="whPanel">
+    <div class="inv-panel-header">
+        <h2 class="inv-panel-title" id="whModalTitle">مستودع جديد</h2>
+        <button class="inv-panel-close" onclick="closeWhModal()">✕</button>
+    </div>
+    <div class="inv-panel-body">
+        <form id="whForm">
+            <input type="hidden" id="editWhId">
+            <div class="fg-grid">
+                <div class="fg fg-full"><label for="whName">اسم المستودع <span class="req">*</span></label><input type="text" id="whName" required></div>
+                <div class="fg fg-full"><label for="whLocation">الموقع</label><input type="text" id="whLocation" placeholder="مثال: المنطقة الصناعية، الرياض"></div>
+                <div class="fg fg-full"><label for="whNotes">ملاحظات</label><textarea id="whNotes"></textarea></div>
+            </div>
+        </form>
+    </div>
+    <div class="inv-panel-footer">
+        <button class="btn-cancel" onclick="closeWhModal()">إلغاء</button>
+        <button class="btn-save" onclick="submitWarehouse()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>حفظ</button>
+    </div>
+</div>
+
+<!-- ══ Modal: Item ══ -->
+<div class="inv-overlay" id="itemOverlay"></div>
+<div class="inv-panel" id="itemPanel">
+    <div class="inv-panel-header">
+        <h2 class="inv-panel-title" id="itemModalTitle">صنف جديد</h2>
+        <button class="inv-panel-close" onclick="closeItemModal()">✕</button>
+    </div>
+    <div class="inv-panel-body">
+        <form id="itemForm">
+            <input type="hidden" id="editItemId">
+            <div class="fg-grid">
+                <div class="fg fg-full"><label for="iName">اسم الصنف <span class="req">*</span></label><input type="text" id="iName" required placeholder="مثال: أسمنت بورتلاند 50 كجم"></div>
+                <div class="fg"><label for="iWarehouse">المستودع <span class="req">*</span></label>
+                    <select id="iWarehouse" required>
+                        <option value="">اختر مستودع...</option>
+                        {% for wh in warehouses %}<option value="{{ wh.id }}">{{ wh.name }}</option>{% endfor %}
+                    </select>
+                </div>
+                <div class="fg"><label for="iCategory">التصنيف</label>
+                    <select id="iCategory">
+                        <option value="">بدون تصنيف</option>
+                        {% for cat in item_cats %}<option value="{{ cat.id }}">{{ cat.name }}</option>{% endfor %}
+                    </select>
+                </div>
+                <div class="fg"><label for="iSku">رمز الصنف (SKU)</label><input type="text" id="iSku" placeholder="اختياري"></div>
+                <div class="fg"><label for="iUnit">وحدة القياس <span class="req">*</span></label><input type="text" id="iUnit" placeholder="كجم / متر / عدد..."></div>
+                <div class="fg"><label for="iQty">الكمية الحالية</label><input type="number" id="iQty" min="0" step="0.01" value="0"></div>
+                <div class="fg"><label for="iReorder">حد إعادة الطلب</label><input type="number" id="iReorder" min="0" step="0.01" value="0"></div>
+                <div class="fg"><label for="iCost">تكلفة الوحدة (ريال)</label><input type="number" id="iCost" min="0" step="0.01" value="0"></div>
+                <div class="fg"><label for="iExpiry">تاريخ الانتهاء</label><input type="date" id="iExpiry"></div>
+                <div class="fg fg-full"><label for="iNotes">ملاحظات</label><textarea id="iNotes"></textarea></div>
+            </div>
+        </form>
+    </div>
+    <div class="inv-panel-footer">
+        <button class="btn-cancel" onclick="closeItemModal()">إلغاء</button>
+        <button class="btn-save" onclick="submitItem()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>حفظ</button>
+    </div>
+</div>
+
+<!-- ══ Modal: Supplier ══ -->
+<div class="inv-overlay" id="supOverlay"></div>
+<div class="inv-panel" id="supPanel">
+    <div class="inv-panel-header">
+        <h2 class="inv-panel-title" id="supModalTitle">مورد جديد</h2>
+        <button class="inv-panel-close" onclick="closeSupModal()">✕</button>
+    </div>
+    <div class="inv-panel-body">
+        <form id="supForm">
+            <input type="hidden" id="editSupId">
+            <div class="fg-grid">
+                <div class="fg fg-full"><label for="sName">اسم المورد <span class="req">*</span></label><input type="text" id="sName" required></div>
+                <div class="fg"><label for="sContact">مسؤول التواصل</label><input type="text" id="sContact"></div>
+                <div class="fg"><label for="sPhone">الجوال</label><input type="tel" id="sPhone" placeholder="05xxxxxxxx"></div>
+                <div class="fg fg-full"><label for="sEmail">البريد الإلكتروني</label><input type="email" id="sEmail"></div>
+                <div class="fg fg-full"><label for="sNotes">ملاحظات</label><textarea id="sNotes"></textarea></div>
+            </div>
+        </form>
+    </div>
+    <div class="inv-panel-footer">
+        <button class="btn-cancel" onclick="closeSupModal()">إلغاء</button>
+        <button class="btn-save" onclick="submitSupplier()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>حفظ</button>
+    </div>
+</div>
+
+<!-- ══ Modal: Purchase Order ══ -->
+<div class="inv-overlay" id="poOverlay"></div>
+<div class="inv-panel inv-panel-wide" id="poPanel">
+    <div class="inv-panel-header">
+        <h2 class="inv-panel-title">أمر شراء جديد</h2>
+        <button class="inv-panel-close" onclick="closePOModal()">✕</button>
+    </div>
+    <div class="inv-panel-body">
+        <form id="poForm">
+            <div class="fg-grid">
+                <div class="fg"><label for="poSupplier">المورد <span class="req">*</span></label>
+                    <select id="poSupplier" required>
+                        <option value="">اختر مورد...</option>
+                        {% for sup in suppliers %}<option value="{{ sup.id }}">{{ sup.name }}</option>{% endfor %}
+                    </select>
+                </div>
+                <div class="fg"><label for="poExpected">تاريخ الاستلام المتوقع</label><input type="date" id="poExpected"></div>
+                <div class="fg fg-full"><label for="poNotes">ملاحظات</label><input type="text" id="poNotes" placeholder="اختياري"></div>
+            </div>
+            <div style="margin-top:20px;font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:8px">بنود الأمر</div>
+            <table class="po-lines">
+                <thead><tr><th style="width:50%">الصنف</th><th style="width:20%">الكمية</th><th style="width:22%">سعر الوحدة</th><th style="width:8%"></th></tr></thead>
+                <tbody id="poLinesBody"></tbody>
+            </table>
+            <button type="button" class="po-add-line" onclick="addPOLine()">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                إضافة صنف
+            </button>
+        </form>
+    </div>
+    <div class="inv-panel-footer">
+        <button class="btn-cancel" onclick="closePOModal()">إلغاء</button>
+        <button class="btn-save" onclick="submitPO()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>إنشاء الأمر</button>
+    </div>
+</div>
+
+<!-- ══ Modal: PO View ══ -->
+<div class="inv-overlay" id="poViewOverlay"></div>
+<div class="inv-panel inv-panel-wide" id="poViewPanel">
+    <div class="inv-panel-header">
+        <h2 class="inv-panel-title">تفاصيل أمر الشراء</h2>
+        <button class="inv-panel-close" onclick="closePOView()">✕</button>
+    </div>
+    <div class="inv-panel-body" id="poViewBody"></div>
+</div>
+
+<!-- ══ Modal: Movement ══ -->
+<div class="inv-overlay" id="movOverlay"></div>
+<div class="inv-panel" id="movPanel">
+    <div class="inv-panel-header">
+        <h2 class="inv-panel-title">تسجيل حركة مخزون</h2>
+        <button class="inv-panel-close" onclick="closeMovModal()">✕</button>
+    </div>
+    <div class="inv-panel-body">
+        <form id="movForm">
+            <div class="fg-grid">
+                <div class="fg fg-full"><label for="mItem">الصنف <span class="req">*</span></label>
+                    <select id="mItem" required>
+                        <option value="">اختر صنف...</option>
+                        {% for item in items %}<option value="{{ item.id }}">{{ item.name }} ({{ item.qty_on_hand }} {{ item.unit }})</option>{% endfor %}
+                    </select>
+                </div>
+                <div class="fg"><label for="mType">نوع الحركة <span class="req">*</span></label>
+                    <select id="mType" required>
+                        <option value="in">↓ استلام</option>
+                        <option value="out">↑ صرف</option>
+                        <option value="adjust">⇄ تعديل الكمية</option>
+                    </select>
+                </div>
+                <div class="fg"><label for="mQty">الكمية <span class="req">*</span></label><input type="number" id="mQty" min="0.01" step="0.01" required></div>
+                <div class="fg"><label for="mProject">المشروع</label><input type="text" id="mProject" placeholder="اسم المشروع (اختياري)"></div>
+                <div class="fg fg-full"><label for="mReason">السبب / البيان</label><input type="text" id="mReason" placeholder="سبب الحركة"></div>
+            </div>
+        </form>
+    </div>
+    <div class="inv-panel-footer">
+        <button class="btn-cancel" onclick="closeMovModal()">إلغاء</button>
+        <button class="btn-save" onclick="submitMovement()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>تسجيل</button>
+    </div>
+</div>
+
+<!-- ══ Delete Confirm ══ -->
+<div class="inv-del-overlay" id="invDelOverlay"></div>
+<div class="inv-del-modal" id="invDelModal">
+    <div class="del-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></div>
+    <h3>تأكيد الحذف</h3>
+    <p>هل أنت متأكد من حذف <strong id="delName"></strong>؟</p>
+    <div class="del-actions">
+        <button class="btn-cancel" id="delCancelBtn">إلغاء</button>
+        <button class="btn-danger" id="delConfirmBtn">حذف</button>
+    </div>
+</div>
+
+<script>
+const CSRF              = '{{ csrf_token }}';
+const URL_WH_CREATE     = '{% url "inv_wh_create" %}';
+const URL_WH_EDIT       = '{% url "inv_wh_edit" 0 %}';
+const URL_ITEM_CREATE   = '{% url "inv_item_create" %}';
+const URL_ITEM_EDIT     = '{% url "inv_item_edit" 0 %}';
+const URL_SUP_CREATE    = '{% url "inv_sup_create" %}';
+const URL_SUP_EDIT      = '{% url "inv_sup_edit" 0 %}';
+const URL_PO_CREATE     = '{% url "inv_po_create" %}';
+const URL_PO_DETAIL     = '{% url "inv_po_detail" 0 %}';
+const URL_PO_RECEIVE    = '{% url "inv_po_receive" 0 %}';
+const URL_PO_CANCEL     = '{% url "inv_po_cancel" 0 %}';
+const URL_MOV_CREATE    = '{% url "inv_mov_create" %}';
+const URL_ALERT_RESOLVE = '{% url "inv_alert_resolve" 0 %}';
+
+const ITEMS_OPTIONS = `{% for item in items %}<option value="{{ item.id }}">{{ item.name }} ({{ item.unit }})</option>{% endfor %}`;
+</script>
+<script src="{% static 'inventory/js/inventory.js' %}"></script>
+</body>
+</html>
