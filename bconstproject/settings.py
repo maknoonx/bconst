@@ -176,10 +176,19 @@ STATICFILES_DIRS = []
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'  # For production
 
+# Plain (non-hashed) static storage. Compressed/hashed manifest storage was tried and
+# reverted: several {% static %} references across the public site (studio.html's
+# service icons, a hero poster image) point at files that were never actually added
+# to the repo, and manifest storage hard-fails template rendering on any missing file
+# — unlike plain storage, which just resolves to a URL without checking existence.
+# Revisit once those missing assets are tracked down and added.
+#
+# Django itself only reads STORAGES (below) — this legacy attribute exists solely
+# because django-cloudinary-storage's own collectstatic override reads it directly
+# and crashes with AttributeError if it's undefined.
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+
 WHITENOISE_AUTOREFRESH = True  # reload static files from disk on each request (dev mode)
-# Non-strict locally so {% static %} doesn't break without running collectstatic;
-# strict in production, where the Procfile runs collectstatic before gunicorn starts.
-WHITENOISE_MANIFEST_STRICT = IS_PRODUCTION
 
 
 
@@ -195,7 +204,7 @@ STORAGES = {
         'BACKEND': 'cloudinary_storage.storage.MediaCloudinaryStorage',
     },
     'staticfiles': {
-        'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
+        'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage',
     },
 }
 
