@@ -1,1 +1,1 @@
-web: gunicorn bconstproject.wsgi --log-file -
+web: gunicorn bconstproject.wsgi --bind 0.0.0.0:$PORT --log-file -

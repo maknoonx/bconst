@@ -8,3 +8,6 @@ requests==2.34.2
 cloudinary==1.45.0
 django-cloudinary-storage==0.3.0
 psycopg2-binary==2.9.12
+openpyxl==3.1.5
+qrcode==8.2
+Pillow==12.2.0
