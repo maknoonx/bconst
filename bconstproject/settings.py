@@ -43,6 +43,12 @@ if IS_PRODUCTION:
     # so Django needs this header to know the original request was HTTPS —
     # without it SECURE_SSL_REDIRECT causes an infinite redirect loop.
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    # The Host header gunicorn actually sees is Railway's internal address, not the
+    # public domain — without this, request.build_absolute_uri() (used e.g. for the
+    # password-setup email link) generates a broken http://127.0.0.1:8000/... URL.
+    # Safe to trust here: Railway's edge proxy sets/overwrites this header itself,
+    # and Django still validates the resolved host against ALLOWED_HOSTS either way.
+    USE_X_FORWARDED_HOST = True
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
