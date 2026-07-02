@@ -29,6 +29,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://bconstructions.org',
+    'https://www.bconstructions.org',
+]
+
 
 # Application definition
 
