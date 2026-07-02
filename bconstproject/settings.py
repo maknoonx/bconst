@@ -17,6 +17,10 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Railway injects RAILWAY_* env vars automatically on every deploy — no manual
+# configuration needed to tell production and local dev apart.
+IS_PRODUCTION = any(k.startswith('RAILWAY_') for k in os.environ)
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -25,14 +29,28 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-y(58+5$m60v9mt&%)wc0oxv6%ojr)cm&6!2f^zb*eh(tia$=!-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = not IS_PRODUCTION
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['bconstructions.org', 'www.bconstructions.org', '.up.railway.app', 'localhost', '127.0.0.1']
 
 CSRF_TRUSTED_ORIGINS = [
     'https://bconstructions.org',
     'https://www.bconstructions.org',
 ]
+
+if IS_PRODUCTION:
+    # Railway terminates TLS at its edge proxy and forwards plain HTTP internally,
+    # so Django needs this header to know the original request was HTTPS —
+    # without it SECURE_SSL_REDIRECT causes an infinite redirect loop.
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    # Conservative initial value (1 day, not the usual 1 year) — HSTS is
+    # enforced client-side and hard to undo quickly if anything's misconfigured.
+    SECURE_HSTS_SECONDS = 60 * 60 * 24
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    X_FRAME_OPTIONS = 'DENY'
 
 
 # Application definition
@@ -105,6 +123,14 @@ DATABASES = {
         'PASSWORD': 'INGcLSJJbTyvaixufygziXipyClBsZjQ',
         'HOST': 'hayabusa.proxy.rlwy.net',
         'PORT': '16451',
+        'CONN_MAX_AGE': 600,
+    }
+}
+
+# In-process cache — used for login-attempt throttling and short-lived report caching
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
     }
 }
 
@@ -150,8 +176,10 @@ STATICFILES_DIRS = []
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'  # For production
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 WHITENOISE_AUTOREFRESH = True  # reload static files from disk on each request (dev mode)
+# Non-strict locally so {% static %} doesn't break without running collectstatic;
+# strict in production, where the Procfile runs collectstatic before gunicorn starts.
+WHITENOISE_MANIFEST_STRICT = IS_PRODUCTION
 
 
 
@@ -167,7 +195,7 @@ STORAGES = {
         'BACKEND': 'cloudinary_storage.storage.MediaCloudinaryStorage',
     },
     'staticfiles': {
-        'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage',
+        'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
     },
 }
 
