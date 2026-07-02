@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.core.paginator import Paginator
+from bconstproject.validators import validate_uploaded_image
 from .models import Client
 
 PAGE_SIZE = 8
@@ -43,6 +44,10 @@ def client_create(request):
     try:
         data = request.POST
         logo = request.FILES.get('company_logo')
+        if logo:
+            error = validate_uploaded_image(logo)
+            if error:
+                return JsonResponse({'ok': False, 'error': error}, status=400)
         client = Client(
             client_type=data.get('client_type', 'individual'),
             name=data.get('name', '').strip(),
@@ -94,6 +99,10 @@ def client_edit(request, pk):
     try:
         data = request.POST
         logo = request.FILES.get('company_logo')
+        if logo:
+            error = validate_uploaded_image(logo)
+            if error:
+                return JsonResponse({'ok': False, 'error': error}, status=400)
         client.client_type = data.get('client_type', client.client_type)
         client.name = data.get('name', client.name).strip()
         client.phone = data.get('phone', '').strip()

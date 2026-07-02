@@ -6,6 +6,7 @@ from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 
 from employees.models import Employee
+from bconstproject.validators import validate_uploaded_image
 from .models import AttendanceRecord, Overtime
 from .filters import filtered_attendance_qs
 
@@ -46,6 +47,9 @@ def record_create(request):
     photo = request.FILES.get('photo')
     if not photo:
         return JsonResponse({'ok': False, 'error': 'صورة التوثيق مطلوبة'}, status=400)
+    error = validate_uploaded_image(photo)
+    if error:
+        return JsonResponse({'ok': False, 'error': error}, status=400)
 
     def _parse_coord(val):
         try:

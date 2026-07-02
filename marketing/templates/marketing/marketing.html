@@ -638,6 +638,7 @@ document.getElementById('delConfirmBtn').onclick = function() {
 /* ── util ── */
 function escH(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 </script>
+<script src="{% static 'projects/js/loading-overlay.js' %}"></script>
 <script src="{% static 'projects/js/dashboard.js' %}?v=2"></script>
 </body>
 </html>

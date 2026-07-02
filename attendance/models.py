@@ -19,7 +19,7 @@ class AttendanceRecord(models.Model):
     latitude = models.DecimalField(max_digits=10, decimal_places=7, null=True, blank=True, verbose_name='خط العرض')
     longitude = models.DecimalField(max_digits=10, decimal_places=7, null=True, blank=True, verbose_name='خط الطول')
     note = models.TextField(blank=True, verbose_name='ملاحظة')
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name='الوقت')
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='الوقت')
 
     paired_check_in = models.OneToOneField(
         'self', null=True, blank=True, on_delete=models.SET_NULL,

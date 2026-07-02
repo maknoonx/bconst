@@ -5,6 +5,7 @@ from django.views.decorators.http import require_POST
 from django.http import JsonResponse
 from django.utils import timezone
 from datetime import timedelta
+from bconstproject.validators import validate_uploaded_image, validate_uploaded_file
 from .models import CompanySettings, CompanyDocument, PaymentMethod
 
 
@@ -44,7 +45,9 @@ def company_save(request):
         val = request.POST.get(f, '')
         setattr(company, f, val)
     if 'company_logo' in request.FILES:
-        company.company_logo = request.FILES['company_logo']
+        logo = request.FILES['company_logo']
+        if not validate_uploaded_image(logo):
+            company.company_logo = logo
     company.save()
     return redirect('company_home')
 
@@ -65,7 +68,9 @@ def doc_create(request):
     if end:
         d.end_date = end
     if 'file' in request.FILES:
-        d.file = request.FILES['file']
+        f = request.FILES['file']
+        if not validate_uploaded_file(f):
+            d.file = f
     d.save()
     return redirect('company_home')
 

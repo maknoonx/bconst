@@ -44,8 +44,8 @@ class Invoice(models.Model):
     ]
 
     invoice_number  = models.CharField(max_length=50, unique=True, editable=False)
-    issue_date      = models.DateField(default=date.today)
-    due_date        = models.DateField(blank=True, null=True)
+    issue_date      = models.DateField(default=date.today, db_index=True)
+    due_date        = models.DateField(blank=True, null=True, db_index=True)
     client          = models.ForeignKey('clients.Client', on_delete=models.PROTECT, related_name='invoices')
     project         = models.ForeignKey('projects.Project', on_delete=models.SET_NULL, null=True, blank=True, related_name='invoices')
     status          = models.CharField(max_length=20, choices=STATUS_CHOICES, default='draft')

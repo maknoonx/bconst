@@ -736,6 +736,7 @@ const ACCOUNTS_OPTIONS = `{% for acc in accounts %}<option value="{{ acc.id }}">
 
 const EMPLOYEES = [{% for emp in employees %}{"id":{{ emp.id }},"name":"{{ emp.full_name }}"}{% if not forloop.last %},{% endif %}{% endfor %}];
 </script>
+<script src="{% static 'projects/js/loading-overlay.js' %}"></script>
 <script src="{% static 'accounting/js/accounting.js' %}"></script>
 </body>
 </html>

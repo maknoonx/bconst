@@ -1,1 +1,1 @@
-web: gunicorn bconstproject.wsgi --bind 0.0.0.0:$PORT --log-file -
+web: python manage.py collectstatic --noinput && python manage.py migrate --noinput && gunicorn bconstproject.wsgi --bind 0.0.0.0:$PORT --log-file -

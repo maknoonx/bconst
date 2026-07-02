@@ -8,6 +8,8 @@ from django.http import JsonResponse
 from django.db.models import Q
 from django.core.paginator import Paginator
 from django.core.mail import EmailMultiAlternatives
+from django.core.exceptions import ValidationError
+from django.contrib.auth.password_validation import validate_password
 from django.utils.crypto import get_random_string
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
@@ -331,8 +333,10 @@ def set_password(request, uidb64, token):
         p2 = request.POST.get('password2', '')
         if p1 != p2:
             return render(request, 'employees/set_password.html', {'error': 'كلمتا المرور غير متطابقتين', 'user': user})
-        if len(p1) < 8:
-            return render(request, 'employees/set_password.html', {'error': 'يجب أن تكون كلمة المرور 8 أحرف على الأقل', 'user': user})
+        try:
+            validate_password(p1, user)
+        except ValidationError as ex:
+            return render(request, 'employees/set_password.html', {'error': ' '.join(ex.messages), 'user': user})
         user.set_password(p1)
         user.is_active = True
         user.save()

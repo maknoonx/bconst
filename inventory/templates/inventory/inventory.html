@@ -598,6 +598,7 @@ const URL_ALERT_RESOLVE = '{% url "inv_alert_resolve" 0 %}';
 
 const ITEMS_OPTIONS = `{% for item in items %}<option value="{{ item.id }}">{{ item.name }} ({{ item.unit }})</option>{% endfor %}`;
 </script>
+<script src="{% static 'projects/js/loading-overlay.js' %}"></script>
 <script src="{% static 'inventory/js/inventory.js' %}"></script>
 </body>
 </html>
