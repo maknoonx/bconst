@@ -1,0 +1,320 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>شركة باء البناء | روابطنا</title>
+    <meta name="description" content="جميع روابط شركة باء البناء في مكان واحد: الموقع الإلكتروني، واتساب، سناب شات، والاتصال المباشر.">
+    <meta name="robots" content="noindex,follow">
+    <meta name="theme-color" content="#0b0f1a">
+
+    <link rel="icon" type="image/png" href="{% static 'website/img/logo.png' %}">
+    <link rel="apple-touch-icon" href="{% static 'website/img/logo.png' %}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root{
+            --navy-1:#0a0d16;
+            --navy-2:#0e1422;
+            --navy-3:#141c30;
+            --gold:#c9a24a;
+            --gold-light:#e6c878;
+            --silver:#d7dbe2;
+            --text:#eef1f6;
+            --text-muted:#9aa3b4;
+            --card-border:rgba(201,162,74,.35);
+            --card-bg:rgba(255,255,255,.02);
+        }
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+        html{scroll-behavior:smooth;}
+        body{
+            min-height:100vh;
+            font-family:'Cairo',sans-serif;
+            color:var(--text);
+            background:
+                linear-gradient(160deg, rgba(201,162,74,.10) 0%, transparent 22%),
+                linear-gradient(-20deg, rgba(201,162,74,.08) 0%, transparent 20%),
+                radial-gradient(circle at 50% 0%, var(--navy-3) 0%, var(--navy-2) 45%, var(--navy-1) 100%);
+            display:flex;
+            justify-content:center;
+            padding:48px 18px 40px;
+        }
+        .page{
+            width:100%;
+            max-width:460px;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+        }
+        .logo-wrap{
+            width:150px;
+            margin-bottom:18px;
+            filter:drop-shadow(0 6px 18px rgba(0,0,0,.45));
+        }
+        .logo-wrap img{width:100%;display:block;}
+        .brand-en{
+            font-family:'Inter',sans-serif;
+            letter-spacing:.25em;
+            font-size:13px;
+            font-weight:700;
+            color:var(--silver);
+            text-transform:uppercase;
+            margin-bottom:10px;
+        }
+        .divider-row{
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            gap:12px;
+            margin-bottom:8px;
+        }
+        .divider-row .line{
+            width:34px;height:1px;
+            background:linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+        .brand-ar{
+            font-size:26px;
+            font-weight:800;
+            color:var(--text);
+        }
+        .tagline{
+            font-size:14px;
+            color:var(--gold-light);
+            font-weight:600;
+            margin-bottom:32px;
+        }
+
+        .links{
+            width:100%;
+            display:flex;
+            flex-direction:column;
+            gap:16px;
+            margin-bottom:34px;
+        }
+        .link-btn{
+            display:flex;
+            align-items:center;
+            gap:14px;
+            width:100%;
+            padding:16px 18px;
+            border:1px solid var(--card-border);
+            border-radius:14px;
+            background:var(--card-bg);
+            color:var(--text);
+            text-decoration:none;
+            transition:transform .2s ease, background .2s ease, border-color .2s ease;
+        }
+        .link-btn:hover{
+            background:rgba(201,162,74,.10);
+            border-color:var(--gold);
+            transform:translateY(-2px);
+        }
+        .link-icon{
+            flex:0 0 auto;
+            width:38px;height:38px;
+            border-radius:50%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            background:rgba(201,162,74,.12);
+            color:var(--gold-light);
+        }
+        .link-icon svg{width:19px;height:19px;}
+        .link-body{
+            flex:1;
+            display:flex;
+            flex-direction:column;
+            gap:2px;
+        }
+        .link-title{
+            font-weight:700;
+            font-size:15.5px;
+        }
+        .link-sub{
+            font-size:12.5px;
+            color:var(--text-muted);
+            font-family:'Inter',sans-serif;
+            direction:ltr;
+            text-align:right;
+        }
+        .link-arrow{
+            flex:0 0 auto;
+            color:var(--gold);
+            opacity:.85;
+        }
+        .link-arrow svg{width:16px;height:16px;transform:scaleX(-1);}
+
+        .services-row{
+            width:100%;
+            display:grid;
+            grid-template-columns:repeat(4,1fr);
+            gap:8px;
+            padding:20px 6px;
+            border-top:1px solid rgba(201,162,74,.22);
+            border-bottom:1px solid rgba(201,162,74,.22);
+            margin-bottom:26px;
+        }
+        .service-item{
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            gap:8px;
+            text-align:center;
+        }
+        .service-item .icon{
+            width:34px;height:34px;
+            color:var(--gold-light);
+        }
+        .service-item .icon svg{width:100%;height:100%;}
+        .service-item span{
+            font-size:11.5px;
+            color:var(--text-muted);
+            font-weight:600;
+            line-height:1.3;
+        }
+
+        .footer-tagline{
+            font-size:14.5px;
+            font-weight:700;
+            color:var(--text);
+            margin-bottom:18px;
+            text-align:center;
+        }
+        .socials{
+            display:flex;
+            gap:16px;
+        }
+        .socials a{
+            width:38px;height:38px;
+            border-radius:50%;
+            border:1px solid var(--card-border);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            color:var(--silver);
+            text-decoration:none;
+            transition:border-color .2s ease, color .2s ease;
+        }
+        .socials a:hover{
+            border-color:var(--gold);
+            color:var(--gold-light);
+        }
+        .socials svg{width:17px;height:17px;}
+
+        @media (max-width:380px){
+            .brand-ar{font-size:22px;}
+            .link-btn{padding:14px 14px;}
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+
+        <div class="logo-wrap">
+            <img src="{% static 'website/img/logo.png' %}" alt="شركة باء البناء">
+        </div>
+
+        <div class="brand-en">Construction Company</div>
+        <div class="divider-row"><span class="line"></span></div>
+        <div class="brand-ar">شركة باء البناء</div>
+        <div class="tagline">جودة تبنى عليها الثقة</div>
+
+        <div class="links">
+
+            <a class="link-btn" href="https://www.bconstructions.org" target="_blank" rel="noopener noreferrer">
+                <span class="link-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                </span>
+                <span class="link-body">
+                    <span class="link-title">زيارة موقعنا الإلكتروني</span>
+                    <span class="link-sub">www.bconstructions.org</span>
+                </span>
+                <span class="link-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+            </a>
+
+            <a class="link-btn" href="https://wa.me/966593394747" target="_blank" rel="noopener noreferrer">
+                <span class="link-icon">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+                </span>
+                <span class="link-body">
+                    <span class="link-title">تواصل معنا عبر واتساب</span>
+                    <span class="link-sub">0593394747</span>
+                </span>
+                <span class="link-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+            </a>
+
+            <a class="link-btn" href="tel:+966593394747">
+                <span class="link-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 3.07 9.81a19.79 19.79 0 0 1-3.07-8.63A2 2 0 0 1 2 0h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L6.09 7.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 14.9v2.02z" transform="translate(0 1)"/></svg>
+                </span>
+                <span class="link-body">
+                    <span class="link-title">الاتصال المباشر</span>
+                    <span class="link-sub">0593394747</span>
+                </span>
+                <span class="link-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+            </a>
+
+            <a class="link-btn" href="{% url 'tree_vcard' %}">
+                <span class="link-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M15 10h4"/><path d="M15 14h4"/><path d="M5 17c.6-1.6 2-2.5 4-2.5s3.4.9 4 2.5"/></svg>
+                </span>
+                <span class="link-body">
+                    <span class="link-title">حفظ جهة الاتصال</span>
+                    <span class="link-sub">Add to Contacts</span>
+                </span>
+                <span class="link-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+            </a>
+
+            <a class="link-btn" href="https://snapchat.com/t/c6FRLdBL" target="_blank" rel="noopener noreferrer">
+                <span class="link-icon">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.004 2c3.06 0 5.16 2.244 5.16 4.98 0 .576-.036 1.404-.084 2.16.828.036 1.512-.288 1.968-.6.288-.192.6-.288.828-.288.276 0 .54.096.72.288.24.24.288.588.144.9-.264.6-1.056 1.116-2.076 1.464.06.264.12.6.06.9-.036.24.036.396.204.516.372.264 1.02.372 1.464.456.336.06.588.336.588.672a.71.71 0 0 1-.396.636c-.42.24-1.056.42-1.62.552-.096.264-.144.516-.192.744-.06.276-.276.468-.552.468h-.036c-.264-.012-.588-.06-.936-.06-.348 0-.744.06-1.14.204-.936.336-1.98 1.152-3.6 1.152s-2.664-.816-3.6-1.152c-.396-.144-.792-.204-1.14-.204-.348 0-.672.048-.936.06h-.036a.58.58 0 0 1-.552-.468c-.048-.228-.096-.48-.192-.744-.564-.132-1.2-.312-1.62-.552a.71.71 0 0 1-.396-.636c0-.336.252-.612.588-.672.444-.084 1.092-.192 1.464-.456.168-.12.24-.276.204-.516-.06-.3 0-.636.06-.9-1.02-.348-1.812-.864-2.076-1.464-.144-.312-.096-.66.144-.9.18-.192.444-.288.72-.288.228 0 .54.096.828.288.456.312 1.14.636 1.968.6-.048-.756-.084-1.584-.084-2.16C6.844 4.244 8.944 2 12.004 2z"/></svg>
+                </span>
+                <span class="link-body">
+                    <span class="link-title">تابعنا على سناب شات</span>
+                    <span class="link-sub">snapchat.com/t/c6FRLdBL</span>
+                </span>
+                <span class="link-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+            </a>
+
+        </div>
+
+        <div class="services-row">
+            <div class="service-item">
+                <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M6 21V9l6-6 6 6v12"/><path d="M10 21v-6h4v6"/></svg></span>
+                <span>تصميم معماري</span>
+            </div>
+            <div class="service-item">
+                <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 21h6"/><path d="M9 8l6-4 1 3 4 1-4 4 1 5-4-2-4 2 1-6z"/><path d="M15 15v6"/></svg></span>
+                <span>إنشاء وبناء</span>
+            </div>
+            <div class="service-item">
+                <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V11l4-3 4 3v10"/><path d="M13 21V6l4-2 4 2v15"/></svg></span>
+                <span>تطوير عقاري</span>
+            </div>
+            <div class="service-item">
+                <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21v-7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v7"/><path d="M4 14V9a8 8 0 0 1 16 0v5"/></svg></span>
+                <span>إشراف هندسي</span>
+            </div>
+        </div>
+
+        <div class="footer-tagline">شريكك في بناء مستقبل أفضل</div>
+
+        <div class="socials">
+            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+            </a>
+            <a href="https://snapchat.com/t/c6FRLdBL" target="_blank" rel="noopener noreferrer" aria-label="Snapchat">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.004 2c3.06 0 5.16 2.244 5.16 4.98 0 .576-.036 1.404-.084 2.16.828.036 1.512-.288 1.968-.6.288-.192.6-.288.828-.288.276 0 .54.096.72.288.24.24.288.588.144.9-.264.6-1.056 1.116-2.076 1.464.06.264.12.6.06.9-.036.24.036.396.204.516.372.264 1.02.372 1.464.456.336.06.588.336.588.672a.71.71 0 0 1-.396.636c-.42.24-1.056.42-1.62.552-.096.264-.144.516-.192.744-.06.276-.276.468-.552.468h-.036c-.264-.012-.588-.06-.936-.06-.348 0-.744.06-1.14.204-.936.336-1.98 1.152-3.6 1.152s-2.664-.816-3.6-1.152c-.396-.144-.792-.204-1.14-.204-.348 0-.672.048-.936.06h-.036a.58.58 0 0 1-.552-.468c-.048-.228-.096-.48-.192-.744-.564-.132-1.2-.312-1.62-.552a.71.71 0 0 1-.396-.636c0-.336.252-.612.588-.672.444-.084 1.092-.192 1.464-.456.168-.12.24-.276.204-.516-.06-.3 0-.636.06-.9-1.02-.348-1.812-.864-2.076-1.464-.144-.312-.096-.66.144-.9.18-.192.444-.288.72-.288.228 0 .54.096.828.288.456.312 1.14.636 1.968.6-.048-.756-.084-1.584-.084-2.16C6.844 4.244 8.944 2 12.004 2z"/></svg>
+            </a>
+            <a href="https://wa.me/966593394747" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+            </a>
+        </div>
+
+    </div>
+</body>
+</html>

@@ -1,4 +1,5 @@
 from django.shortcuts import render, Http404
+from django.http import HttpResponse
 from django.urls import reverse
 from .translations import CONTENT
 
@@ -138,6 +139,27 @@ def services_list(request, lang='ar'):
         })
     ctx['services'] = services
     return render(request, 'website/services.html', ctx)
+
+
+def tree(request):
+    return render(request, 'website/tree.html')
+
+
+def tree_vcard(request):
+    vcard = (
+        "BEGIN:VCARD\r\n"
+        "VERSION:3.0\r\n"
+        "N:;شركة باء البناء;;;\r\n"
+        "FN:شركة باء البناء\r\n"
+        "ORG:شركة باء البناء\r\n"
+        "TEL;TYPE=CELL:+966593394747\r\n"
+        "EMAIL:b.construction.med@gmail.com\r\n"
+        "URL:https://www.bconstructions.org\r\n"
+        "END:VCARD\r\n"
+    )
+    response = HttpResponse(vcard, content_type='text/vcard; charset=utf-8')
+    response['Content-Disposition'] = 'attachment; filename="baa-al-bina.vcf"'
+    return response
 
 
 def service_detail(request, slug, lang='ar'):

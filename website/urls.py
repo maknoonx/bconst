@@ -13,6 +13,10 @@ urlpatterns = [
     path('services/',                 views.services_list,  {'lang': 'ar'}, name='services'),
     path('services/<slug:slug>/',     views.service_detail, {'lang': 'ar'}, name='service_detail'),
 
+    # Linktree-style page
+    path('tree/',                     views.tree,           name='tree'),
+    path('tree/vcard/',               views.tree_vcard,      name='tree_vcard'),
+
     # الإنجليزية
     path('en/',                       views.home,           {'lang': 'en'}, name='home_en'),
     path('en/studio/',                views.studio,         {'lang': 'en'}, name='studio_en'),
