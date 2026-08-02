@@ -10,7 +10,7 @@ from bconstproject.validators import validate_uploaded_image
 from .models import AttendanceRecord, Overtime
 from .filters import filtered_attendance_qs
 
-LOGIN_URL = '/system/'
+LOGIN_URL = '/dashboard/login/'
 
 
 def _current_employee(request):

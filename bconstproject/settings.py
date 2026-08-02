@@ -71,7 +71,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'cloudinary',
     'website',
-    'system',
+    'dashboard',
     'projects',
     'clients',
     'employees',
@@ -226,9 +226,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_URL          = '/system/'
-LOGIN_REDIRECT_URL = '/projects/'
-LOGOUT_REDIRECT_URL = '/system/'
+LOGIN_URL          = '/dashboard/login/'
+LOGIN_REDIRECT_URL = '/dashboard/'
+LOGOUT_REDIRECT_URL = '/dashboard/login/'
 
 
 # للاستخدام مع Gmail

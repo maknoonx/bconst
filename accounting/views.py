@@ -14,7 +14,7 @@ from .models import (
 )
 from employees.models import Employee
 
-LOGIN_URL = '/system/'
+LOGIN_URL = '/dashboard/login/'
 
 
 # ---------------------------------------------------------------------------

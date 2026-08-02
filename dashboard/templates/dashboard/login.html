@@ -1,0 +1,183 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول — بوابة الموظفين — {{ company.company_name_ar|default:"باء البناء" }}</title>
+    <link rel="icon" href="{% if company.company_logo %}{{ company.company_logo.url }}{% else %}{% static 'website/img/logo.png' %}{% endif %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+            background: linear-gradient(140deg, #ffffff 0%, #faf5e6 25%, #f3e8c6 60%, #ecdca0 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+        .login-card {
+            width: 100%;
+            max-width: 420px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 20px;
+            padding: 40px 36px;
+            box-shadow: 0 18px 50px rgba(80, 60, 10, 0.14);
+        }
+        .card-logo { text-align: center; margin-bottom: 30px; }
+        .logo-circle {
+            width: 74px; height: 74px;
+            margin: 0 auto 16px;
+            border-radius: 50%;
+            background: #1a1812;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+        }
+        .logo-circle img { width: 100%; height: 100%; object-fit: cover; }
+        .brand-name { font-size: 22px; font-weight: 800; color: #1a1812; }
+        .brand-sub { font-size: 14px; color: #8b887e; margin-top: 4px; }
+
+        .alert-box { margin-bottom: 18px; }
+        .alert {
+            display: flex; align-items: center; gap: 8px;
+            background: #fdeaea; color: #b3261e;
+            border: 1px solid #f3c2c2; border-radius: 10px;
+            padding: 11px 14px; font-size: 13.5px; margin-bottom: 8px;
+        }
+
+        .field-group { margin-bottom: 16px; }
+        .field-label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 13.5px; color: #1a1a1a; }
+        .field-wrap { position: relative; display: flex; align-items: center; }
+        .field-icon { position: absolute; right: 13px; color: #b0a884; display: flex; }
+        .field-input {
+            width: 100%;
+            padding: 12px 40px 12px 14px;
+            border: 1.5px solid #e3dcc8;
+            border-radius: 11px;
+            font-family: inherit; font-size: 14px;
+            background: #fff; color: #1a1a1a;
+            outline: none; direction: rtl;
+            transition: border-color .15s;
+        }
+        .field-input:focus { border-color: #c9a84c; }
+        .toggle-pass { position: absolute; left: 12px; background: none; border: none; cursor: pointer; color: #b0a884; display: flex; }
+
+        .btn-login {
+            width: 100%;
+            margin-top: 6px;
+            padding: 13px;
+            background: #1a1812;
+            color: #e8b84a;
+            border: none; border-radius: 11px;
+            font-family: inherit; font-size: 15px; font-weight: 700;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            transition: background .2s;
+        }
+        .btn-login:hover { background: #2a2618; }
+
+        .card-footer { text-align: center; margin-top: 22px; }
+        .back-link { display: inline-flex; align-items: center; gap: 6px; color: #8b887e; text-decoration: none; font-size: 13px; }
+        .back-link:hover { color: #c9a84c; }
+    </style>
+</head>
+<body>
+
+    <main class="login-card">
+
+        <div class="card-logo">
+            <div class="logo-circle">
+                {% if company and company.company_logo %}
+                <img src="{{ company.company_logo.url }}" alt="{{ company.company_name_ar|default:'باء البناء' }}">
+                {% else %}
+                <img src="{% static 'website/img/logo.png' %}" alt="باء البناء">
+                {% endif %}
+            </div>
+            <h1 class="brand-name">{{ company.company_name_ar|default:"باء البناء" }}</h1>
+            <p class="brand-sub">بوابة الموظفين</p>
+        </div>
+
+        {% if messages %}
+        <div class="alert-box">
+            {% for message in messages %}
+            <div class="alert">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <form method="post" class="login-form" novalidate>
+            {% csrf_token %}
+
+            <div class="field-group">
+                <label class="field-label" for="username">اسم المستخدم</label>
+                <div class="field-wrap">
+                    <span class="field-icon">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                        </svg>
+                    </span>
+                    <input type="text" id="username" name="username" class="field-input" placeholder="أدخل اسم المستخدم" autocomplete="username" autofocus required>
+                </div>
+            </div>
+
+            <div class="field-group">
+                <label class="field-label" for="password">كلمة المرور</label>
+                <div class="field-wrap">
+                    <span class="field-icon">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+                    </span>
+                    <input type="password" id="password" name="password" class="field-input" placeholder="أدخل كلمة المرور" autocomplete="current-password" required>
+                    <button type="button" class="toggle-pass" id="togglePass" aria-label="إظهار كلمة المرور">
+                        <svg class="eye-open" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                        </svg>
+                        <svg class="eye-closed" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-login">
+                <span>تسجيل الدخول</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/>
+                </svg>
+            </button>
+
+        </form>
+
+        <div class="card-footer">
+            <a href="/" class="back-link">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+                العودة إلى الموقع
+            </a>
+        </div>
+
+    </main>
+
+    <script>
+        const toggle = document.getElementById('togglePass');
+        const passInput = document.getElementById('password');
+        toggle.addEventListener('click', () => {
+            const isText = passInput.type === 'text';
+            passInput.type = isText ? 'password' : 'text';
+            toggle.querySelector('.eye-open').style.display  = isText ? '' : 'none';
+            toggle.querySelector('.eye-closed').style.display = isText ? 'none' : '';
+        });
+    </script>
+
+</body>
+</html>

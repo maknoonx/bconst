@@ -6,7 +6,7 @@ from django.views.decorators.http import require_POST
 from .models import Form, FormCategory, Letter, LetterCategory
 from employees.models import Employee
 
-LOGIN_URL = '/system/'
+LOGIN_URL = '/dashboard/login/'
 
 
 # ─── HOME (tabs: forms + letters) ────────────────────────────────────────────

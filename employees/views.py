@@ -21,7 +21,7 @@ from attendance.models import Overtime
 from attendance.filters import filtered_attendance_qs
 from company.models import CompanySettings
 
-LOGIN_URL = '/system/'
+LOGIN_URL = '/dashboard/login/'
 
 
 # ── helpers ──────────────────────────────────────────────────────────────────

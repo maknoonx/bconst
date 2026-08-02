@@ -59,7 +59,7 @@ def _save_plan_relations(plan, objectives, budgets, channels, targets):
         )
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 def marketing_home(request):
     plans     = list(MonthlyPlan.objects.prefetch_related('objectives', 'budgets', 'channels__days', 'targets'))
     marketers = ExternalMarketer.objects.all()
@@ -104,7 +104,7 @@ def marketing_home(request):
     return render(request, 'marketing/marketing.html', context)
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 @require_POST
 def plan_create(request):
     try:
@@ -124,7 +124,7 @@ def plan_create(request):
         return JsonResponse({'ok': False, 'error': str(e)})
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 @require_POST
 def plan_edit(request, pk):
     try:
@@ -143,7 +143,7 @@ def plan_edit(request, pk):
         return JsonResponse({'ok': False, 'error': str(e)})
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 @require_POST
 def plan_delete(request, pk):
     try:
@@ -153,7 +153,7 @@ def plan_delete(request, pk):
         return JsonResponse({'ok': False, 'error': str(e)})
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 @require_POST
 def plan_approve(request, pk):
     try:
@@ -165,7 +165,7 @@ def plan_approve(request, pk):
         return JsonResponse({'ok': False, 'error': str(e)})
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 @require_POST
 def plan_complete(request, pk):
     try:
@@ -177,7 +177,7 @@ def plan_complete(request, pk):
         return JsonResponse({'ok': False, 'error': str(e)})
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 @require_POST
 def marketer_create(request):
     try:
@@ -197,7 +197,7 @@ def marketer_create(request):
         return JsonResponse({'ok': False, 'error': str(e)})
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 @require_POST
 def marketer_edit(request, pk):
     try:
@@ -218,7 +218,7 @@ def marketer_edit(request, pk):
         return JsonResponse({'ok': False, 'error': str(e)})
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 @require_POST
 def marketer_delete(request, pk):
     try:

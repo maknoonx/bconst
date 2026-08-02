@@ -11,7 +11,7 @@ from .models import Invoice, InvoiceLine, PaymentReceipt, Quotation, QuotationLi
 #  قائمة الفواتير الرئيسية
 # ──────────────────────────────────────────────────────────────
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 def invoices_home(request):
     return _invoices_home(request)
 
@@ -20,7 +20,7 @@ def invoices_home(request):
 #  إدارة الخدمات
 # ──────────────────────────────────────────────────────────────
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 @require_POST
 def service_create(request):
     data = json.loads(request.body)
@@ -36,7 +36,7 @@ def service_create(request):
     return JsonResponse({'ok': True, 'pk': s.pk})
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 @require_POST
 def service_edit(request, pk):
     s    = get_object_or_404(Service, pk=pk)
@@ -51,20 +51,20 @@ def service_edit(request, pk):
     return JsonResponse({'ok': True})
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 @require_POST
 def service_delete(request, pk):
     get_object_or_404(Service, pk=pk).delete()
     return JsonResponse({'ok': True})
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 def category_list(request):
     cats = list(ServiceCategory.objects.values_list('name', flat=True))
     return JsonResponse(cats, safe=False)
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 @require_POST
 def category_create(request):
     data = json.loads(request.body)
@@ -75,14 +75,14 @@ def category_create(request):
     return JsonResponse({'ok': True, 'name': cat.name, 'created': created})
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 @require_POST
 def category_delete(request, name):
     ServiceCategory.objects.filter(name=name).delete()
     return JsonResponse({'ok': True})
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 def service_search(request):
     q  = request.GET.get('q', '').strip()
     qs = Service.objects.filter(is_active=True)
@@ -95,7 +95,7 @@ def service_search(request):
     return JsonResponse(data, safe=False)
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 def _invoices_home(request):
     invoices = Invoice.objects.select_related('client', 'project').all()
     receipts = PaymentReceipt.objects.select_related('invoice', 'invoice__client').all()
@@ -122,7 +122,7 @@ def _invoices_home(request):
 #  إنشاء / تعديل فاتورة
 # ──────────────────────────────────────────────────────────────
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 def invoice_create(request):
     from clients.models import Client
     from projects.models import Project
@@ -155,7 +155,7 @@ def invoice_create(request):
     })
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 def invoice_edit(request, pk):
     from clients.models import Client
     from projects.models import Project
@@ -192,7 +192,7 @@ def invoice_edit(request, pk):
 #  تفاصيل / طباعة الفاتورة
 # ──────────────────────────────────────────────────────────────
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 def invoice_detail(request, pk):
     from company.models import CompanySettings
     invoice  = get_object_or_404(Invoice, pk=pk)
@@ -229,7 +229,7 @@ def _zatca_qr(seller_name, vat_number, invoice_dt, total_with_vat, vat_amount):
     return 'data:image/png;base64,' + base64.b64encode(buf.getvalue()).decode()
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 def invoice_print(request, pk):
     from company.models import CompanySettings
     from datetime import datetime
@@ -273,7 +273,7 @@ def invoice_print(request, pk):
 #  إجراءات الفاتورة
 # ──────────────────────────────────────────────────────────────
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 @require_POST
 def invoice_finalize(request, pk):
     invoice = get_object_or_404(Invoice, pk=pk)
@@ -282,7 +282,7 @@ def invoice_finalize(request, pk):
     return JsonResponse({'ok': True})
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 @require_POST
 def invoice_cancel(request, pk):
     invoice = get_object_or_404(Invoice, pk=pk)
@@ -291,7 +291,7 @@ def invoice_cancel(request, pk):
     return JsonResponse({'ok': True})
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 @require_POST
 def invoice_delete(request, pk):
     invoice = get_object_or_404(Invoice, pk=pk)
@@ -305,7 +305,7 @@ def invoice_delete(request, pk):
 #  سندات القبض
 # ──────────────────────────────────────────────────────────────
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 @require_POST
 def payment_add(request, pk):
     invoice = get_object_or_404(Invoice, pk=pk)
@@ -322,7 +322,7 @@ def payment_add(request, pk):
     return JsonResponse({'ok': True, 'receipt_pk': receipt.pk})
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 def receipt_print(request, pk):
     from company.models import CompanySettings
     receipt = get_object_or_404(PaymentReceipt, pk=pk)
@@ -332,7 +332,7 @@ def receipt_print(request, pk):
     })
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 @require_POST
 def receipt_delete(request, pk):
     receipt = get_object_or_404(PaymentReceipt, pk=pk)
@@ -346,7 +346,7 @@ def receipt_delete(request, pk):
 #  API: بحث
 # ──────────────────────────────────────────────────────────────
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 def client_search(request):
     from clients.models import Client
     q       = request.GET.get('q', '')
@@ -354,7 +354,7 @@ def client_search(request):
     return JsonResponse([{'id': c.id, 'name': str(c)} for c in clients], safe=False)
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 def project_search(request):
     from projects.models import Project
     q = request.GET.get('q', '').strip()
@@ -367,7 +367,7 @@ def project_search(request):
     return JsonResponse([{'id': p.id, 'name': str(p)} for p in qs[:30]], safe=False)
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 def item_search(request):
     from inventory.models import Item
     q   = request.GET.get('q', '').strip()
@@ -389,7 +389,7 @@ def item_search(request):
 #  عروض الأسعار
 # ──────────────────────────────────────────────────────────────
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 def quotes_list(request):
     quotes = Quotation.objects.select_related('client', 'project').all()
     return render(request, 'invoices/quotes_list.html', {'quotes': quotes})
@@ -416,7 +416,7 @@ def _save_quote_data(quote, data):
     quote.recalculate()
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 def quote_create(request):
     from clients.models import Client
     if request.method == 'POST':
@@ -427,7 +427,7 @@ def quote_create(request):
     return render(request, 'invoices/quote_form.html', {'clients': Client.objects.all()})
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 def quote_edit(request, pk):
     from clients.models import Client
     quote = get_object_or_404(Quotation, pk=pk)
@@ -442,7 +442,7 @@ def quote_edit(request, pk):
     })
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 def quote_detail(request, pk):
     from company.models import CompanySettings
     quote = get_object_or_404(Quotation, pk=pk)
@@ -453,7 +453,7 @@ def quote_detail(request, pk):
     })
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 def quote_print(request, pk):
     from company.models import CompanySettings
     quote   = get_object_or_404(Quotation, pk=pk)
@@ -479,7 +479,7 @@ def quote_print(request, pk):
     })
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 @require_POST
 def quote_send(request, pk):
     quote = get_object_or_404(Quotation, pk=pk)
@@ -488,7 +488,7 @@ def quote_send(request, pk):
     return JsonResponse({'ok': True})
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 @require_POST
 def quote_accept(request, pk):
     quote = get_object_or_404(Quotation, pk=pk)
@@ -497,7 +497,7 @@ def quote_accept(request, pk):
     return JsonResponse({'ok': True})
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 @require_POST
 def quote_reject(request, pk):
     quote = get_object_or_404(Quotation, pk=pk)
@@ -506,7 +506,7 @@ def quote_reject(request, pk):
     return JsonResponse({'ok': True})
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 @require_POST
 def quote_convert(request, pk):
     quote = get_object_or_404(Quotation, pk=pk)
@@ -537,7 +537,7 @@ def quote_convert(request, pk):
     return JsonResponse({'ok': True, 'invoice_pk': invoice.pk})
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 @require_POST
 def quote_delete(request, pk):
     quote = get_object_or_404(Quotation, pk=pk)
@@ -551,7 +551,7 @@ def quote_delete(request, pk):
 #  تغيير العميل والإشعارات
 # ──────────────────────────────────────────────────────────────
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 @require_POST
 def invoice_change_client(request, pk):
     from clients.models import Client
@@ -566,7 +566,7 @@ def invoice_change_client(request, pk):
     return JsonResponse({'ok': True, 'client_name': invoice.client.name})
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 @require_POST
 def invoice_note_add(request, pk):
     from decimal import Decimal
@@ -616,7 +616,7 @@ def invoice_note_add(request, pk):
     return JsonResponse({'ok': True, 'note_pk': note.pk, 'note_number': note.note_number})
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 @require_POST
 def invoice_note_delete(request, note_pk):
     note = get_object_or_404(InvoiceNote, pk=note_pk)
@@ -624,7 +624,7 @@ def invoice_note_delete(request, note_pk):
     return JsonResponse({'ok': True})
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 @require_POST
 def receipt_edit(request, pk):
     from .models import PaymentReceipt
@@ -640,7 +640,7 @@ def receipt_edit(request, pk):
     return JsonResponse({'ok': True})
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 def invoice_note_print(request, note_pk):
     note = get_object_or_404(InvoiceNote, pk=note_pk)
     return render(request, 'invoices/note_print.html', {'note': note})

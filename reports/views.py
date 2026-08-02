@@ -7,7 +7,7 @@ from django.utils import timezone
 import openpyxl
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 
-LOGIN_URL = '/system/'
+LOGIN_URL = '/dashboard/login/'
 PER_PAGE  = 20
 
 

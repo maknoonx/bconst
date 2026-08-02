@@ -10,7 +10,7 @@ from .models import (
     PurchaseOrder, PurchaseOrderLine, StockMovement, Alert,
 )
 
-LOGIN_URL = '/system/'
+LOGIN_URL = '/dashboard/login/'
 
 
 def _err(msg, status=400):

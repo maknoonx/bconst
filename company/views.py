@@ -9,7 +9,7 @@ from bconstproject.validators import validate_uploaded_image, validate_uploaded_
 from .models import CompanySettings, CompanyDocument, PaymentMethod
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 def company_home(request):
     company   = CompanySettings.objects.first()
     documents = CompanyDocument.objects.all()
@@ -25,7 +25,7 @@ def company_home(request):
     })
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 def company_save(request):
     if request.method != 'POST':
         return redirect('company_home')
@@ -52,7 +52,7 @@ def company_save(request):
     return redirect('company_home')
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 def doc_create(request):
     if request.method != 'POST':
         return redirect('company_home')
@@ -75,7 +75,7 @@ def doc_create(request):
     return redirect('company_home')
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 @require_POST
 def doc_delete(request, pk):
     get_object_or_404(CompanyDocument, pk=pk).delete()
@@ -84,7 +84,7 @@ def doc_delete(request, pk):
 
 # ── طرق الدفع ──
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 @require_POST
 def pm_create(request):
     data = json.loads(request.body)
@@ -101,7 +101,7 @@ def pm_create(request):
     return JsonResponse({'ok': True, 'pk': pm.pk})
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 @require_POST
 def pm_edit(request, pk):
     pm   = get_object_or_404(PaymentMethod, pk=pk)
@@ -117,7 +117,7 @@ def pm_edit(request, pk):
     return JsonResponse({'ok': True})
 
 
-@login_required(login_url='/system/')
+@login_required(login_url='/dashboard/login/')
 @require_POST
 def pm_delete(request, pk):
     get_object_or_404(PaymentMethod, pk=pk).delete()

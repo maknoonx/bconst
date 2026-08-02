@@ -2,10 +2,10 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "django",
+      "name": "bconst",
       "runtimeExecutable": "/Users/linah/Desktop/bconst/venv/bin/python",
-      "runtimeArgs": ["manage.py", "runserver", "8000"],
-      "port": 8000
+      "runtimeArgs": ["manage.py", "runserver", "8010"],
+      "port": 8010
     }
   ]
 }
