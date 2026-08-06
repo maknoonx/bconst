@@ -1,0 +1,183 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "url": "{{ canonical_url }}",
+  "name": "{{ og_title }}",
+  "description": "{{ meta_description }}",
+  "inLanguage": "{{ lang }}",
+  "isPartOf": { "@id": "https://www.bconstructions.org/#website" },
+  "about": { "@id": "https://www.bconstructions.org/#organization" }
+}
+</script>
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .projects-page { padding: 70px 0 110px; }
+    .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        gap: 34px;
+    }
+    .project-card {
+        display: block;
+        border-radius: 18px;
+        overflow: hidden;
+        background: var(--dark-2);
+        border: 1px solid var(--gold-border);
+        text-decoration: none;
+        color: #f4efe6;
+        transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease;
+    }
+    .project-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 24px 60px rgba(0,0,0,.45);
+        border-color: var(--gold);
+    }
+    .project-card-media {
+        position: relative;
+        aspect-ratio: 4 / 3;
+        overflow: hidden;
+    }
+    .project-card-media img {
+        width: 100%; height: 100%;
+        object-fit: cover;
+        transition: transform .6s ease;
+    }
+    .project-card:hover .project-card-media img { transform: scale(1.06); }
+    .project-card-status {
+        position: absolute; top: 16px; inset-inline-start: 16px;
+        background: var(--gold);
+        color: var(--dark);
+        font-size: 12px; font-weight: 700;
+        padding: 6px 14px; border-radius: 999px;
+        letter-spacing: .02em;
+    }
+    .project-card-body { padding: 26px 26px 30px; }
+    .project-card-loc {
+        display: inline-flex; align-items: center; gap: 6px;
+        color: var(--gold-light); font-size: 13px; font-weight: 600;
+        margin-bottom: 10px;
+    }
+    .project-card-name { font-size: 26px; font-weight: 800; margin: 0 0 12px; color: #ffffff; }
+    .project-card-tag { font-size: 15px; line-height: 1.8; color: rgba(255,255,255,.82); margin: 0 0 18px; }
+    .project-card-meta {
+        font-size: 13px; font-weight: 700; color: var(--gold-light);
+        padding-top: 16px; border-top: 1px solid var(--gold-border);
+        display: flex; align-items: center; justify-content: space-between;
+    }
+    .project-card-cta { display: inline-flex; align-items: center; gap: 7px; }
+    [dir="ltr"] .project-card-name,
+    [dir="ltr"] .project-card-tag { text-align: left; }
+    .projects-empty { text-align: center; opacity: .7; font-size: 18px; padding: 60px 0; }
+</style>
+
+<!-- شريط التنقل -->
+<header class="site-header studio-header" id="siteHeader">
+    <div class="header-inner">
+        <nav class="navbar">
+            <div class="logo">
+                <div class="logo-mark">
+                    <img src="{% static 'website/img/logo.png' %}" alt="{{ company_name }}">
+                </div>
+                <div class="logo-info">
+                    <span class="logo-name">{{ company_name }}</span>
+                </div>
+            </div>
+
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="{{ url_home }}"          class="nav-link">{{ nav_home }}</a></li>
+                <li><a href="{{ url_home }}#about"    class="nav-link">{{ nav_about }}</a></li>
+                <li><a href="{{ url_studio }}"        class="nav-link">{{ nav_studio }}</a></li>
+                <li><a href="{{ url_services }}"      class="nav-link">{{ footer_link_services_page }}</a></li>
+                <li><a href="{{ url_projects }}"      class="nav-link active">{{ nav_projects }}</a></li>
+                <li><a href="{{ url_home }}#partners" class="nav-link">{{ nav_partners }}</a></li>
+                <li><a href="{{ url_contact }}"       class="nav-link">{{ nav_contact }}</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <a href="{{ url_lang_switch }}" class="lang-switch">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="2" y1="12" x2="22" y2="12"/>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                    </svg>
+                    {{ lang_label }}
+                </a>
+                <a href="{{ url_whatsapp }}" class="btn-nav" target="_blank" rel="noopener noreferrer">{{ nav_cta }}</a>
+                <a href="/dashboard/login/" class="btn-employee-login">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                    {{ btn_employee_login }}
+                </a>
+                <button class="menu-toggle" id="menuToggle" aria-label="menu">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<!-- رأس صفحة المشاريع -->
+<section class="studio-page-hero">
+    <div class="container">
+        <div class="studio-hero-content">
+            <span class="section-badge">{{ projects_badge }}</span>
+            <h1 class="studio-hero-title">{{ projects_title_1 }} <em>{{ projects_title_2 }}</em></h1>
+            <p class="studio-hero-desc">{{ projects_intro }}</p>
+        </div>
+    </div>
+</section>
+
+<!-- قائمة المشاريع -->
+<section class="projects-page">
+    <div class="container">
+        {% if projects %}
+        <div class="projects-grid">
+            {% for project in projects %}
+            <a href="{{ project.url }}" class="project-card">
+                <div class="project-card-media">
+                    <img src="{% static project.cover %}" alt="{{ project.name }}" loading="lazy">
+                    <span class="project-card-status">{{ project.status }}</span>
+                </div>
+                <div class="project-card-body">
+                    <span class="project-card-loc">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                            <circle cx="12" cy="10" r="3"/>
+                        </svg>
+                        {{ project.location }}
+                    </span>
+                    <h2 class="project-card-name">{{ project.name }}</h2>
+                    <p class="project-card-tag">{{ project.tagline }}</p>
+                    <div class="project-card-meta">
+                        <span>{{ project.meta }}</span>
+                        <span class="project-card-cta">
+                            {{ projects_view_btn }}
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <line x1="5" y1="12" x2="19" y2="12"/>
+                                <polyline points="12 5 19 12 12 19"/>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="projects-empty">{{ projects_empty }}</p>
+        {% endif %}
+    </div>
+</section>
+
+{% endblock %}
