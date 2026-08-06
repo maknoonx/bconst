@@ -12,6 +12,8 @@ urlpatterns = [
     path('terms/',                    views.terms,          {'lang': 'ar'}, name='terms'),
     path('services/',                 views.services_list,  {'lang': 'ar'}, name='services'),
     path('services/<slug:slug>/',     views.service_detail, {'lang': 'ar'}, name='service_detail'),
+    path('our-projects/',                 views.projects_list,  {'lang': 'ar'}, name='projects'),
+    path('our-projects/adwar-al-khuzami/', views.project_khuzami, {'lang': 'ar'}, name='project_khuzami'),
 
     # Linktree-style page
     path('tree/',                     views.tree,           name='tree'),
@@ -26,6 +28,8 @@ urlpatterns = [
     path('en/terms/',                 views.terms,          {'lang': 'en'}, name='terms_en'),
     path('en/services/',              views.services_list,  {'lang': 'en'}, name='services_en'),
     path('en/services/<slug:slug>/',  views.service_detail, {'lang': 'en'}, name='service_detail_en'),
+    path('en/our-projects/',              views.projects_list,  {'lang': 'en'}, name='projects_en'),
+    path('en/our-projects/adwar-al-khuzami/', views.project_khuzami, {'lang': 'en'}, name='project_khuzami_en'),
 ]
 
 urlpatterns += [

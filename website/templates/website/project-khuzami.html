@@ -1,0 +1,411 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="{{ lang }}" dir="{{ dir }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page_title }}</title>
+
+    <meta name="description" content="{{ meta_description }}">
+    <meta name="keywords" content="{{ meta_keywords }}">
+    <meta name="author" content="{{ company_name }}">
+    <meta name="robots" content="{{ meta_robots }}">
+    <meta name="theme-color" content="#0b1f36">
+
+    <link rel="canonical" href="{{ canonical_url }}">
+    <link rel="alternate" hreflang="ar" href="{{ hreflang_ar_url }}">
+    <link rel="alternate" hreflang="en" href="{{ hreflang_en_url }}">
+    <link rel="alternate" hreflang="x-default" href="{{ hreflang_ar_url }}">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="{{ company_name }}">
+    <meta property="og:locale" content="{{ og_locale }}">
+    <meta property="og:url" content="{{ canonical_url }}">
+    <meta property="og:title" content="{{ og_title }}">
+    <meta property="og:description" content="{{ og_description }}">
+    <meta property="og:image" content="{{ og_image_url }}">
+
+    <link rel="icon" type="image/png" href="{% static 'website/img/logo.png' %}">
+    <link rel="apple-touch-icon" href="{% static 'website/img/logo.png' %}">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": ["Residence", "Product"],
+      "name": "{{ p.name }}",
+      "description": "{{ meta_description }}",
+      "url": "{{ canonical_url }}",
+      "image": "{{ og_image_url }}",
+      "brand": { "@type": "Organization", "name": "{{ company_name }}" },
+      "address": { "@type": "PostalAddress", "addressLocality": "{{ p.city }}", "addressCountry": "SA" }
+    }
+    </script>
+
+    <link rel="stylesheet" href="{% static 'website/css/project-khuzami.css' %}">
+</head>
+<body class="pk">
+
+<!-- ============ RIGHT-SIDE ICONS (language + whatsapp white + call) ============ -->
+<div class="pk-right-actions">
+    <a href="{{ url_lang_switch }}" class="pk-icon-btn lang" aria-label="{{ lang_label }}" title="{{ lang_label }}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        <span class="pk-lang-tag">{% if lang == 'ar' %}EN{% else %}ع{% endif %}</span>
+    </a>
+    <a href="{{ url_whatsapp }}" target="_blank" rel="noopener noreferrer" class="pk-icon-btn wa" aria-label="WhatsApp">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    </a>
+    <a href="tel:{{ tel_number }}" class="pk-icon-btn call" aria-label="{{ p.cta_call }}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.9v2.02z"/></svg>
+    </a>
+</div>
+
+<!-- ============ LEFT SPEED DIAL (four dots) ============ -->
+<div class="pk-speeddial" id="pkDial">
+    <button class="pk-dial-toggle" id="pkDialToggle" aria-label="{{ p.cta_call }}" aria-expanded="false">
+        <span class="pk-dial-dots"><span></span><span></span><span></span><span></span></span>
+    </button>
+    <div class="pk-dial-actions">
+        <a href="tel:{{ tel_number }}" class="pk-dial-item">
+            <span class="pk-dial-ic call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.9v2.02z"/></svg></span>
+            <span class="pk-dial-label">{{ p.cta_call }}</span>
+        </a>
+        <a href="{{ url_whatsapp }}" target="_blank" rel="noopener noreferrer" class="pk-dial-item">
+            <span class="pk-dial-ic wa"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></span>
+            <span class="pk-dial-label">{{ p.cta_whatsapp }}</span>
+        </a>
+        <a href="{{ map_url }}" target="_blank" rel="noopener noreferrer" class="pk-dial-item">
+            <span class="pk-dial-ic loc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+            <span class="pk-dial-label">{{ p.cta_location }}</span>
+        </a>
+    </div>
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="pk-hero">
+    <div class="pk-wrap pk-hero-grid">
+        <div class="pk-hero-text">
+            <span class="pk-hero-loc">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                {{ p.location }}
+            </span>
+            <h1 class="pk-hero-title">{{ p.name }}</h1>
+            <p class="pk-hero-tagline">{{ p.hero_tagline_1 }} <em>{{ p.hero_tagline_2 }}</em></p>
+            <p class="pk-hero-desc">{{ p.hero_desc }}</p>
+            <div class="pk-hero-meta">{{ p.hero_meta }}</div>
+            <div class="pk-hero-actions">
+                <a href="{{ url_whatsapp }}" target="_blank" rel="noopener noreferrer" class="pk-btn pk-btn-gold">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/></svg>
+                    {{ p.cta_book }}
+                </a>
+                <a href="#pk-plans" class="pk-btn pk-btn-ghost">
+                    {{ p.plans_title }}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+                </a>
+            </div>
+        </div>
+        <div class="pk-hero-figure">
+            <img src="{% static 'website/img/projects/khuzami/exterior-hero.jpg' %}" alt="{{ p.name }} — {{ p.city }}">
+        </div>
+    </div>
+</section>
+
+<!-- ============ AT A GLANCE ============ -->
+<section class="pk-section pk-stats">
+    <div class="pk-wrap">
+        <div class="pk-sec-head" style="margin-bottom:40px;">
+            <span class="pk-kicker">{{ p.stats_title }}</span>
+        </div>
+        <div class="pk-stats-grid">
+            {% for s in p.stats %}
+            <div class="pk-stat">
+                <div class="pk-stat-num">{{ s.num }}</div>
+                <div class="pk-stat-label">{{ s.label }}</div>
+                <div class="pk-stat-sub">{{ s.sub }}</div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ============ PRIVACY ============ -->
+<section class="pk-section pk-privacy">
+    <div class="pk-wrap pk-privacy-grid">
+        <div>
+            <span class="pk-kicker">{{ p.privacy_kicker }}</span>
+            <h2 class="pk-privacy-title">{{ p.privacy_title_1 }} <em>{{ p.privacy_title_2 }}</em></h2>
+            <p class="pk-privacy-desc">{{ p.privacy_desc }}</p>
+        </div>
+        <ul class="pk-points">
+            {% for pt in p.privacy_points %}
+            <li class="pk-point">
+                <span class="pk-point-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                {{ pt }}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</section>
+
+<!-- ============ RESIDENCES ============ -->
+<section class="pk-section pk-residences">
+    <div class="pk-wrap">
+        <div class="pk-sec-head">
+            <span class="pk-kicker">{{ p.floors_kicker }}</span>
+            <h2 class="pk-h2">{{ p.floors_title }}</h2>
+        </div>
+        <div class="pk-floors">
+            {% for f in p.floors %}
+            <div class="pk-floor">
+                <span class="pk-floor-tag">{{ f.tag }}</span>
+                <div class="pk-floor-name">{{ f.name }}</div>
+                <div class="pk-floor-area">{{ f.area }}</div>
+                <div class="pk-floor-config">{{ f.config }}</div>
+                <p class="pk-floor-hl">{{ f.highlight }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ============ ENTRANCES ============ -->
+<section class="pk-section pk-entrances">
+    <div class="pk-wrap">
+        <div class="pk-sec-head">
+            <span class="pk-kicker">{{ p.entrance_kicker }}</span>
+            <h2 class="pk-h2">{{ p.entrance_title }}</h2>
+        </div>
+        <div class="pk-ent-grid">
+            {% for e in p.entrances %}
+            <div class="pk-ent">
+                <div class="pk-ent-num">0{{ forloop.counter }}</div>
+                <div class="pk-ent-name">{{ e.name }}</div>
+                <p class="pk-ent-desc">{{ e.desc }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ============ LIVING / FEATURES ============ -->
+<section class="pk-section pk-living">
+    <div class="pk-wrap">
+        <div class="pk-sec-head">
+            <span class="pk-kicker">{{ p.living_kicker }}</span>
+            <h2 class="pk-h2">{{ p.living_title }}</h2>
+        </div>
+        <div class="pk-living-grid">
+            {% for l in p.living %}
+            <div class="pk-feat">
+                <div class="pk-feat-ic">
+                    {% if l.icon == 'flex' %}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                    {% elif l.icon == 'light' %}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.2" y1="4.2" x2="5.6" y2="5.6"/><line x1="18.4" y1="18.4" x2="19.8" y2="19.8"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.2" y1="19.8" x2="5.6" y2="18.4"/><line x1="18.4" y1="5.6" x2="19.8" y2="4.2"/></svg>
+                    {% else %}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/><path d="M9 10h.01M15 10h.01"/></svg>
+                    {% endif %}
+                </div>
+                <h3 class="pk-feat-title">{{ l.title }}</h3>
+                <p class="pk-feat-desc">{{ l.desc }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ============ INTERIORS ============ -->
+<section class="pk-section pk-interiors">
+    <div class="pk-wrap">
+        <div class="pk-sec-head">
+            <span class="pk-kicker">{{ p.interiors_kicker }}</span>
+            <h2 class="pk-h2">{{ p.interiors_title }}</h2>
+            <p class="pk-sec-sub">{{ p.interiors_desc }}</p>
+        </div>
+        <div class="pk-interiors-grid">
+            {% for room in p.interiors %}
+            <figure class="pk-room js-zoom" data-src="{% static 'website/img/projects/khuzami/'|add:room.img %}">
+                <img src="{% static 'website/img/projects/khuzami/'|add:room.img %}" alt="{{ room.label }} — {{ p.name }}" loading="lazy">
+                <figcaption class="pk-room-label">{{ room.label }}</figcaption>
+            </figure>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ============ COMPARE TABLE ============ -->
+<section class="pk-section pk-compare">
+    <div class="pk-wrap">
+        <div class="pk-sec-head">
+            <span class="pk-kicker">{{ p.compare_kicker }}</span>
+            <h2 class="pk-h2" style="color:#fff;">{{ p.compare_title }}</h2>
+        </div>
+        <div class="pk-table-wrap">
+            <table class="pk-table">
+                <thead>
+                    <tr>{% for h in p.compare_head %}<th>{{ h }}</th>{% endfor %}</tr>
+                </thead>
+                <tbody>
+                    {% for row in p.compare_rows %}
+                    <tr>
+                        {% for cell in row %}
+                        <td{% if forloop.first %}{% elif cell == '✓' %} class="yes"{% endif %}>{{ cell }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <p class="pk-compare-note">{{ p.compare_note }}</p>
+    </div>
+</section>
+
+<!-- ============ FLOOR PLANS ============ -->
+<section class="pk-section pk-plans" id="pk-plans">
+    <div class="pk-wrap">
+        <div class="pk-sec-head">
+            <span class="pk-kicker">{{ p.plans_kicker }}</span>
+            <h2 class="pk-h2">{{ p.plans_title }}</h2>
+        </div>
+        <div class="pk-plans-grid">
+            <div class="pk-plan">
+                <div class="pk-plan-frame js-zoom" data-src="{% static 'website/img/projects/khuzami/plan-ground.jpg' %}">
+                    <img src="{% static 'website/img/projects/khuzami/plan-ground.jpg' %}" alt="{{ p.plan_ground_label }}" loading="lazy">
+                </div>
+                <div class="pk-plan-label">{{ p.plan_ground_label }}</div>
+            </div>
+            <div class="pk-plan">
+                <div class="pk-plan-frame js-zoom" data-src="{% static 'website/img/projects/khuzami/plan-upper.jpg' %}">
+                    <img src="{% static 'website/img/projects/khuzami/plan-upper.jpg' %}" alt="{{ p.plan_upper_label }}" loading="lazy">
+                </div>
+                <div class="pk-plan-label">{{ p.plan_upper_label }}</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ INCLUDES ============ -->
+<section class="pk-section pk-includes">
+    <div class="pk-wrap">
+        <div class="pk-sec-head">
+            <span class="pk-kicker">{{ p.includes_kicker }}</span>
+            <h2 class="pk-h2">{{ p.includes_title }}</h2>
+        </div>
+        <div class="pk-inc-grid">
+            {% for item in p.includes %}
+            <div class="pk-inc">
+                <span class="pk-inc-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                {{ item }}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ============ GALLERY ============ -->
+<section class="pk-section pk-gallery">
+    <div class="pk-wrap">
+        <div class="pk-sec-head">
+            <span class="pk-kicker">{{ p.gallery_kicker }}</span>
+            <h2 class="pk-h2" style="color:#fff;">{{ p.gallery_title }}</h2>
+        </div>
+        <div class="pk-gal-grid">
+            <div class="pk-gal-item tall js-zoom" data-src="{% static 'website/img/projects/khuzami/exterior-hero.jpg' %}">
+                <img src="{% static 'website/img/projects/khuzami/exterior-hero.jpg' %}" alt="{{ p.name }}" loading="lazy">
+            </div>
+            <div class="pk-gal-item js-zoom" data-src="{% static 'website/img/projects/khuzami/exterior-detail.jpg' %}">
+                <img src="{% static 'website/img/projects/khuzami/exterior-detail.jpg' %}" alt="{{ p.name }}" loading="lazy">
+            </div>
+            <div class="pk-gal-item js-zoom" data-src="{% static 'website/img/projects/khuzami/exterior-entrance.jpg' %}">
+                <img src="{% static 'website/img/projects/khuzami/exterior-entrance.jpg' %}" alt="{{ p.name }}" loading="lazy">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ FINAL CTA ============ -->
+<section class="pk-section pk-final">
+    <div class="pk-wrap">
+        <h2 class="pk-final-title">{{ p.final_title_1 }}<br><em>{{ p.final_title_2 }}</em></h2>
+        <p class="pk-final-desc">{{ p.final_desc }}</p>
+        <div class="pk-final-actions">
+            <a href="{{ url_whatsapp }}" target="_blank" rel="noopener noreferrer" class="pk-btn pk-btn-navy">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/></svg>
+                {{ p.cta_whatsapp }}
+            </a>
+            <a href="tel:{{ tel_number }}" class="pk-btn pk-btn-gold">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.9v2.02z"/></svg>
+                {{ tel_number }}
+            </a>
+            <a href="{{ map_url }}" target="_blank" rel="noopener noreferrer" class="pk-btn pk-btn-ghost" style="color:var(--pk-navy);border-color:var(--pk-line);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                {{ p.cta_location }}
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ============ PROJECT INFO ============ -->
+<section class="pk-section pk-info">
+    <div class="pk-wrap pk-info-grid">
+        <div>
+            <span class="pk-kicker" style="color:var(--pk-gold-2);">{{ p.info_kicker }}</span>
+            <h2 class="pk-h2" style="color:#fff;margin-bottom:26px;">{{ p.info_title }}</h2>
+            <ul class="pk-info-list">
+                {% for k, v in p.info %}
+                <li class="pk-info-row">
+                    <span class="pk-info-k">{{ k }}</span>
+                    <span class="pk-info-v">{{ v }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="pk-info-side">
+            <div class="pk-info-logo">
+                <img src="{% static 'website/img/logo.png' %}" alt="{{ company_name }}">
+            </div>
+            <p class="pk-slogan">{{ p.slogan }}</p>
+        </div>
+    </div>
+</section>
+
+<footer class="pk-foot">
+    © 2026 {{ company_name }} — {{ p.name }} · {{ p.location }} · <a href="{{ url_home }}">{{ company_name }}</a>
+</footer>
+
+<!-- ============ LIGHTBOX ============ -->
+<div class="pk-lightbox" id="pkLightbox">
+    <button class="pk-lightbox-close" id="pkLightboxClose" aria-label="close">&times;</button>
+    <img src="" alt="" id="pkLightboxImg">
+</div>
+
+<script>
+(function () {
+    // speed dial toggle
+    var dial = document.getElementById('pkDial');
+    var toggle = document.getElementById('pkDialToggle');
+    toggle.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var open = dial.classList.toggle('open');
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    document.addEventListener('click', function (e) {
+        if (!dial.contains(e.target)) dial.classList.remove('open');
+    });
+
+    // lightbox
+    var lb = document.getElementById('pkLightbox');
+    var lbImg = document.getElementById('pkLightboxImg');
+    document.querySelectorAll('.js-zoom').forEach(function (el) {
+        el.addEventListener('click', function () {
+            lbImg.src = el.getAttribute('data-src');
+            lb.classList.add('open');
+        });
+    });
+    function closeLb() { lb.classList.remove('open'); lbImg.src = ''; }
+    lb.addEventListener('click', closeLb);
+    document.getElementById('pkLightboxClose').addEventListener('click', closeLb);
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeLb(); });
+})();
+</script>
+</body>
+</html>

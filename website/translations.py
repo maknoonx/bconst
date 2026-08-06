@@ -19,6 +19,7 @@ CONTENT = {
         'page_title_privacy':     'سياسة الخصوصية — شركة باء البناء',
         'page_title_terms':       'الشروط والأحكام — شركة باء البناء',
         'page_title_services':    'خدماتنا — شركة باء البناء',
+        'page_title_projects':    'مشاريعنا — شركة باء البناء',
 
         # الشركة
         'company_name': 'شركة باء البناء',
@@ -28,6 +29,7 @@ CONTENT = {
         'nav_home':     'الرئيسية',
         'nav_about':    'من نحن',
         'nav_studio':   'استديو أعمالنا',
+        'nav_projects': 'مشاريعنا',
         'nav_partners': 'شركاؤنا',
         'nav_contact':  'تواصل معنا',
         'nav_cta':      'احصل على عرض سعر',
@@ -213,6 +215,20 @@ CONTENT = {
         'services_intro':   'نقدم مجموعة شاملة من الخدمات الإنشائية والمعمارية والاستشارية التي تلبي كافة احتياجاتك.',
         'services_learn_more': 'اعرف أكثر',
 
+        # صفحة المشاريع
+        'projects_badge':      'مشاريعنا',
+        'projects_title_1':    'مشاريعنا',
+        'projects_title_2':    'الحالية',
+        'projects_intro':      'نخبة من المشاريع السكنية التي تنفذها شركة باء البناء بمعايير جودة عالية وتصاميم عصرية تليق بعملائنا.',
+        'projects_status_now': 'متاح الآن',
+        'projects_view_btn':   'استعرض المشروع',
+        'projects_empty':      'لا توجد مشاريع متاحة حالياً.',
+        # بطاقة مشروع أدوار الخزامى
+        'khuzami_card_name':     'أدوار الخزامى',
+        'khuzami_card_location': 'المدينة المنورة — حي الخزامى',
+        'khuzami_card_tagline':  'عمارة سكنية راقية — شقة كاملة لكل دور، بحديقة أو شرفات أو سطح خاص.',
+        'khuzami_card_meta':     '٤ أدوار · ٤ منازل · ١٩٢–١٩٨ م²',
+
         # بيانات تفاصيل الخدمات
         'svc_architectural_design_title': 'التصميم المعماري',
         'svc_architectural_design_desc':  'نقدم حلول تصميمية متكاملة تجمع بين الجمال والوظيفية، وفق أحدث المعايير العالمية وبما يتوافق مع الهوية السعودية وبيئتها المعمارية الفريدة.',
@@ -274,6 +290,7 @@ CONTENT = {
         'seo_title_studio':   'استديو أعمالنا — معرض المشاريع المعمارية والإنشائية | شركة باء البناء',
         'seo_title_contact':  'تواصل معنا | شركة باء البناء للمقاولات',
         'seo_title_services': 'خدماتنا | تصميم معماري وإنشاء وتطوير عقاري | شركة باء البناء',
+        'seo_title_projects': 'مشاريعنا | مشروع أدوار الخزامى بالمدينة المنورة | شركة باء البناء',
         'seo_title_privacy':  'سياسة الخصوصية | شركة باء البناء',
         'seo_title_terms':    'الشروط والأحكام | شركة باء البناء',
 
@@ -282,6 +299,7 @@ CONTENT = {
         'meta_description_studio':   'معرض أعمال شركة باء البناء — 21 مشروعاً معمارياً، 42 مشروعاً إنشائياً، و9 تصاميم منجزة في المملكة العربية السعودية. شاهد جودة التنفيذ والتصميم.',
         'meta_description_contact':  'تواصل مع شركة باء البناء للمقاولات في السعودية. اتصل على 0593394747 أو راسلنا عبر البريد الإلكتروني للحصول على استشارة مجانية.',
         'meta_description_services': 'خدمات شركة باء البناء: التصميم المعماري، الإنشاء والبناء، التطوير العقاري، التجديد والترميم، والاستشارات الهندسية في المملكة العربية السعودية.',
+        'meta_description_projects': 'مشاريع شركة باء البناء — مشروع أدوار الخزامى بحي الخزامى في المدينة المنورة: عمارة سكنية راقية، شقة كاملة لكل دور بمساحات ١٩٢–١٩٨ م²، حدائق وشرفات وسطح خاص.',
         'meta_description_privacy':  'سياسة خصوصية شركة باء البناء — تعرف على كيفية جمع بياناتك الشخصية وحمايتها عند تصفحك لموقعنا.',
         'meta_description_terms':    'الشروط والأحكام لشركة باء البناء — اقرأ شروط الاستخدام وسياسات التعامل مع خدماتنا الإنشائية والمعمارية.',
 
@@ -290,6 +308,7 @@ CONTENT = {
         'meta_keywords_studio':   'معرض مشاريع إنشائية, أعمال معمارية السعودية, تصاميم هندسية, شركة باء البناء',
         'meta_keywords_contact':  'تواصل شركة مقاولات, أرقام هاتف مقاول السعودية, استشارة هندسية مجانية',
         'meta_keywords_services': 'خدمات إنشائية السعودية, تصميم معماري, إنشاء وبناء, تطوير عقاري, تجديد وترميم',
+        'meta_keywords_projects': 'مشاريع سكنية المدينة المنورة, شقق تمليك المدينة المنورة, حي الخزامى, أدوار الخزامى, شقق دور كامل, شركة باء البناء',
         'meta_keywords_privacy':  'سياسة خصوصية, حماية البيانات',
         'meta_keywords_terms':    'شروط وأحكام, سياسات الاستخدام',
 
@@ -298,6 +317,7 @@ CONTENT = {
         'og_title_studio':   'استديو مشاريعنا — شركة باء البناء',
         'og_title_contact':  'تواصل معنا — شركة باء البناء',
         'og_title_services': 'خدماتنا — شركة باء البناء',
+        'og_title_projects': 'مشاريعنا — مشروع أدوار الخزامى بالمدينة المنورة | شركة باء البناء',
         'og_locale':         'ar_SA',
 
         # Structured data
@@ -320,6 +340,7 @@ CONTENT = {
         'page_title_privacy':     'Privacy Policy — Baa Al-Bina Company',
         'page_title_terms':       'Terms & Conditions — Baa Al-Bina Company',
         'page_title_services':    'Our Services — Baa Al-Bina Company',
+        'page_title_projects':    'Our Projects — Baa Al-Bina Company',
 
         # Company
         'company_name': 'Baa Al-Bina Company',
@@ -329,6 +350,7 @@ CONTENT = {
         'nav_home':     'Home',
         'nav_about':    'About Us',
         'nav_studio':   'Our Studio',
+        'nav_projects': 'Our Projects',
         'nav_partners': 'Partners',
         'nav_contact':  'Contact Us',
         'nav_cta':      'Get a Quote',
@@ -514,6 +536,20 @@ CONTENT = {
         'services_intro':   'We provide a comprehensive range of construction, architectural, and consultancy services that meet all your needs.',
         'services_learn_more': 'Learn More',
 
+        # Projects page
+        'projects_badge':      'Our Projects',
+        'projects_title_1':    'Our Current',
+        'projects_title_2':    'Projects',
+        'projects_intro':      'A selection of residential projects delivered by Baa Al-Bina Company with high quality standards and modern designs worthy of our clients.',
+        'projects_status_now': 'Available Now',
+        'projects_view_btn':   'View Project',
+        'projects_empty':      'No projects available at the moment.',
+        # Adwar Al Khuzami card
+        'khuzami_card_name':     'Adwar Al Khuzami',
+        'khuzami_card_location': 'Madinah — Al Khuzama District',
+        'khuzami_card_tagline':  'A boutique residential building — one full-floor apartment per level, each with its own garden, balconies or private roof.',
+        'khuzami_card_meta':     '4 Floors · 4 Homes · 192–198 m²',
+
         # Service detail data
         'svc_architectural_design_title': 'Architectural Design',
         'svc_architectural_design_desc':  'We provide comprehensive design solutions that combine beauty and functionality, in line with the latest international standards and in harmony with the Saudi identity and its unique architectural environment.',
@@ -574,6 +610,7 @@ CONTENT = {
         'seo_title_studio':   'Our Studio — Architecture & Construction Portfolio | Baa Al-Bina Company',
         'seo_title_contact':  'Contact Us | Baa Al-Bina Construction Company',
         'seo_title_services': 'Our Services | Architectural Design, Construction & Real Estate | Baa Al-Bina',
+        'seo_title_projects': 'Our Projects | Adwar Al Khuzami, Madinah | Baa Al-Bina Company',
         'seo_title_privacy':  'Privacy Policy | Baa Al-Bina Company',
         'seo_title_terms':    'Terms & Conditions | Baa Al-Bina Company',
 
@@ -581,6 +618,7 @@ CONTENT = {
         'meta_description_studio':   'Explore Baa Al-Bina portfolio: 21 architectural projects, 42 construction projects, and 9 designs delivered across Saudi Arabia. See the quality of our execution.',
         'meta_description_contact':  'Contact Baa Al-Bina Construction Company in Saudi Arabia. Call +966593394747 or email us for a free consultation.',
         'meta_description_services': 'Baa Al-Bina services: architectural design, construction, real estate development, renovation & restoration, and engineering consultancy across Saudi Arabia.',
+        'meta_description_projects': 'Baa Al-Bina projects — Adwar Al Khuzami in the Al Khuzama district of Madinah: a boutique residential building, one full-floor apartment per level (192–198 m²) with gardens, balconies and a private roof.',
         'meta_description_privacy':  'Privacy Policy of Baa Al-Bina Company — learn how we collect, use, and protect your personal data when you use our website.',
         'meta_description_terms':    'Terms & Conditions of Baa Al-Bina Company — read the usage terms and policies for our construction and architectural services.',
 
@@ -588,6 +626,7 @@ CONTENT = {
         'meta_keywords_studio':   'construction portfolio Saudi Arabia, architectural projects KSA, engineering designs, Baa Al-Bina',
         'meta_keywords_contact':  'contact construction company Saudi Arabia, engineering consultancy phone, free consultation KSA',
         'meta_keywords_services': 'construction services Saudi Arabia, architectural design, real estate development, renovation KSA',
+        'meta_keywords_projects': 'residential projects Madinah, apartments for sale Madinah, Al Khuzama district, Adwar Al Khuzami, full-floor apartments, Baa Al-Bina',
         'meta_keywords_privacy':  'privacy policy, data protection',
         'meta_keywords_terms':    'terms and conditions, usage policy',
 
@@ -595,6 +634,7 @@ CONTENT = {
         'og_title_studio':   'Our Studio — Baa Al-Bina Company',
         'og_title_contact':  'Contact Us — Baa Al-Bina Company',
         'og_title_services': 'Our Services — Baa Al-Bina Company',
+        'og_title_projects': 'Our Projects — Adwar Al Khuzami, Madinah | Baa Al-Bina Company',
         'og_locale':         'en_US',
 
         'schema_org_name':    'Baa Al-Bina Company',
