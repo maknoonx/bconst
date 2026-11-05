@@ -31,11 +31,13 @@ SECRET_KEY = 'django-insecure-y(58+5$m60v9mt&%)wc0oxv6%ojr)cm&6!2f^zb*eh(tia$=!-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = not IS_PRODUCTION
 
-ALLOWED_HOSTS = ['bconstructions.org', 'www.bconstructions.org', '.up.railway.app', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['bconstructions.org', 'www.bconstructions.org', 'balbena.sa', 'www.balbena.sa', '.up.railway.app', 'localhost', '127.0.0.1']
 
 CSRF_TRUSTED_ORIGINS = [
     'https://bconstructions.org',
     'https://www.bconstructions.org',
+    'https://balbena.sa',
+    'https://www.balbena.sa',
 ]
 
 if IS_PRODUCTION:
