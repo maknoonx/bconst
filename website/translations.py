@@ -41,7 +41,7 @@ CONTENT = {
         'hero_title_2':  'بيد خبراء موثوقين',
         'hero_subtitle': 'شركة باء البناء — أكثر من 10 سنوات من التميز في الإنشاء والتصميم المعماري والحلول الهندسية المتكاملة.',
         'btn_consultation': 'احصل على استشارة مجانية',
-        'btn_browse':       'استعرض أعمالنا',
+        'btn_browse':       'استعرض مشاريعنا',
 
         # قسم من نحن
         'about_badge':   'من نحن',
@@ -94,7 +94,7 @@ CONTENT = {
         'footer_newsletter_desc':    'اشترك لتلقي آخر أخبار مشاريعنا والعروض الحصرية',
         'newsletter_placeholder':    'بريدك الإلكتروني',
         'newsletter_aria':           'اشتراك',
-        'copyright':     'حقوق النشر © 2025 شركة باء البناء — جميع الحقوق محفوظة | تم تصميم الموقع من قبل: <a href="https://hinp.sa/" target="_blank">HINP</a>',
+        'copyright':     'حقوق النشر © {year} شركة باء البناء — جميع الحقوق محفوظة | تم تصميم الموقع من قبل: <a href="https://hinp.sa/" target="_blank">HINP</a>',
         'footer_privacy':'سياسة الخصوصية',
         'footer_terms':  'الشروط والأحكام',
         'footer_about':  'من نحن',
@@ -126,7 +126,17 @@ CONTENT = {
 
         # واتساب
         'url_whatsapp': 'https://wa.me/966593394747',
+        'url_whatsapp_consult': 'https://wa.me/966593394747?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D9%81%D9%8A%20%D8%A7%D9%84%D8%AD%D8%B5%D9%88%D9%84%20%D8%B9%D9%84%D9%89%20%D8%A7%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%D8%A9%20%D9%85%D8%AC%D8%A7%D9%86%D9%8A%D8%A9',
         'whatsapp_aria': 'تواصل عبر واتساب',
+
+        # البيانات النظامية والموقع
+        'legal_cr_label':      'السجل التجاري',
+        'legal_cr_number':     '7033033882',
+        'legal_class_label':   'تصنيف المقاولين',
+        'legal_class_value':   '',
+        'location_label':      'موقعنا',
+        'location_cities':     'المدينة المنورة / جدة',
+        'location_map_action': 'افتح في خرائط قوقل',
 
         # صفحة التواصل
         'contact_badge':           'تواصل معنا',
@@ -223,6 +233,12 @@ CONTENT = {
         'projects_status_now': 'متاح الآن',
         'projects_view_btn':   'استعرض المشروع',
         'projects_empty':      'لا توجد مشاريع متاحة حالياً.',
+        'projects_tab_current':   'مشاريع قائمة',
+        'projects_tab_available': 'مشاريع متاحة',
+        'projects_soon_badge':    'قريباً',
+        'projects_soon_title':    'مشاريع متاحة قريباً',
+        'projects_soon_desc':     'نعمل على إطلاق مشاريع جديدة متاحة للتملك والاستثمار. تواصل معنا ليصلك كل جديد أولاً.',
+        'projects_soon_cta':      'تواصل عبر واتساب',
         # بطاقة مشروع أدوار الخزامى
         'khuzami_card_name':     'أدوار الخزامى',
         'khuzami_card_location': 'المدينة المنورة — حي الخزامى',
@@ -362,7 +378,7 @@ CONTENT = {
         'hero_title_2':  'With Trusted Experts',
         'hero_subtitle': 'Baa Al-Bina Company — Over 10 years of excellence in construction, architectural design, and integrated engineering solutions.',
         'btn_consultation': 'Get Free Consultation',
-        'btn_browse':       'Browse Our Work',
+        'btn_browse':       'Browse Our Projects',
 
         # About
         'about_badge':   'About Us',
@@ -415,7 +431,7 @@ CONTENT = {
         'footer_newsletter_desc':    'Subscribe to receive the latest news about our projects and exclusive offers',
         'newsletter_placeholder':    'Your email address',
         'newsletter_aria':           'Subscribe',
-        'copyright':     'Copyright © 2025 Baa Al-Bina Company — All rights reserved | Designed by: <a href="https://hinp.sa/" target="_blank">HINP</a>',
+        'copyright':     'Copyright © {year} Baa Al-Bina Company — All rights reserved | Designed by: <a href="https://hinp.sa/" target="_blank">HINP</a>',
         'footer_privacy':'Privacy Policy',
         'footer_terms':  'Terms & Conditions',
         'footer_about':  'About Us',
@@ -447,7 +463,17 @@ CONTENT = {
 
         # WhatsApp
         'url_whatsapp': 'https://wa.me/966593394747',
+        'url_whatsapp_consult': 'https://wa.me/966593394747?text=Hello%2C%20I%20would%20like%20a%20free%20consultation',
         'whatsapp_aria': 'Chat on WhatsApp',
+
+        # Legal & location
+        'legal_cr_label':      'Commercial Registration',
+        'legal_cr_number':     '7033033882',
+        'legal_class_label':   'Contractor Classification',
+        'legal_class_value':   '',
+        'location_label':      'Our Location',
+        'location_cities':     'Madinah / Jeddah',
+        'location_map_action': 'Open in Google Maps',
 
         # Contact page
         'contact_badge':           'Contact Us',
@@ -544,6 +570,12 @@ CONTENT = {
         'projects_status_now': 'Available Now',
         'projects_view_btn':   'View Project',
         'projects_empty':      'No projects available at the moment.',
+        'projects_tab_current':   'Current Projects',
+        'projects_tab_available': 'Available Projects',
+        'projects_soon_badge':    'Soon',
+        'projects_soon_title':    'Available projects coming soon',
+        'projects_soon_desc':     'We are preparing new projects available for ownership and investment. Get in touch to hear about them first.',
+        'projects_soon_cta':      'Chat on WhatsApp',
         # Adwar Al Khuzami card
         'khuzami_card_name':     'Adwar Al Khuzami',
         'khuzami_card_location': 'Madinah — Al Khuzama District',

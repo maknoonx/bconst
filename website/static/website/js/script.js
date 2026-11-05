@@ -131,3 +131,25 @@
     });
 
 })();
+
+// فيديو الهيرو — يُحمَّل بعد فتح الصفحة، بنسخة خفيفة على الجوال، ويُتخطّى مع توفير البيانات
+(function () {
+    var video = document.getElementById('heroVideo');
+    if (!video) return;
+    var conn = navigator.connection || {};
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (conn.saveData || /(^|-)2g$/.test(conn.effectiveType || '') || reduceMotion) return; // يبقى الـ poster فقط
+
+    function start() {
+        var isMobile = window.matchMedia('(max-width: 768px)').matches;
+        var source = document.createElement('source');
+        source.src = isMobile ? video.dataset.srcMobile : video.dataset.srcDesktop;
+        source.type = 'video/mp4';
+        video.appendChild(source);
+        video.load();
+        var p = video.play();
+        if (p && p.catch) p.catch(function () {});
+    }
+    if (document.readyState === 'complete') start();
+    else window.addEventListener('load', start);
+})();

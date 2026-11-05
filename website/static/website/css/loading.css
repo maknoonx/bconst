@@ -113,3 +113,11 @@
     color: rgba(250,248,242,.45);
     font-weight: 500;
 }
+
+/* النص يأتي من data-text حتى لا يُفهرس كمحتوى للصفحة */
+.loader-brand::before,
+.loader-msg::before { content: attr(data-text); }
+
+/* احتياط: تختفي الشاشة تلقائياً حتى لو تعطّل الجافاسكربت */
+.preloader { animation: preloaderAutoHide .5s ease 4s forwards; }
+@keyframes preloaderAutoHide { to { opacity: 0; visibility: hidden; } }

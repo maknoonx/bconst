@@ -72,7 +72,14 @@
         "email": "b.construction.med@gmail.com",
         "priceRange": "$$$",
         "areaServed": { "@type": "Country", "name": "Saudi Arabia" },
-        "knowsAbout": ["Architectural Design","Construction","Real Estate Development","Renovation","Engineering Consultancy"]
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "المدينة المنورة",
+          "addressCountry": "SA"
+        },
+        "hasMap": "https://maps.app.goo.gl/dXnXGsnpTLKDdLrZ6",
+        "identifier": { "@type": "PropertyValue", "name": "Commercial Registration", "value": "7033033882" },
+        "knowsAbout": ["Real Estate Development","Architectural Design","Construction","Renovation","Engineering Consultancy"]
       },
       {
         "@type": "WebSite",
@@ -91,6 +98,7 @@
 
     <link rel="stylesheet" href="{% static 'website/css/styles.css' %}">
     <link rel="stylesheet" href="{% static 'website/css/loading.css' %}">
+    <noscript><style>.preloader{display:none!important}</style></noscript>
     <link rel="stylesheet" href="{% static 'website/css/coming-soon.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -99,19 +107,20 @@
 <body>
 
     <!-- شاشة الانتظار -->
-    <div class="preloader" id="preloader">
+    {# النصوص تُعرض عبر CSS (data-text) حتى لا تظهر في وصف قوقل أو كنص في الصفحة #}
+    <div class="preloader" id="preloader" aria-hidden="true">
         <div class="loader-wrap">
             <div class="loader-logo">
-                <img src="{% static 'website/img/logo.png' %}" alt="{{ company_name }}">
+                <img src="{% static 'website/img/logo.png' %}" alt="">
             </div>
-            <p class="loader-brand">{{ company_name }}</p>
+            <p class="loader-brand" data-text="{{ company_name }}"></p>
             <div class="loader-ring">
                 <div class="loader-ring-inner"></div>
             </div>
             <div class="loader-bar-wrap">
                 <div class="loader-bar"></div>
             </div>
-            <p class="loader-msg">{{ loader_msg }}</p>
+            <p class="loader-msg" data-text="{{ loader_msg }}"></p>
         </div>
     </div>
 
@@ -147,6 +156,10 @@
                             </div>
                         </div>
                         <p>{{ footer_brand_desc }}</p>
+                        <ul class="footer-legal">
+                            <li><span>{{ legal_cr_label }}:</span> <bdi>{{ legal_cr_number }}</bdi></li>
+                            {% if legal_class_value %}<li><span>{{ legal_class_label }}:</span> <bdi>{{ legal_class_value }}</bdi></li>{% endif %}
+                        </ul>
                     </div>
 
                     <!-- روابط سريعة -->
@@ -157,7 +170,7 @@
                             <li><a href="{{ url_home }}#about">{{ footer_about }}</a></li>
                             <li><a href="{{ url_services }}">{{ footer_link_services_page }}</a></li>
                             <li><a href="{{ url_projects }}">{{ nav_projects }}</a></li>
-                            <li><a href="{{ url_studio }}">{{ nav_studio }}</a></li>
+                            {% if show_studio %}<li><a href="{{ url_studio }}">{{ nav_studio }}</a></li>{% endif %}
                             <li><a href="{{ url_contact }}">{{ nav_contact }}</a></li>
                         </ul>
                     </div>
@@ -166,9 +179,9 @@
                     <div class="footer-links-col">
                         <h3 class="footer-col-title">{{ footer_services_heading }}</h3>
                         <ul class="footer-link-list">
+                            <li><a href="{{ url_services }}real-estate/">{{ footer_svc_3 }}</a></li>
                             <li><a href="{{ url_services }}architectural-design/">{{ footer_svc_1 }}</a></li>
                             <li><a href="{{ url_services }}construction/">{{ footer_svc_2 }}</a></li>
-                            <li><a href="{{ url_services }}real-estate/">{{ footer_svc_3 }}</a></li>
                             <li><a href="{{ url_services }}renovation/">{{ footer_svc_4 }}</a></li>
                             <li><a href="{{ url_services }}consultancy/">{{ footer_svc_5 }}</a></li>
                         </ul>
@@ -194,6 +207,12 @@
                                 <a href="mailto:b.construction.med@gmail.com">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                                     b.construction.med@gmail.com
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ map_url_company }}" target="_blank" rel="noopener noreferrer">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                                    {{ location_cities }}
                                 </a>
                             </li>
                         </ul>

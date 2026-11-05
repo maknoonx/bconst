@@ -37,10 +37,10 @@
                 <ul class="nav-menu" id="navMenu">
                     <li><a href="{{ url_home }}"        class="nav-link {% if active_page == 'home' %}active{% endif %}">{{ nav_home }}</a></li>
                     <li><a href="#about"                class="nav-link">{{ nav_about }}</a></li>
-                    <li><a href="{{ url_studio }}"      class="nav-link">{{ nav_studio }}</a></li>
+                    {% if show_studio %}<li><a href="{{ url_studio }}"      class="nav-link">{{ nav_studio }}</a></li>{% endif %}
                     <li><a href="{{ url_services }}"    class="nav-link">{{ footer_link_services_page }}</a></li>
                     <li><a href="{{ url_projects }}"    class="nav-link">{{ nav_projects }}</a></li>
-                    <li><a href="#partners"             class="nav-link">{{ nav_partners }}</a></li>
+                    {% if show_partners %}<li><a href="#partners"             class="nav-link">{{ nav_partners }}</a></li>{% endif %}
                     <li><a href="{{ url_contact }}"     class="nav-link">{{ nav_contact }}</a></li>
                 </ul>
 
@@ -70,10 +70,12 @@
     </header>
  
     <div class="hero-media">
-        <video autoplay muted loop playsinline preload="metadata"
+        {# الفيديو يُحمَّل بعد فتح الصفحة: نسخة خفيفة للجوال (~1MB) ونسخة للشاشات الكبيرة (~3.5MB) #}
+        <video autoplay muted loop playsinline preload="none"
                poster="{% static 'website/img/hero-poster.webp' %}"
-               width="1920" height="1080" class="hero-video">
-            <source src="{% static 'website/vid/heroimg.mp4' %}" type="video/mp4">
+               width="1280" height="720" class="hero-video" id="heroVideo"
+               data-src-mobile="{% static 'website/vid/hero-mobile.mp4' %}"
+               data-src-desktop="{% static 'website/vid/hero-desktop.mp4' %}">
         </video>
         <div class="hero-overlay"></div>
     </div>
@@ -91,8 +93,8 @@
                 </h1>
                 <p class="hero-subtitle">{{ hero_subtitle }}</p>
                 <div class="hero-actions">
-                    <a href="{{ url_coming_soon }}" class="btn-hero-primary">{{ btn_consultation }}</a>
-                    <a href="{{ url_studio }}" class="btn-hero-secondary">
+                    <a href="{{ url_whatsapp_consult }}" class="btn-hero-primary" target="_blank" rel="noopener noreferrer">{{ btn_consultation }}</a>
+                    <a href="{{ url_projects }}" class="btn-hero-secondary">
                         <span class="play-circle">&#9658;</span>
                         {{ btn_browse }}
                     </a>
@@ -158,6 +160,7 @@
     </div>
 </section>
 
+{% if show_partners %}
 <!-- الشركاء -->
 <section class="partners-section" id="partners">
     <div class="container">
@@ -178,6 +181,7 @@
         </div>
     </div>
 </section>
+{% endif %}
 
 <!-- CTA -->
 <section class="cta-section" id="contact">
@@ -189,8 +193,8 @@
         </h2>
         <p class="cta-subtitle">{{ cta_subtitle }}</p>
         <div class="cta-btns">
-            <a href="{{ url_coming_soon }}" class="btn-cta-solid">{{ btn_cta }}</a>
-            <a href="{{ url_coming_soon }}" class="btn-cta-ghost">{{ btn_contact_team }}</a>
+            <a href="{{ url_whatsapp_consult }}" class="btn-cta-solid" target="_blank" rel="noopener noreferrer">{{ btn_cta }}</a>
+            <a href="{{ url_contact }}" class="btn-cta-ghost">{{ btn_contact_team }}</a>
         </div>
     </div>
 </section>

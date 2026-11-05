@@ -1,25 +1,15 @@
-// Preloader
-window.addEventListener('load', function() {
-    const preloader = document.getElementById('preloader');
-    
-    // Minimum loading time of 1 second for better UX
-    setTimeout(() => {
+// Preloader — يختفي بعد تحميل الصفحة ثم يُزال من الـ DOM
+(function () {
+    var done = false;
+    function hide() {
+        if (done) return;
+        done = true;
+        var preloader = document.getElementById('preloader');
+        if (!preloader) return;
         preloader.classList.add('fade-out');
-        
-        // Remove preloader from DOM after fade out
-        setTimeout(() => {
-            preloader.style.display = 'none';
-        }, 500);
-    }, 1000);
-});
-
-// Fallback: Hide preloader after 3 seconds even if page isn't fully loaded
-setTimeout(() => {
-    const preloader = document.getElementById('preloader');
-    if (preloader && !preloader.classList.contains('fade-out')) {
-        preloader.classList.add('fade-out');
-        setTimeout(() => {
-            preloader.style.display = 'none';
-        }, 500);
+        setTimeout(function () { preloader.remove(); }, 600);
     }
-}, 3000);
+    window.addEventListener('load', function () { setTimeout(hide, 300); });
+    // احتياط: أقصى مدة 2.5 ثانية حتى لو لم يكتمل التحميل
+    setTimeout(hide, 2500);
+})();

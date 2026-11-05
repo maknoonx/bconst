@@ -1,9 +1,18 @@
-from django.shortcuts import render, Http404
+import datetime
+
+from django.shortcuts import render, redirect, Http404
 from django.http import HttpResponse
 from django.urls import reverse
 from .translations import CONTENT
 
 SITE_BASE = 'https://www.bconstructions.org'
+
+# أقسام موقوفة مؤقتاً — اجعلها True لإعادة إظهارها
+SHOW_STUDIO   = False   # استديو أعمالنا
+SHOW_PARTNERS = False   # شركاؤنا
+
+# موقع الشركة على خرائط قوقل
+COMPANY_MAP_URL = 'https://maps.app.goo.gl/dXnXGsnpTLKDdLrZ6'
 
 # Slug → service_key mapping
 SLUG_TO_KEY = {
@@ -16,9 +25,9 @@ SLUG_TO_KEY = {
 
 # All services in display order (slug, icon-class)
 SERVICES_LIST = [
+    ('real-estate',          'svc_real_estate'),
     ('architectural-design', 'svc_architectural_design'),
     ('construction',         'svc_construction'),
-    ('real-estate',          'svc_real_estate'),
     ('renovation',           'svc_renovation'),
     ('consultancy',          'svc_consultancy'),
 ]
@@ -31,6 +40,10 @@ def _build_ctx(lang, page, slug=None):
     # عنوان الصفحة
     ctx['page_title']  = ctx.get(f'page_title_{page}', ctx.get('company_name', ''))
     ctx['active_page'] = page
+    ctx['show_studio']   = SHOW_STUDIO
+    ctx['show_partners'] = SHOW_PARTNERS
+    ctx['map_url_company'] = COMPANY_MAP_URL
+    ctx['copyright'] = ctx['copyright'].replace('{year}', str(datetime.date.today().year))
 
     # روابط بنفس اللغة الحالية
     ctx['url_home']        = reverse('home'        if lang == 'ar' else 'home_en')
@@ -108,6 +121,8 @@ def home(request, lang='ar'):
 
 
 def studio(request, lang='ar'):
+    if not SHOW_STUDIO:
+        return redirect('coming_soon' if lang == 'ar' else 'coming_soon_en')
     return render(request, 'website/studio.html', _build_ctx(lang, 'studio'))
 
 

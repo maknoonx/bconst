@@ -21,10 +21,10 @@
             <ul class="nav-menu" id="navMenu">
                 <li><a href="{{ url_home }}"          class="nav-link">{{ nav_home }}</a></li>
                 <li><a href="{{ url_home }}#about"    class="nav-link">{{ nav_about }}</a></li>
-                <li><a href="{{ url_studio }}"        class="nav-link">{{ nav_studio }}</a></li>
+                {% if show_studio %}<li><a href="{{ url_studio }}"        class="nav-link">{{ nav_studio }}</a></li>{% endif %}
                 <li><a href="{{ url_services }}"      class="nav-link">{{ footer_link_services_page }}</a></li>
                 <li><a href="{{ url_projects }}"      class="nav-link">{{ nav_projects }}</a></li>
-                <li><a href="{{ url_home }}#partners" class="nav-link">{{ nav_partners }}</a></li>
+                {% if show_partners %}<li><a href="{{ url_home }}#partners" class="nav-link">{{ nav_partners }}</a></li>{% endif %}
                 <li><a href="{{ url_contact }}"       class="nav-link">{{ nav_contact }}</a></li>
             </ul>
 

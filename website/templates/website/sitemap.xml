@@ -24,7 +24,8 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/"/>
   </url>
 
-  <!-- Studio -->
+  <!--
+  Studio — موقوف مؤقتاً، أعد تفعيله مع SHOW_STUDIO
   <url>
     <loc>https://www.bconstructions.org/studio/</loc>
     <lastmod>2026-05-05</lastmod>
@@ -45,6 +46,7 @@
     <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/studio/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/studio/"/>
   </url>
+  -->
 
   <!-- Contact -->
   <url>
