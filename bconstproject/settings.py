@@ -64,7 +64,6 @@ if IS_PRODUCTION:
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -73,18 +72,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'cloudinary',
     'website',
-    'dashboard',
-    'projects',
-    'clients',
-    'employees',
-    'accounting',
-    'inventory',
-    'marketing',
-    'company',
-    'invoices',
-    'reports',
-    'namadhj',
-    'attendance',
 ]
 
 MIDDLEWARE = [
@@ -111,7 +98,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'company.context_processors.company_settings',
             ],
         },
     },
@@ -228,9 +214,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_URL          = '/dashboard/login/'
-LOGIN_REDIRECT_URL = '/dashboard/'
-LOGOUT_REDIRECT_URL = '/dashboard/login/'
 
 
 # للاستخدام مع Gmail

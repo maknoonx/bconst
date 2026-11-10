@@ -1148,27 +1148,6 @@ ul { list-style:none; }
     box-shadow: 0 10px 32px rgba(37,211,102,.55);
 }
 
-/* --- زر دخول الموظفين --- */
-.btn-employee-login {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 7px 13px;
-    border: 1.5px solid var(--gold-border);
-    border-radius: var(--radius-pill);
-    color: var(--gold);
-    font-size: 12.5px;
-    font-weight: 600;
-    background: transparent;
-    transition: var(--transition-fast);
-    white-space: nowrap;
-}
-.btn-employee-login:hover {
-    background: var(--gold-pale);
-    border-color: var(--gold);
-    color: var(--gold);
-}
-
 /* --- الفوتر: قائمة التواصل --- */
 .footer-contact-list a {
     display: inline-flex;
@@ -1583,9 +1562,6 @@ ul { list-style:none; }
         left: 20px;
         width: 48px;
         height: 48px;
-    }
-    .btn-employee-login {
-        display: none;
     }
 }
 

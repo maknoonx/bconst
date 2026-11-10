@@ -33,7 +33,6 @@ CONTENT = {
         'nav_partners': 'شركاؤنا',
         'nav_contact':  'تواصل معنا',
         'nav_cta':      'احصل على عرض سعر',
-        'btn_employee_login': 'دخول الموظفين',
 
         # الهيرو
         'hero_badge':    'بناء الثقة، خلق القيمة',
@@ -370,7 +369,6 @@ CONTENT = {
         'nav_partners': 'Partners',
         'nav_contact':  'Contact Us',
         'nav_cta':      'Get a Quote',
-        'btn_employee_login': 'Staff Login',
 
         # Hero
         'hero_badge':    'Building Trust, Creating Value',
