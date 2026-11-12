@@ -4,10 +4,10 @@
    ============================================================ */
 
 /* الخط الرسمي للشركة — Bahij TheSansArabic */
-@font-face { font-family: 'Bahij'; src: url('../fonts/Bahij_TheSansArabic-Plain.ttf') format('truetype'); font-weight: 400; font-display: swap; }
-@font-face { font-family: 'Bahij'; src: url('../fonts/Bahij_TheSansArabic-SemiBold.ttf') format('truetype'); font-weight: 600; font-display: swap; }
-@font-face { font-family: 'Bahij'; src: url('../fonts/Bahij_TheSansArabic-Bold.ttf') format('truetype'); font-weight: 700; font-display: swap; }
-@font-face { font-family: 'Bahij'; src: url('../fonts/Bahij_TheSansArabic-ExtraBold.ttf') format('truetype'); font-weight: 800; font-display: swap; }
+@font-face { font-family: 'Bahij'; src: url('../fonts/Bahij_TheSansArabic-Plain.woff2') format('woff2'), url('../fonts/Bahij_TheSansArabic-Plain.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Bahij'; src: url('../fonts/Bahij_TheSansArabic-SemiBold.woff2') format('woff2'), url('../fonts/Bahij_TheSansArabic-SemiBold.ttf') format('truetype'); font-weight: 600; font-display: swap; }
+@font-face { font-family: 'Bahij'; src: url('../fonts/Bahij_TheSansArabic-Bold.woff2') format('woff2'), url('../fonts/Bahij_TheSansArabic-Bold.ttf') format('truetype'); font-weight: 700; font-display: swap; }
+@font-face { font-family: 'Bahij'; src: url('../fonts/Bahij_TheSansArabic-ExtraBold.woff2') format('woff2'), url('../fonts/Bahij_TheSansArabic-ExtraBold.ttf') format('truetype'); font-weight: 800; font-display: swap; }
 
 :root {
     --pk-navy:    #0b1f36;
