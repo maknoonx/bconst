@@ -124,9 +124,9 @@
     background: #C8920A;
     top:50%; left:50%;
     transform:translate(-50%,-50%);
-    animation: logoPulse 5s ease-in-out infinite;
+    animation: csShapePulse 5s ease-in-out infinite;
 }
-@keyframes logoPulse {
+@keyframes csShapePulse {
     0%,100% { transform:translate(-50%,-50%) scale(1);   }
     50%      { transform:translate(-50%,-50%) scale(1.15); }
 }

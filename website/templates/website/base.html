@@ -101,10 +101,11 @@
     <link rel="stylesheet" href="{% static 'website/css/styles.css' %}">
     <link rel="stylesheet" href="{% static 'website/css/loading.css' %}">
     <noscript><style>.preloader{display:none!important}</style></noscript>
-    <link rel="stylesheet" href="{% static 'website/css/coming-soon.css' %}">
+    {% block extra_head %}{% endblock %}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"></noscript>
 </head>
 <body>
 
