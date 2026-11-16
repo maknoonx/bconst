@@ -77,6 +77,12 @@
     .project-card-cta { display: inline-flex; align-items: center; gap: 7px; }
     [dir="ltr"] .project-card-name,
     [dir="ltr"] .project-card-tag { text-align: left; }
+    .projects-slogan {
+        margin-top: 18px; font-size: 17px; color: var(--gold-light);
+        letter-spacing: .01em;
+    }
+    .projects-slogan strong { color: var(--gold); font-weight: 800; }
+    .project-card-status.is-building { background: rgba(11,31,54,.82); color: var(--gold-light); border: 1px solid var(--gold-border); backdrop-filter: blur(6px); }
     .projects-empty { text-align: center; opacity: .7; font-size: 18px; padding: 60px 0; }
     .projects-tabs { margin-inline: auto; }
     .projects-panel { display: none; }
@@ -142,6 +148,7 @@
             <span class="section-badge">{{ projects_badge }}</span>
             <h1 class="studio-hero-title">{{ projects_title_1 }} <em>{{ projects_title_2 }}</em></h1>
             <p class="studio-hero-desc">{{ projects_intro }}</p>
+            <p class="projects-slogan">{{ company_name }} — <strong>{{ projects_slogan }}</strong></p>
         </div>
     </div>
 </section>
@@ -165,7 +172,7 @@
             <a href="{{ project.url }}" class="project-card">
                 <div class="project-card-media">
                     <img src="{% static project.cover %}" alt="{{ project.name }}" loading="lazy">
-                    <span class="project-card-status">{{ project.status }}</span>
+                    <span class="project-card-status{% if project.slug %} is-building{% endif %}">{{ project.status }}</span>
                 </div>
                 <div class="project-card-body">
                     <span class="project-card-loc">

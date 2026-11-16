@@ -3,6 +3,7 @@ import datetime
 from django.shortcuts import render, redirect, Http404
 from django.http import HttpResponse
 from django.urls import reverse
+from urllib.parse import quote
 from .translations import CONTENT
 
 SITE_BASE = 'https://www.bconstructions.org'
@@ -69,7 +70,10 @@ def _build_ctx(lang, page, slug=None):
         'project_khuzami': 'project_khuzami_en' if lang == 'ar' else 'project_khuzami',
     }
 
-    if page == 'services' and slug:
+    if page == 'project_detail' and slug:
+        other_name = 'project_detail_en' if lang == 'ar' else 'project_detail'
+        ctx['url_lang_switch'] = reverse(other_name, kwargs={'slug': slug})
+    elif page == 'services' and slug:
         # service detail — switch to same slug in other language
         other_name = 'service_detail_en' if lang == 'ar' else 'service_detail'
         ctx['url_lang_switch'] = reverse(other_name, kwargs={'slug': slug})
@@ -88,7 +92,10 @@ def _build_ctx(lang, page, slug=None):
                     'projects': 'projects_en', 'project_khuzami': 'project_khuzami_en',
                     'coming_soon': 'coming_soon_en'}
 
-    if page == 'services' and slug:
+    if page == 'project_detail' and slug:
+        ar_url = SITE_BASE + reverse('project_detail', kwargs={'slug': slug})
+        en_url = SITE_BASE + reverse('project_detail_en', kwargs={'slug': slug})
+    elif page == 'services' and slug:
         ar_url = SITE_BASE + reverse('service_detail', kwargs={'slug': slug})
         en_url = SITE_BASE + reverse('service_detail_en', kwargs={'slug': slug})
     elif page in ar_route_map:
@@ -455,8 +462,81 @@ KHUZAMI = {
 }
 
 # ملخص المشاريع لصفحة القائمة
+# مشاريع قائمة حالياً (قيد التنفيذ) — الصور في static/website/img/projects/<slug>/1.jpg ...
+SITE_PROJECTS = [
+    {'slug': 'albadrani-residential', 'photos': 3, 'kind': 'residential',
+     'ar': 'عمارة سكنية البدراني', 'en': 'Al-Badrani Residential Building',
+     'floors': 5, 'district_ar': '', 'district_en': '',
+     'map': 'https://maps.app.goo.gl/Fh1BmMTEi2crCRRX7', 'q': '24.435368,39.663597'},
+    {'slug': 'baa-albinaa-building', 'photos': 2, 'kind': 'residential',
+     'ar': 'عمارة باء البناء للتطوير العقاري', 'en': 'Baa Al-Bina Real Estate Development Building',
+     'floors': None, 'district_ar': '', 'district_en': '',
+     'map': 'https://maps.app.goo.gl/KRJ23qqRVXC5HPEP7', 'q': '24.435017,39.663247'},
+    {'slug': 'mudhainib-residential', 'photos': 3, 'kind': 'residential',
+     'ar': 'عمارة سكنية مذينب', 'en': 'Mudhainib Residential Building',
+     'floors': None, 'district_ar': 'مذينب', 'district_en': 'Mudhainib',
+     'map': 'https://goo.gl/maps/qiznzwV3Pn1Tw9nh7', 'q': '24.421611,39.688389'},
+    {'slug': 'al-qasr-residential', 'photos': 2, 'kind': 'residential',
+     'ar': 'عمارة سكنية مخطط القصر', 'en': 'Al-Qasr Plan Residential Building',
+     'floors': None, 'district_ar': 'مخطط القصر', 'district_en': 'Al-Qasr Plan',
+     'map': 'https://maps.app.goo.gl/YJPqGhK8keTy769v8', 'q': '24.429817,39.656924'},
+    {'slug': 'serviced-apartments', 'photos': 2, 'kind': 'serviced',
+     'ar': 'شقق مخدومة', 'en': 'Serviced Apartments',
+     'floors': 6, 'district_ar': '', 'district_en': '',
+     'map': 'https://maps.app.goo.gl/JkZb1KpPBUAx2C61A', 'q': '24.451845,39.593166'},
+    {'slug': 'baa-albinaa-mudhainib', 'photos': 2, 'kind': 'residential',
+     'ar': 'عمارة شركة باء البناء للتطوير العقاري — مذينب', 'en': 'Baa Al-Bina Development Building — Mudhainib',
+     'floors': None, 'district_ar': 'مذينب', 'district_en': 'Mudhainib',
+     'map': 'https://goo.gl/maps/KPe1PyyxSZBrQVr5A', 'q': '24.417556,39.684222'},
+    {'slug': 'al-hamra-mosque', 'photos': 2, 'kind': 'mosque',
+     'ar': 'جامع الحمراء النموذجي', 'en': 'Al-Hamra Model Mosque',
+     'floors': None, 'district_ar': 'الحمراء', 'district_en': 'Al-Hamra',
+     'map': 'https://maps.app.goo.gl/tzwZKpDHxAqzenFz8', 'q': '24.360061,39.518865'},
+    {'slug': 'hamra-al-asad-mosque', 'photos': 2, 'kind': 'mosque',
+     'ar': 'جامع حمراء الأسد ٢', 'en': 'Hamra Al-Asad Mosque 2',
+     'floors': None, 'district_ar': 'حمراء الأسد', 'district_en': 'Hamra Al-Asad',
+     'map': 'https://maps.app.goo.gl/zZoQveZtGK15DeDa9', 'q': '24.356245,39.509305'},
+    {'slug': 'al-dhubbat-mosque', 'photos': 3, 'kind': 'mosque',
+     'ar': 'جامع الضباط', 'en': 'Al-Dhubbat Mosque',
+     'floors': None, 'district_ar': 'مخطط الشروق', 'district_en': 'Al-Shurouq Plan',
+     'map': 'https://maps.app.goo.gl/o11ufryTk6HXzCJw7',
+     'q': 'مسجد الضباط الجامعيين 49 ووالديهم، وادي البطان، المدينة المنورة'},
+]
+SITE_PROJECTS_BY_SLUG = {sp['slug']: sp for sp in SITE_PROJECTS}
+
+_PROJECT_KIND = {
+    'ar': {'residential': 'عمارة سكنية', 'serviced': 'شقق مخدومة', 'mosque': 'جامع'},
+    'en': {'residential': 'Residential Building', 'serviced': 'Serviced Apartments', 'mosque': 'Mosque'},
+}
+
+
+def _site_project(sp, ctx, lang):
+    """بيانات مشروع قائم جاهزة للعرض بلغة الصفحة."""
+    city = 'المدينة المنورة' if lang == 'ar' else 'Madinah'
+    district = sp['district_' + lang]
+    kind = _PROJECT_KIND[lang][sp['kind']]
+    meta = kind
+    if sp['floors']:
+        meta += (f' · {sp["floors"]} أدوار' if lang == 'ar' else f' · {sp["floors"]} Floors')
+    photos = [f'website/img/projects/{sp["slug"]}/{i}.jpg' for i in range(1, sp['photos'] + 1)]
+    return {
+        'slug':     sp['slug'],
+        'name':     sp[lang],
+        'kind':     kind,
+        'location': f'{city} — {district}' if district else city,
+        'tagline':  ctx['projects_site_tagline_' + sp['kind']],
+        'meta':     meta,
+        'status':   ctx['projects_status_building'],
+        'url':      reverse('project_detail' if lang == 'ar' else 'project_detail_en', kwargs={'slug': sp['slug']}),
+        'cover':    photos[0],
+        'photos':   photos,
+        'map_url':  sp['map'],
+        'map_embed': 'https://maps.google.com/maps?q=' + quote(sp['q']) + '&z=16&hl=' + lang + '&output=embed',
+    }
+
+
 def _projects_summary(ctx, lang):
-    return [{
+    khuzami = {
         'name':     ctx['khuzami_card_name'],
         'location': ctx['khuzami_card_location'],
         'tagline':  ctx['khuzami_card_tagline'],
@@ -464,7 +544,8 @@ def _projects_summary(ctx, lang):
         'status':   ctx['projects_status_now'],
         'url':      reverse('project_khuzami' if lang == 'ar' else 'project_khuzami_en'),
         'cover':    'website/img/projects/khuzami/exterior-hero.jpg',
-    }]
+    }
+    return [khuzami] + [_site_project(sp, ctx, lang) for sp in SITE_PROJECTS]
 
 
 def projects_list(request, lang='ar'):
@@ -485,6 +566,22 @@ def project_khuzami(request, lang='ar'):
     ctx['og_description'] = p['hero_desc']
     ctx['og_image_url'] = f"{SITE_BASE}/static/website/img/projects/khuzami/exterior-hero.jpg"
     return render(request, 'website/project-khuzami.html', ctx)
+
+
+def project_detail(request, slug, lang='ar'):
+    sp = SITE_PROJECTS_BY_SLUG.get(slug)
+    if sp is None:
+        raise Http404
+    ctx = _build_ctx(lang, 'project_detail', slug=slug)
+    p = _site_project(sp, ctx, lang)
+    ctx['p'] = p
+    ctx['others'] = [_site_project(o, ctx, lang) for o in SITE_PROJECTS if o['slug'] != slug][:3]
+    ctx['page_title'] = p['name'] + ' — ' + ctx['company_name']
+    ctx['og_title'] = ctx['page_title']
+    ctx['meta_description'] = p['name'] + ' — ' + p['tagline']
+    ctx['og_description'] = ctx['meta_description']
+    ctx['og_image_url'] = f"{SITE_BASE}/static/{p['cover']}"
+    return render(request, 'website/project-detail.html', ctx)
 
 
 def tree(request):
