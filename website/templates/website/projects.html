@@ -172,7 +172,7 @@
             <a href="{{ project.url }}" class="project-card">
                 <div class="project-card-media">
                     <img src="{% static project.cover %}" alt="{{ project.name }}" loading="lazy">
-                    <span class="project-card-status{% if project.slug %} is-building{% endif %}">{{ project.status }}</span>
+                    <span class="project-card-status{% if project.slug and not project.done %} is-building{% endif %}">{{ project.status }}</span>
                 </div>
                 <div class="project-card-body">
                     <span class="project-card-loc">

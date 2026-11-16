@@ -499,7 +499,7 @@ SITE_PROJECTS = [
     {'slug': 'al-dhubbat-mosque', 'photos': 3, 'kind': 'mosque',
      'ar': 'جامع الضباط', 'en': 'Al-Dhubbat Mosque',
      'floors': None, 'district_ar': 'مخطط الشروق', 'district_en': 'Al-Shurouq Plan',
-     'map': 'https://maps.app.goo.gl/o11ufryTk6HXzCJw7',
+     'map': 'https://maps.app.goo.gl/o11ufryTk6HXzCJw7', 'done': True,
      'q': 'مسجد الضباط الجامعيين 49 ووالديهم، وادي البطان، المدينة المنورة'},
 ]
 SITE_PROJECTS_BY_SLUG = {sp['slug']: sp for sp in SITE_PROJECTS}
@@ -526,7 +526,8 @@ def _site_project(sp, ctx, lang):
         'location': f'{city} — {district}' if district else city,
         'tagline':  ctx['projects_site_tagline_' + sp['kind']],
         'meta':     meta,
-        'status':   ctx['projects_status_building'],
+        'status':   ctx['projects_status_done' if sp.get('done') else 'projects_status_building'],
+        'done':     bool(sp.get('done')),
         'url':      reverse('project_detail' if lang == 'ar' else 'project_detail_en', kwargs={'slug': sp['slug']}),
         'cover':    photos[0],
         'photos':   photos,
