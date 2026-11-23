@@ -6,7 +6,7 @@ from django.urls import reverse
 from urllib.parse import quote
 from .translations import CONTENT
 
-SITE_BASE = 'https://www.bconstructions.org'
+SITE_BASE = 'https://balbena.sa'
 
 # أقسام موقوفة مؤقتاً — اجعلها True لإعادة إظهارها
 SHOW_STUDIO   = False   # استديو أعمالنا
@@ -598,7 +598,7 @@ def tree_vcard(request):
         "ORG:شركة باء البناء\r\n"
         "TEL;TYPE=CELL:+966593394747\r\n"
         "EMAIL:b.construction.med@gmail.com\r\n"
-        "URL:https://www.bconstructions.org\r\n"
+        "URL:https://balbena.sa\r\n"
         "END:VCARD\r\n"
     )
     response = HttpResponse(vcard, content_type='text/vcard; charset=utf-8')

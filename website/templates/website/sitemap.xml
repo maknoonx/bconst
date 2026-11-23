@@ -4,231 +4,231 @@
 
   <!-- Homepage -->
   <url>
-    <loc>https://www.bconstructions.org/</loc>
+    <loc>https://balbena.sa/</loc>
     <lastmod>2026-05-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/"/>
-    <xhtml:link rel="alternate" hreflang="ar"    href="https://www.bconstructions.org/"/>
-    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/"/>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://balbena.sa/"/>
+    <xhtml:link rel="alternate" hreflang="ar"    href="https://balbena.sa/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://balbena.sa/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://balbena.sa/"/>
   </url>
   <url>
-    <loc>https://www.bconstructions.org/en/</loc>
+    <loc>https://balbena.sa/en/</loc>
     <lastmod>2026-05-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/"/>
-    <xhtml:link rel="alternate" hreflang="ar"    href="https://www.bconstructions.org/"/>
-    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/"/>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://balbena.sa/"/>
+    <xhtml:link rel="alternate" hreflang="ar"    href="https://balbena.sa/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://balbena.sa/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://balbena.sa/"/>
   </url>
 
   <!--
   Studio — موقوف مؤقتاً، أعد تفعيله مع SHOW_STUDIO
   <url>
-    <loc>https://www.bconstructions.org/studio/</loc>
+    <loc>https://balbena.sa/studio/</loc>
     <lastmod>2026-05-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/studio/"/>
-    <xhtml:link rel="alternate" hreflang="ar"    href="https://www.bconstructions.org/studio/"/>
-    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/studio/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/studio/"/>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://balbena.sa/studio/"/>
+    <xhtml:link rel="alternate" hreflang="ar"    href="https://balbena.sa/studio/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://balbena.sa/en/studio/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://balbena.sa/studio/"/>
   </url>
   <url>
-    <loc>https://www.bconstructions.org/en/studio/</loc>
+    <loc>https://balbena.sa/en/studio/</loc>
     <lastmod>2026-05-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/studio/"/>
-    <xhtml:link rel="alternate" hreflang="ar"    href="https://www.bconstructions.org/studio/"/>
-    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/studio/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/studio/"/>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://balbena.sa/studio/"/>
+    <xhtml:link rel="alternate" hreflang="ar"    href="https://balbena.sa/studio/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://balbena.sa/en/studio/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://balbena.sa/studio/"/>
   </url>
   -->
 
   <!-- Contact -->
   <url>
-    <loc>https://www.bconstructions.org/contact/</loc>
+    <loc>https://balbena.sa/contact/</loc>
     <lastmod>2026-05-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/contact/"/>
-    <xhtml:link rel="alternate" hreflang="ar"    href="https://www.bconstructions.org/contact/"/>
-    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/contact/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/contact/"/>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://balbena.sa/contact/"/>
+    <xhtml:link rel="alternate" hreflang="ar"    href="https://balbena.sa/contact/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://balbena.sa/en/contact/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://balbena.sa/contact/"/>
   </url>
   <url>
-    <loc>https://www.bconstructions.org/en/contact/</loc>
+    <loc>https://balbena.sa/en/contact/</loc>
     <lastmod>2026-05-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/contact/"/>
-    <xhtml:link rel="alternate" hreflang="ar"    href="https://www.bconstructions.org/contact/"/>
-    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/contact/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/contact/"/>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://balbena.sa/contact/"/>
+    <xhtml:link rel="alternate" hreflang="ar"    href="https://balbena.sa/contact/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://balbena.sa/en/contact/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://balbena.sa/contact/"/>
   </url>
 
   <!-- Services main -->
   <url>
-    <loc>https://www.bconstructions.org/services/</loc>
+    <loc>https://balbena.sa/services/</loc>
     <lastmod>2026-05-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/services/"/>
-    <xhtml:link rel="alternate" hreflang="ar"    href="https://www.bconstructions.org/services/"/>
-    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/services/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/services/"/>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://balbena.sa/services/"/>
+    <xhtml:link rel="alternate" hreflang="ar"    href="https://balbena.sa/services/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://balbena.sa/en/services/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://balbena.sa/services/"/>
   </url>
   <url>
-    <loc>https://www.bconstructions.org/en/services/</loc>
+    <loc>https://balbena.sa/en/services/</loc>
     <lastmod>2026-05-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/services/"/>
-    <xhtml:link rel="alternate" hreflang="ar"    href="https://www.bconstructions.org/services/"/>
-    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/services/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/services/"/>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://balbena.sa/services/"/>
+    <xhtml:link rel="alternate" hreflang="ar"    href="https://balbena.sa/services/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://balbena.sa/en/services/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://balbena.sa/services/"/>
   </url>
 
   <!-- Service detail pages — AR + EN pairs -->
   <!-- architectural-design -->
   <url>
-    <loc>https://www.bconstructions.org/services/architectural-design/</loc>
+    <loc>https://balbena.sa/services/architectural-design/</loc>
     <lastmod>2026-05-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/services/architectural-design/"/>
-    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/services/architectural-design/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/services/architectural-design/"/>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://balbena.sa/services/architectural-design/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://balbena.sa/en/services/architectural-design/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://balbena.sa/services/architectural-design/"/>
   </url>
   <url>
-    <loc>https://www.bconstructions.org/en/services/architectural-design/</loc>
+    <loc>https://balbena.sa/en/services/architectural-design/</loc>
     <lastmod>2026-05-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/services/architectural-design/"/>
-    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/services/architectural-design/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/services/architectural-design/"/>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://balbena.sa/services/architectural-design/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://balbena.sa/en/services/architectural-design/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://balbena.sa/services/architectural-design/"/>
   </url>
 
   <!-- construction -->
   <url>
-    <loc>https://www.bconstructions.org/services/construction/</loc>
+    <loc>https://balbena.sa/services/construction/</loc>
     <lastmod>2026-05-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/services/construction/"/>
-    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/services/construction/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/services/construction/"/>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://balbena.sa/services/construction/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://balbena.sa/en/services/construction/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://balbena.sa/services/construction/"/>
   </url>
   <url>
-    <loc>https://www.bconstructions.org/en/services/construction/</loc>
+    <loc>https://balbena.sa/en/services/construction/</loc>
     <lastmod>2026-05-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/services/construction/"/>
-    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/services/construction/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/services/construction/"/>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://balbena.sa/services/construction/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://balbena.sa/en/services/construction/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://balbena.sa/services/construction/"/>
   </url>
 
   <!-- real-estate -->
   <url>
-    <loc>https://www.bconstructions.org/services/real-estate/</loc>
+    <loc>https://balbena.sa/services/real-estate/</loc>
     <lastmod>2026-05-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/services/real-estate/"/>
-    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/services/real-estate/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/services/real-estate/"/>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://balbena.sa/services/real-estate/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://balbena.sa/en/services/real-estate/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://balbena.sa/services/real-estate/"/>
   </url>
   <url>
-    <loc>https://www.bconstructions.org/en/services/real-estate/</loc>
+    <loc>https://balbena.sa/en/services/real-estate/</loc>
     <lastmod>2026-05-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/services/real-estate/"/>
-    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/services/real-estate/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/services/real-estate/"/>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://balbena.sa/services/real-estate/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://balbena.sa/en/services/real-estate/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://balbena.sa/services/real-estate/"/>
   </url>
 
   <!-- renovation -->
   <url>
-    <loc>https://www.bconstructions.org/services/renovation/</loc>
+    <loc>https://balbena.sa/services/renovation/</loc>
     <lastmod>2026-05-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/services/renovation/"/>
-    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/services/renovation/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/services/renovation/"/>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://balbena.sa/services/renovation/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://balbena.sa/en/services/renovation/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://balbena.sa/services/renovation/"/>
   </url>
   <url>
-    <loc>https://www.bconstructions.org/en/services/renovation/</loc>
+    <loc>https://balbena.sa/en/services/renovation/</loc>
     <lastmod>2026-05-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/services/renovation/"/>
-    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/services/renovation/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/services/renovation/"/>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://balbena.sa/services/renovation/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://balbena.sa/en/services/renovation/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://balbena.sa/services/renovation/"/>
   </url>
 
   <!-- consultancy -->
   <url>
-    <loc>https://www.bconstructions.org/services/consultancy/</loc>
+    <loc>https://balbena.sa/services/consultancy/</loc>
     <lastmod>2026-05-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/services/consultancy/"/>
-    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/services/consultancy/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/services/consultancy/"/>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://balbena.sa/services/consultancy/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://balbena.sa/en/services/consultancy/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://balbena.sa/services/consultancy/"/>
   </url>
   <url>
-    <loc>https://www.bconstructions.org/en/services/consultancy/</loc>
+    <loc>https://balbena.sa/en/services/consultancy/</loc>
     <lastmod>2026-05-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/services/consultancy/"/>
-    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/services/consultancy/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/services/consultancy/"/>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://balbena.sa/services/consultancy/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://balbena.sa/en/services/consultancy/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://balbena.sa/services/consultancy/"/>
   </url>
 
   <!-- Privacy + Terms -->
   <url>
-    <loc>https://www.bconstructions.org/privacy/</loc>
+    <loc>https://balbena.sa/privacy/</loc>
     <lastmod>2026-05-05</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/privacy/"/>
-    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/privacy/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://balbena.sa/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://balbena.sa/en/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://balbena.sa/privacy/"/>
   </url>
   <url>
-    <loc>https://www.bconstructions.org/en/privacy/</loc>
+    <loc>https://balbena.sa/en/privacy/</loc>
     <lastmod>2026-05-05</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/privacy/"/>
-    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/privacy/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://balbena.sa/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://balbena.sa/en/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://balbena.sa/privacy/"/>
   </url>
   <url>
-    <loc>https://www.bconstructions.org/terms/</loc>
+    <loc>https://balbena.sa/terms/</loc>
     <lastmod>2026-05-05</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/terms/"/>
-    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/terms/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/terms/"/>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://balbena.sa/terms/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://balbena.sa/en/terms/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://balbena.sa/terms/"/>
   </url>
   <url>
-    <loc>https://www.bconstructions.org/en/terms/</loc>
+    <loc>https://balbena.sa/en/terms/</loc>
     <lastmod>2026-05-05</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://www.bconstructions.org/terms/"/>
-    <xhtml:link rel="alternate" hreflang="en"    href="https://www.bconstructions.org/en/terms/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bconstructions.org/terms/"/>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://balbena.sa/terms/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://balbena.sa/en/terms/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://balbena.sa/terms/"/>
   </url>
 
 </urlset>

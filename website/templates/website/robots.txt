@@ -1,4 +1,4 @@
-# robots.txt for https://www.bconstructions.org
+# robots.txt for https://balbena.sa
 User-agent: *
 Allow: /
 
@@ -25,4 +25,4 @@ Allow: /*.svg$
 
 Crawl-delay: 1
 
-Sitemap: https://www.bconstructions.org/sitemap.xml
+Sitemap: https://balbena.sa/sitemap.xml
