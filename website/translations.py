@@ -55,7 +55,7 @@ CONTENT = {
         'f3_text':  'نلتزم بجداول التسليم المتفق عليها مع الحفاظ على أعلى معايير الجودة',
         'card1_num':   '10+',
         'card1_label': 'سنة خبرة في السوق السعودي',
-        'card2_num':   '500+',
+        'card2_num':   '38',
         'card2_label': 'مشروع منجز بنجاح وإتقان',
         'card3_num':   '120+',
         'card3_label': 'موظف ومهندس ومختص',
@@ -323,7 +323,7 @@ CONTENT = {
         'seo_title_terms':    'الشروط والأحكام | شركة باء البناء',
 
         # Meta descriptions (120-140 chars Arabic)
-        'meta_description_home':     'شركة باء البناء — مقاول إنشاءات معتمد في المملكة العربية السعودية. نقدم التصميم المعماري، الإنشاء، التطوير العقاري، التجديد، والاستشارات الهندسية. أكثر من 10 سنوات و500+ مشروع منجز.',
+        'meta_description_home':     'شركة باء البناء — مقاول إنشاءات معتمد في المملكة العربية السعودية. نقدم التصميم المعماري، الإنشاء، التطوير العقاري، التجديد، والاستشارات الهندسية. أكثر من 10 سنوات و38 مشروعًا منجزًا.',
         'meta_description_studio':   'معرض أعمال شركة باء البناء — 21 مشروعاً معمارياً، 42 مشروعاً إنشائياً، و9 تصاميم منجزة في المملكة العربية السعودية. شاهد جودة التنفيذ والتصميم.',
         'meta_description_contact':  'تواصل مع شركة باء البناء للمقاولات في السعودية. اتصل على 0593394747 أو راسلنا عبر البريد الإلكتروني للحصول على استشارة مجانية.',
         'meta_description_services': 'خدمات شركة باء البناء: التصميم المعماري، الإنشاء والبناء، التطوير العقاري، التجديد والترميم، والاستشارات الهندسية في المملكة العربية السعودية.',
@@ -404,7 +404,7 @@ CONTENT = {
         'f3_text':  'We adhere to agreed delivery schedules while maintaining the highest quality standards',
         'card1_num':   '10+',
         'card1_label': 'Years of Experience in the Saudi Market',
-        'card2_num':   '500+',
+        'card2_num':   '38',
         'card2_label': 'Completed Projects with Excellence',
         'card3_num':   '120+',
         'card3_label': 'Employees, Engineers & Specialists',
@@ -670,7 +670,7 @@ CONTENT = {
         'seo_title_privacy':  'Privacy Policy | Baa Al-Bina Company',
         'seo_title_terms':    'Terms & Conditions | Baa Al-Bina Company',
 
-        'meta_description_home':     'Baa Al-Bina Company — licensed construction contractor in Saudi Arabia. Architectural design, construction, real estate development, renovation and engineering consultancy. 10+ years, 500+ projects.',
+        'meta_description_home':     'Baa Al-Bina Company — licensed construction contractor in Saudi Arabia. Architectural design, construction, real estate development, renovation and engineering consultancy. 10+ years, 38 completed projects.',
         'meta_description_studio':   'Explore Baa Al-Bina portfolio: 21 architectural projects, 42 construction projects, and 9 designs delivered across Saudi Arabia. See the quality of our execution.',
         'meta_description_contact':  'Contact Baa Al-Bina Construction Company in Saudi Arabia. Call +966593394747 or email us for a free consultation.',
         'meta_description_services': 'Baa Al-Bina services: architectural design, construction, real estate development, renovation & restoration, and engineering consultancy across Saudi Arabia.',
